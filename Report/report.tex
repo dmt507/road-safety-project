@@ -24,20 +24,49 @@
 \thispagestyle{empty}\cleardoublepage
 
 \chapter{Introduction}
-\label{cha:Introduction}
 
-It is envisaged that open data 
+\section{Project Area and Motivation}
 
-The importance of this data is growing, as acknowledged by the G8 leaders, who signed the Open Data Charter on 18 June 2013 [2]. The charter states that members of G8 are committed to releasing open data in order to create more accountable, responsive, and effective governments and businesses, as well as spurring economic growth. Open data increases transparency about what government and businesses are doing, which promotes accountability and good governance. The charter also states that “freely-available government data can be used in innovative ways to create useful tools and products that help people navigate modern life more easily”. It is this use of open data that forms the motivation for this project. 
+It is envisaged that open data, i.e. data that can be freely used and redistributed by anyone, released by governments will lead to major social and economic advances. Deloitte, one of the largest professional services firms in the world, believes that every business should have a strategy to exploit the growing estate of open data \citep{DeloitteAnalytics2012}. Furthermore, in the Open Data Charter of 18 June 2013, it is acknowledged that the use of open data can spur economic growth \citep{CabinetOffice2013}. The Open Data charter states that members of G8 are committed to releasing open data in order to create more accountable, responsive, and effective governments and businesses. Open data increases transparency about what government and businesses are doing, which promotes accountability and good governance.
 
-In this project, I will be looking at web applications with interactive maps that make use of open data. There are several applications available in this area, but there isn't an agreed approach on how to develop such web applications. I will analyse the literature in this area, any existing applications, and the development options that are available. This will allow me to establish a suitable approach, before making my own application. I aim to build a framework that can be followed by other developers in the future, in order to simplify and encourage the development of similar applications. This will hopefully lead to more open data sets being used for the benefit of the general public.
-\citep{KopkaDaly1999}
+The Open Data Charter also states that "freely-available government data can be used in innovative ways to create useful tools and products that help people navigate modern life more easily". It is this use of open data that forms the motivation for this project. There are already a large number of applications available that make use of various open data sets. The \textit{data.gov.uk} website has a catalogue of 350+ applications \citep{Data.go}, each of which take open datasets and make the data a usable resource for the general public. 
+
+In this project, I will be looking at web applications with interactive maps, that make use of open data. There are several applications available in this area, but there isn't an agreed approach on how to develop such web applications. I will analyse the literature in this area, any existing applications, and the development options that are available. This will allow me to establish a suitable approach, before making my own application.
+
+%something about road data
+
+\section{Project Aims and Objectives}
+
+The principle aim of this project is to develop and evaluate an application that allows a user to view and interact with open data via an interactive map. More specifically, I aim to build a web application that uses road safety data provided by the UK Department for Transport, in order to warn road users about accident hotspots.
+
+I'm also aiming to build a framework that can be followed by other developers in the future, in order to simplify and encourage the development of similar applications. This will hopefully lead to more open data sets being used for the benefit of the general public.
+
+For the planning phase of the project, I followed the steps outlined in Dawson's Projects in Computing and Information Systems \citep{Dawson2009}. As part of this process, I have identified the following high-level objectives:
+\begin{enumerate}
+	\item Complete a literature search and review of web development options, software engineering methodologies, open data paradigm, similar applications and road safety studies.
+	\item Assemble a list of SMART requirements for the project.
+	\item Develop the application on a suitable platform.
+	\item Evaluate technology and techniques used.
+	\item Complete final report.
+\end{enumerate}
+
+These objectives have been broken down into more specific objectives, which are shown in the work breakdown structure in Appendix A. In addition to this, I created a Gantt chart in order to plan the delivery of each objective within the time constraints of the project. The Gantt chart can also be seen in Appendix A. 
+
+
+\section{Statement of Ethics}
+
+\section{Report Structure}
+
 
 \chapter{Literature Review}
-\section{Open Data}
-\subsection{The Open Data Movement}
 
-The formal definition of open data states that “open data is data that can be freely used, modified, and shared by anyone for any purpose” [1].
+\section{Open Data}
+
+The formal definition of open data states that "open data is data that can be freely used, modified, and shared by anyone for any purpose" \citep{OpenKnowledge}. The release of open datasets by governments is becoming increasingly popular as the benefits become more apparent.
+
+In this section of the report, I will look at the history of the open data movement, benefits and challenges that it introduces, available open datasets, applications using road safety data, and research areas involving open data.
+
+\subsection{The Open Data Movement}
 
 The origins of the open data movement can be traced back as far as 1942, when Robert King Merton explained the importance of making research results freely accessible to all [3]. The term open data wasn’t coined until 1995, when an American scientific agency used it in reference to a complete and open exchange of scientific information between countries. Researchers were the first to recognise the benefits of sharing data in this manner. This concept of sharing data, along with the growing popularity of open source software led to the foundation of open data. In 2007, a meeting was held in the US, with the aim of defining the concept of open public data and have it adopted by the US presidential candidates. 
 
@@ -74,7 +103,36 @@ The Open Data Institute (ODI) was founded by Berners-Lee and Nigel Shadbolt in 2
 
 \section{Non-functional Requirements}
 
+\begin{tabular}{| p{2.2cm} | p{7.5cm} | p{2cm} |}
+	\hline
+	\textbf{Requirement ID} & \textbf{Description} & \textbf{Importance} \\ \hline
+	NFR1 & The results of any data analysis should be presented in a user-friendly way. & High \\ \hline
+	NFR2 & The response time of the application should be <5 seconds, assuming that the user's connection isn't the bottleneck. & High \\ \hline
+	NFR3 & The user interface should use standard controls. & Medium \\
+	\hline
+\end{tabular}
+
 \section{Functional Requirements}
+
+\begin{tabular}{| p{2.2cm} | p{7.5cm} | p{2cm} |}
+	\hline
+	\textbf{Requirement ID} & \textbf{Description} & \textbf{Importance} \\ \hline
+	FR1 & The application should use road safety data published by the UK Department for Transport to warn users about accident hotspots. & High \\ \hline
+	FR2 & Users should be able to specify road journeys, and the road safety data should be used to highlight risks on the selected route. & High \\ \hline
+	FR3 & Users should be able to specify time of travel in order to further filter the data. & Medium \\ \hline
+	FR4 & Users should be able to set warning thresholds, such as frequency and severity of accidents. & Medium \\ \hline
+	FR5 & Users should be able to specify weather conditions in order to further filter the data. & Low \\ \hline
+	FR6 & Weather data should be retrieved from the Met Office DataPoint service using the location and time parameters specified by the user. This data should then be used to filter the road safety data. & Low \\ \hline
+	FR7 & The application should suggest lower risk routes for the specified journey. & Low \\ \hline
+	FR8 & The location of incidents should be displayed on an interactive map. & High \\ \hline
+	FR9 & Users should be able to retrieve additional information about an incident. & Medium \\ \hline
+	FR10 & UThe application should be compatible with the latest versions of Google Chrome, Mozilla Firefox and Internet Explorer. & High \\ \hline
+	FR11 & The application should be compatible with mobile devices. & Low \\ \hline
+	FR12 & The site administrator should be able to add and remove datasets through a user-friendly GUI. & High \\ \hline
+	FR13 & The road safety data should be automatically updated when new datasets are released. & Low \\ \hline
+	FR14 & A generic ‘boilerplate’ implementation should be developed that can be reused to develop other Open Data applications. & Medium \\
+	\hline
+\end{tabular}
 
 \chapter{Design}
 
@@ -83,7 +141,7 @@ The Open Data Institute (ODI) was founded by Berners-Lee and Nigel Shadbolt in 2
 
 
 
-\bibliography{references}
+\bibliography{library}
 
 
 \end{document}
