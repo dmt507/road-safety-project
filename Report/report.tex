@@ -68,24 +68,30 @@ In this section of the report, I will look at the history of the open data movem
 
 \subsection{The Open Data Movement}
 
-The origins of the open data movement can be traced back as far as 1942, when Robert King Merton explained the importance of making research results freely accessible to all [3]. The term open data wasn’t coined until 1995, when an American scientific agency used it in reference to a complete and open exchange of scientific information between countries. Researchers were the first to recognise the benefits of sharing data in this manner. This concept of sharing data, along with the growing popularity of open source software led to the foundation of open data. In 2007, a meeting was held in the US, with the aim of defining the concept of open public data and have it adopted by the US presidential candidates. 
+The origins of the open data movement can be traced back as far as 1942, when Robert King Merton explained the importance of making research results freely accessible to all \citep{Chignard2013}. The term open data wasn't coined until 1995, when an American scientific agency used it in reference to a complete and open exchange of scientific information between countries. Researchers were the first to recognise the benefits of sharing data in this manner. This concept of sharing data, along with the growing popularity of open source software led to the foundation of open data.
 
-Tim O’Reilly has played a big role in the open data movement in the US. As well as being a key figure in the aforementioned 2007 meeting, he has since written about how government can improve by embracing open data.  He believes that government can learn from open-source software, by becoming “an open platform that allows people inside and outside government to innovate” [4]. 
+The open data movement in the UK started to pick up momentum as early as 2006, when The Guardian launched its "Free Our Data" campaign \citep{GuardianTechnology2006}. This campaign called for raw data gathered by Ordnance Survey to be made freely available for reuse by individuals and companies. This campaign partially achieved its goal when, on 1 April 2010, Ordnance Survey released the brand OS OpenData \citep{OrdnanceSurveyteam2010}. The campaign has since continued, with the aim of making more data publicly available. 
 
-In 2009,  the White House issued an Open Government Directive [5] requiring federal agencies to take immediate, specific steps to achieve key milestones in transparency, participation, and collaboration. On 9 May 2013, Barack Obama signed an executive order [6] that made open and machine-readable data the new default for government information. The US government has launched a number of open data initiatives aimed at scaling up open data efforts across the Health, Energy, Climate, Education, Finance, Public Safety, and Global Development sectors.
+In 2007, a meeting was held in Sebastopol, USA, with the aim of defining the concept of open public data and have it adopted by the US presidential candidates. This meeting was hugely successful, and ultimately led to Barack Obama signing two presidential memoranda concerning Open Data the following year. 
 
-The open data movement in the UK started to pick up momentum as early as 2006, when The Guardian launched its “Free Our Data” campaign [7]. This campaign called for raw data gathered by Ordnance Survey to be made freely available for reuse by individuals and companies. This campaign partially achieved its goal when, on 1 April 2010, Ordnance Survey released the brand OS OpenData [8]. The campaign has since continued, with the aim of making more data publicly available. 
+In 2009, \textit{data.gov} was launched, with the objective of increasing public access to high value, machine readable datasets. Later in the year, the White House issued an Open Government Directive requiring federal agencies to take immediate, specific steps to achieve key milestones in transparency, participation, and collaboration \citep{Orszag2009}. This required that all agencies post at least three high-value data sets online and register them on \textit{data.gov}.
 
-In 2009, the Prime Minister appointed the founder of the World Wide Web, Sir Tim Berners-Lee as expert advisor on public information delivery [9]. Berners-Lee was asked to oversee the work to create a single point of access for government held public data and develop proposals to extend access to data from the wider public sector, including selecting and implementing common standards. This work led to the launch of data.gov.uk in January 2010. On launch the site contained 2,500 datasets, and it now contains over 19,500. This increase demonstrates the Open Data push that has taken place over the last few years in the UK, as the government strives to improve its openness. 
+In 2009, the UK Prime Minister appointed the founder of the World Wide Web, Sir Tim Berners-Lee, as expert advisor on public information delivery \citep{CabinetOffice2009}. Berners-Lee was asked to oversee the work to create a single point of access for government held public data and develop proposals to extend access to data from the wider public sector, including selecting and implementing common standards. This work led to the launch of \textit{data.gov.uk} in January 2010. On launch the site contained 2,500 datasets, and it now contains over 19,500 from areas as diverse as transport, health, and the economy. This increase demonstrates the open data push that has taken place over the last few years in the UK, as the government strives to improve its openness.
 
-Open Gov Partnership
+On 9 May 2013, Barack Obama signed an executive order \citep{TheWhiteHouse-OfficeofthePressSecretary2013} that made open and machine-readable data the new default for government information. The US government has launched a number of open data initiatives aimed at scaling up open data efforts across the Health, Energy, Climate, Education, Finance, Public Safety, and Global Development sectors. The number of available datasets on \textit{data.gov} has grown rapidly in recent years, with over 130,000 now available. This shows that, like the UK, the US administration has taken large steps to improve its openness.
 
-http://www.opengovpartnership.org/
 
-The Open Data Institute
-The Open Data Institute (ODI) was founded by Berners-Lee and Nigel Shadbolt in 2012. The ODI is a not-for-profit organisation, dedicated to promoting Open Data. The ODI aims to "catalyse the evolution of open data culture to create economic, environmental, and social value" [10]. In only its first year, the ODI made a big impact on the Open Data movement...
+%Open Gov Partnership
+
+%http://www.opengovpartnership.org/
+
+%The Open Data Institute
+%The Open Data Institute (ODI) was founded by Berners-Lee and Nigel Shadbolt in 2012. The ODI is a not-for-profit organisation, dedicated to promoting Open Data. The ODI aims to "catalyse the evolution of open data culture to create economic, environmental, and social value" [10]. In only its first year, the ODI made a big impact on the Open Data movement...
 
 \subsection{Benefits and Challenges of Using Open Data}
+
+
+%Tim O'Reilly played a big role in the Sebastopol meeting and the open data movement in the US as a whole. He has since written about how government can improve by embracing open data.  He believes that government can learn from open-source software, by becoming "an open platform that allows people inside and outside government to innovate" \citep{OReilly2011}. 
 
 \subsection{Open Data Datasets}
 
@@ -137,7 +143,15 @@ The Open Data Institute (ODI) was founded by Berners-Lee and Nigel Shadbolt in 2
 \chapter{Design}
 
 \section{Development Options}
+One of the principle objectives of this project is to find an elegant approach to building web applications that make use of open data. It is important to develop a framework that makes the development of such applications as simple as possible, in order to make it available to a wider audience. This will hopefully encourage other developers, regardless of experience in the field, to make web applications that use open data. 
 
+One of the largest obstacles in creating an application like this is managing the different datasets. Hence, I believe that it’s important to create an interface for doing this, so that datasets can be added and removed with ease. It is also important that data is stored in a consistent manner, so that various external components can interact with any dataset.
+
+Given these requirements, I believe that using a content management system (CMS) such as Drupal, Joomla or WordPress would be a suitable solution. By developing a component for importing the data into the CMS infrastructure, I will then be able to take advantage of the functionality that the CMS offers. This will enable me to use various components for interacting with the data, without having to develop everything from square one. This will not only benefit myself, but also future developers looking to work with open data. 
+
+Using a CMS will enable me to create a dynamic site, which makes adding new features and functions far easier. Many content management systems are highly scalable, which is very important in projects like this, where a large amount of data is involved. Most popular CMSs have a large community who develop components for everyone to use, as well as providing support. In addition to all of this, a larger number of developers are already experienced in using CMSs, so they will be able to pick up my framework with ease. 
+
+I will now evaluate some of the available content management systems, in order to decide which is the most suitable for this project.
 
 
 
