@@ -12,6 +12,6 @@ Report/report.synctex.gz
 Report/report.toc
 Report/texput.log
 Report/report.pdf
-Application/.idea
-Application/.com.apple.timemachine.supported
-Application/sites/default/settings.php
+Application/*/.idea
+Application/*/.com.apple.timemachine.supported
+Application/Drupal/sites/default/settings.php
