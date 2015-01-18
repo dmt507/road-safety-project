@@ -68,6 +68,7 @@ class Application
      */
     private function splitUrl()
     {
+        print_r($_GET);
         if (isset($_GET['url'])) {
             // split URL
             $url = rtrim($_GET['url'], '/');
@@ -84,9 +85,9 @@ class Application
             $this->url_parameter_3 = (isset($url[4]) ? $url[4] : null);
 
             // for debugging. uncomment this if you have problems with the URL
-            // echo 'Controller: ' . $this->url_controller . '<br />';
-            // echo 'Action: ' . $this->url_action . '<br />';
-            // echo 'Parameter 1: ' . $this->url_parameter_1 . '<br />';
+             echo 'Controller: ' . $this->url_controller . '<br />';
+             echo 'Action: ' . $this->url_action . '<br />';
+             echo 'Parameter 1: ' . $this->url_parameter_1 . '<br />';
             // echo 'Parameter 2: ' . $this->url_parameter_2 . '<br />';
             // echo 'Parameter 3: ' . $this->url_parameter_3 . '<br />';
         }
