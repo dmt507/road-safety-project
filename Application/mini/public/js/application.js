@@ -38,20 +38,24 @@ $(function() {
 
 });
 
-function getAccidents(coords)
+function getAccidents(routeSteps)
 {
     var xmlhttp;
-    if (coords=="")
+    if (routeSteps=="")
     {
         return;
     }
 
-    //round coords to 6 d.p. as they are given in datasets
-    var i = 0;
-    while (i<coords.length){
-        coords[i].D = coords[i].D.toFixed(6);
-        coords[i].k = coords[i].k.toFixed(6);
-        i++;
+    var coords = [];
+    var noOfSteps = routeSteps.length;
+    for (var step = 0; step < noOfSteps; step++) {
+        var noOfLatLngs = routeSteps[step].lat_lngs.length;
+        for (var lat_lng = 0; lat_lng < noOfLatLngs; lat_lng++) {
+            if (step==0 || (step>0 && lat_lng>0)) {
+                var point = {D: routeSteps[step].lat_lngs[lat_lng].D.toFixed(6), k: routeSteps[step].lat_lngs[lat_lng].k.toFixed(6)};
+                coords.push(point);
+            }
+        }
     }
 
     if (window.XMLHttpRequest)
@@ -70,7 +74,7 @@ function getAccidents(coords)
         }
     }
     var str = JSON.stringify(coords);
-    alert(str);
+    alert(coords.length);
     xmlhttp.open("POST",url + "/search/getaccidents",true);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp.send('coords=' + str);
