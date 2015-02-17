@@ -38,15 +38,14 @@ $(function() {
 
 });
 
-function getAccidents(routeSteps)
+function getAccidents(routeBounds,routePath)
 {
-    var xmlhttp;
-    if (routeSteps=="")
+    if (routeBounds=="")
     {
         return;
     }
 
-    var coords = [];
+    /*var coords = [];
     var colours = ['#FF0000','#FFFF00'];
     var colour_index = 0;
     var noOfSteps = routeSteps.length;
@@ -78,26 +77,79 @@ function getAccidents(routeSteps)
             }
         }
         //alert(test);
-    }
+    }*/
 
-    if (window.XMLHttpRequest)
-    {// code for IE7+, Firefox, Chrome, Opera, Safari
-        xmlhttp=new XMLHttpRequest();
-    }
-    else
-    {// code for IE6, IE5
-        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    xmlhttp.onreadystatechange=function()
-    {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200)
-        {
-            document.getElementById("search-results").innerHTML=xmlhttp.responseText;
+
+/*
+    var myLatlng = new google.maps.LatLng(bounds.Ba.j,bounds.ua.j);
+
+    var marker = new google.maps.Marker({
+        position: myLatlng,
+        map: map,
+        title:"Hello World!"
+    });
+
+    var myLatlng = new google.maps.LatLng(bounds.Ba.j,bounds.ua.k);
+
+    var marker = new google.maps.Marker({
+        position: myLatlng,
+        map: map,
+        title:"Hello World!"
+    });
+
+    var myLatlng = new google.maps.LatLng(bounds.Ba.k,bounds.ua.j);
+
+    var marker = new google.maps.Marker({
+        position: myLatlng,
+        map: map,
+        title:"Hello World!"
+    });
+
+    var myLatlng = new google.maps.LatLng(bounds.Ba.k,bounds.ua.k);
+
+    var marker = new google.maps.Marker({
+        position: myLatlng,
+        map: map,
+        title:"Hello World!"
+    });*/
+
+
+    var str = JSON.stringify(routeBounds);
+    $.post(url + "/search/getaccidents",
+        {bounds: str},
+        function(data,status){
+            if(status=="success"){
+                var accidents = JSON.parse(data);
+                var accidentsOnRoute = filterAccidents(accidents,routePath);
+                alert (accidentsOnRoute);
+            }
+        }
+    );
+
+}
+
+function filterAccidents(accidents,routePath){
+    var accidentsOnRoute = 0;
+
+    var routeLine = new google.maps.Polyline({
+        path: routePath,
+        geodesic: true,
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 3
+    });
+    routeLine.setMap(map);
+
+    for (var i = 0; i<accidents.length;i++){
+        var accidentLatLng = new google.maps.LatLng(accidents[i].latitude,accidents[i].longitude);
+        if(google.maps.geometry.poly.isLocationOnEdge(accidentLatLng,routeLine,10e-6)){
+            accidentsOnRoute++;
+            var marker = new google.maps.Marker({
+                position: accidentLatLng,
+                map: map
+            })
         }
     }
-    var str = JSON.stringify(coords);
-    //alert(coords.length);
-    xmlhttp.open("POST",url + "/search/getaccidents",true);
-    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xmlhttp.send('coords=' + str);
+    return accidentsOnRoute;
 }
+

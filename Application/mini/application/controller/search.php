@@ -7,10 +7,9 @@ class Search extends Controller
 
     public function getAccidents()
     {
-        $coords = json_decode($_POST['coords']);
-        $buffered_coords = $this->bufferCoords($coords);
-        $accidents = $this->model->getAccidents($buffered_coords);
-        print_r($accidents);
+        $bounds = json_decode($_POST['bounds']);
+        $accidents = $this->model->getAccidents($bounds);
+        echo json_encode($accidents);
     }
 
     public function bufferCoords($coords){

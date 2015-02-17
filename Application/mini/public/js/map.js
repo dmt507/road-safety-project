@@ -30,7 +30,7 @@ function calculateRoute(from, to) {
                     map: map,
                     directions: response
                 });*/
-                getAccidents(response.routes[0].legs[0].steps);
+                getAccidents(response.routes[0].bounds, response.routes[0].overview_path);
             }
             else
                 $("#error").append("Unable to retrieve your route<br />");

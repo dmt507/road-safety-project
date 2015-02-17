@@ -127,12 +127,12 @@ class Model
         return $query->fetch()->amount_of_songs;
     }
 
-    public function getAccidents($coords)
+    public function getAccidents($bounds)
     {
         //$count = count($coords);
         //$coords[$count]->D = -0.211708;
         //$coords[$count]->k  = 51.520075;
-        $results=[];
+        /*$results=[];
         for($x=0;$x<count($coords);$x++){
             $coord=$coords[$x];
             $sql = "SELECT * FROM accidents0513 WHERE longitude>=:min_long AND
@@ -145,8 +145,15 @@ class Model
             if($result){
                 $results[]=$result;
             }
-        }
+        }*/
 
-        return $results;
+        $sql = "SELECT * FROM accidents0513 WHERE longitude>=:min_long AND
+                    longitude<=:max_long AND latitude>=:min_lat AND latitude<=:max_lat";
+        $parameters = array(':max_long' => $bounds->ua->k,':min_long' => $bounds->ua->j,
+            ':max_lat'=>$bounds->Ba->j, ':min_lat'=>$bounds->Ba->k);
+        $query = $this->db->prepare($sql);
+        $query->execute($parameters);
+
+        return $query->fetchAll();
     }
 }
