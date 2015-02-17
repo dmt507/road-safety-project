@@ -47,15 +47,37 @@ function getAccidents(routeSteps)
     }
 
     var coords = [];
+    var colours = ['#FF0000','#FFFF00'];
+    var colour_index = 0;
     var noOfSteps = routeSteps.length;
     for (var step = 0; step < noOfSteps; step++) {
+        var step_line = new google.maps.Polyline({
+            path: routeSteps[step].lat_lngs,
+            geodesic: true,
+            strokeColor: colours[colour_index],
+            strokeOpacity: 1.0,
+            strokeWeight: 3
+        });
+        if (colour_index == 1){
+            colour_index=0;
+        }
+        else{
+            colour_index++;
+        }
+        step_line.setMap(map);
+
         var noOfLatLngs = routeSteps[step].lat_lngs.length;
+        var test = 0;
         for (var lat_lng = 0; lat_lng < noOfLatLngs; lat_lng++) {
             if (step==0 || (step>0 && lat_lng>0)) {
                 var point = {D: routeSteps[step].lat_lngs[lat_lng].D.toFixed(6), k: routeSteps[step].lat_lngs[lat_lng].k.toFixed(6)};
                 coords.push(point);
+                if(google.maps.geometry.poly.isLocationOnEdge(routeSteps[step].lat_lngs[lat_lng],step_line,10e-6)){
+                    test++;
+                }
             }
         }
+        //alert(test);
     }
 
     if (window.XMLHttpRequest)
@@ -74,7 +96,7 @@ function getAccidents(routeSteps)
         }
     }
     var str = JSON.stringify(coords);
-    alert(coords.length);
+    //alert(coords.length);
     xmlhttp.open("POST",url + "/search/getaccidents",true);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp.send('coords=' + str);

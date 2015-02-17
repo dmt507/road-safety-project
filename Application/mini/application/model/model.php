@@ -126,4 +126,27 @@ class Model
         // fetch() is the PDO method that get exactly one result
         return $query->fetch()->amount_of_songs;
     }
+
+    public function getAccidents($coords)
+    {
+        //$count = count($coords);
+        //$coords[$count]->D = -0.211708;
+        //$coords[$count]->k  = 51.520075;
+        $results=[];
+        for($x=0;$x<count($coords);$x++){
+            $coord=$coords[$x];
+            $sql = "SELECT * FROM accidents0513 WHERE longitude>=:min_long AND
+                    longitude<=:max_long AND latitude>=:min_lat AND latitude<=:max_lat";
+            $parameters = array(':max_long' => $coord->max_long,':min_long' => $coord->min_long,
+                                ':max_lat'=>$coord->max_lat, ':min_lat'=>$coord->min_lat);
+            $query = $this->db->prepare($sql);
+            $query->execute($parameters);
+            $result = $query->fetch();
+            if($result){
+                $results[]=$result;
+            }
+        }
+
+        return $results;
+    }
 }

@@ -6,7 +6,7 @@ var map;
 
 function initialize() {
     var mapOptions = {
-        center: { lat: -34.397, lng: 150.644},
+        center: { lng: -1.08726, lat: 53.95995},
         zoom: 8
     };
     map = new google.maps.Map(document.getElementById('map-canvas'),
@@ -26,10 +26,10 @@ function calculateRoute(from, to) {
         directionsRequest,
         function (response, status) {
             if (status == google.maps.DirectionsStatus.OK) {
-                new google.maps.DirectionsRenderer({
+                /*new google.maps.DirectionsRenderer({
                     map: map,
                     directions: response
-                });
+                });*/
                 getAccidents(response.routes[0].legs[0].steps);
             }
             else
