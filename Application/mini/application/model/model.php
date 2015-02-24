@@ -127,7 +127,7 @@ class Model
         return $query->fetch()->amount_of_songs;
     }
 
-    public function getAccidents($bounds)
+    public function getAccidents($bounds,$severity)
     {
         //$count = count($coords);
         //$coords[$count]->D = -0.211708;
@@ -147,12 +147,14 @@ class Model
             }
         }*/
 
-        $sql = "SELECT accident_index,longitude,latitude FROM accidents0513 WHERE longitude>=:min_long AND
-                    longitude<=:max_long AND latitude>=:min_lat AND latitude<=:max_lat";
-        $parameters = array(':max_long' => $bounds->va->k,':min_long' => $bounds->va->j,
-            ':max_lat'=>$bounds->Ca->j, ':min_lat'=>$bounds->Ca->k);
+        $sev  = join(',', array_fill(0, count($severity), '?'));
+
+        $sql = "SELECT accident_index,longitude,latitude FROM accidents0513 WHERE longitude>=? AND
+                    longitude<=? AND latitude>=? AND latitude<=? AND accident_severity IN ($sev)";
+        $parameters = array($bounds->va->j,$bounds->va->k,$bounds->Ca->k,$bounds->Ca->j);
+        $params = array_merge($parameters,$severity);
         $query = $this->db->prepare($sql);
-        $query->execute($parameters);
+        $query->execute($params);
 
         return $query->fetchAll();
     }

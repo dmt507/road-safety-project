@@ -28,7 +28,8 @@
         $(document).ready(function(){
             $("#calculate-route").submit(function(event) {
                 event.preventDefault();
-                calculateRoute($("#from").val(), $("#to").val());
+                calculateRoute($("#from").val(), $("#to").val(),$("#severityFatal").is(':checked'),$("#severitySerious").is(':checked')
+                    ,$("#severitySlight").is(':checked'));
             });
         });
     </script>

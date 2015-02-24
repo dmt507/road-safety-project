@@ -38,7 +38,7 @@ $(function() {
 
 });
 
-function getAccidents(routeSteps)
+function getAccidents(routeSteps,severity)
 {
     if (routeSteps=="")
     {
@@ -119,12 +119,13 @@ function getAccidents(routeSteps)
     }
 
 
-    var str = JSON.stringify(routeSteps);
+    var steps = JSON.stringify(routeSteps);
+    var accidentSeverity = JSON.stringify(severity);
     $.post(url + "/search/getaccidents",
-        {steps: str},
+        {steps: steps,severity: accidentSeverity},
         function(data,status){
             if(status=="success"){
-                //$('#search-results').html(data);
+                $('#search-results').html(data);
 
                 var accidents = JSON.parse(data);
                 var accidentsOnRoute = filterAccidents(accidents,routeSteps);

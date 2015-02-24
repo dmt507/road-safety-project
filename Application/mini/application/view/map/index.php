@@ -17,6 +17,29 @@
                             <label for="to">To:</label>
                             <input type="text" id="to" name="to" class="form-control" required="required" placeholder="Another address" size="30" value="leeds" />
                         </div>
+                        <div class="form-group">
+                            <label for="severity">Accident Severity</label>
+                            <div id="severity">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="severityFatal" checked>
+                                        Fatal
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="severitySerious" checked>
+                                        Serious
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="severitySlight" checked>
+                                        Slight
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
 
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>

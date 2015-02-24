@@ -13,7 +13,7 @@ function initialize() {
         mapOptions);
 }
 
-function calculateRoute(from, to) {
+function calculateRoute(from, to, fatal, serious, slight) {
     var directionsService = new google.maps.DirectionsService();
     var directionsRequest = {
         origin: from,
@@ -30,7 +30,17 @@ function calculateRoute(from, to) {
                     map: map,
                     directions: response
                 });
-                getAccidents(response.routes[0].legs[0].steps);
+                var severity =[];
+                if(fatal==true){
+                    severity.push(1);
+                }
+                if(serious==true){
+                    severity.push(2);
+                }
+                if(slight==true){
+                    severity.push(3);
+                }
+                getAccidents(response.routes[0].legs[0].steps,severity);
             }
             else
                 $("#error").append("Unable to retrieve your route<br />");
