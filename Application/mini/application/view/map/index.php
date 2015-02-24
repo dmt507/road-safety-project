@@ -34,9 +34,74 @@
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" id="severitySlight" checked>
+                                        <input type="checkbox" id="severitySlight">
                                         Slight
                                     </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="year">Year of Accident</label>
+                            <div id="year">
+                                <div>
+                                    <div class="checkbox-inline">
+                                        <label>
+                                            <input type="checkbox" id="year2005">
+                                            2005
+                                        </label>
+                                    </div>
+                                    <div class="checkbox-inline">
+                                        <label>
+                                            <input type="checkbox" id="year2006">
+                                            2006
+                                        </label>
+                                    </div>
+                                    <div class="checkbox-inline">
+                                        <label>
+                                            <input type="checkbox" id="year2007">
+                                            2007
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="checkbox-inline">
+                                        <label>
+                                            <input type="checkbox" id="year2008">
+                                            2008
+                                        </label>
+                                    </div>
+                                    <div class="checkbox-inline">
+                                        <label>
+                                            <input type="checkbox" id="year2009">
+                                            2009
+                                        </label>
+                                    </div>
+                                    <div class="checkbox-inline">
+                                        <label>
+                                            <input type="checkbox" id="year2010">
+                                            2010
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="checkbox-inline">
+                                        <label>
+                                            <input type="checkbox" id="year2011" checked>
+                                            2011
+                                        </label>
+                                    </div>
+                                    <div class="checkbox-inline">
+                                        <label>
+                                            <input type="checkbox" id="year2012" checked>
+                                            2012
+                                        </label>
+                                    </div>
+                                    <div class="checkbox-inline">
+                                        <label>
+                                            <input type="checkbox" id="year2013" checked>
+                                            2013
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>

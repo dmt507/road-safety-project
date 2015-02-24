@@ -38,7 +38,7 @@ $(function() {
 
 });
 
-function getAccidents(routeSteps,severity)
+function getAccidents(routeSteps,severity,years)
 {
     if (routeSteps=="")
     {
@@ -121,11 +121,13 @@ function getAccidents(routeSteps,severity)
 
     var steps = JSON.stringify(routeSteps);
     var accidentSeverity = JSON.stringify(severity);
+    var accidentYear = JSON.stringify(years);
+
     $.post(url + "/search/getaccidents",
-        {steps: steps,severity: accidentSeverity},
+        {steps: steps,severity: accidentSeverity,years:accidentYear},
         function(data,status){
             if(status=="success"){
-                $('#search-results').html(data);
+               // $('#search-results').html(data);
 
                 var accidents = JSON.parse(data);
                 var accidentsOnRoute = filterAccidents(accidents,routeSteps);
@@ -156,10 +158,10 @@ function filterAccidents(accidents,routeSteps){
             if(google.maps.geometry.poly.isLocationOnEdge(accidentLatLng,stepLine,10e-5)){
                 accidentsOnRoute++;
                 accidentsOnStep++;
-                /*var marker = new google.maps.Marker({
+                var marker = new google.maps.Marker({
                     position: accidentLatLng,
                     map: map
-                })*/
+                })
             }
         }
 

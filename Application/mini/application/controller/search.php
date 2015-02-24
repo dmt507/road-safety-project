@@ -9,10 +9,11 @@ class Search extends Controller
     {
         $steps = json_decode($_POST['steps']);
         $severity = json_decode($_POST['severity']);
+        $years = json_decode($_POST['years']);
 
 
         for($x=0;$x<count($steps);$x++){
-                $step_accidents[] = $this->model->getAccidents($steps[$x]->bounds,$severity);
+                $step_accidents[] = $this->model->getAccidents($steps[$x]->bounds,$severity,$years);
         }
 
 

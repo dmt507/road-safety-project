@@ -2,4 +2,8 @@
 
 #map-canvas{ height: 500px;}
 
+.checkbox-inline label{
+    font-weight: 400;
+}
+
 

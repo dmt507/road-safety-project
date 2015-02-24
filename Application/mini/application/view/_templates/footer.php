@@ -29,7 +29,10 @@
             $("#calculate-route").submit(function(event) {
                 event.preventDefault();
                 calculateRoute($("#from").val(), $("#to").val(),$("#severityFatal").is(':checked'),$("#severitySerious").is(':checked')
-                    ,$("#severitySlight").is(':checked'));
+                    ,$("#severitySlight").is(':checked'),$("#year2005").is(':checked'),$("#year2006").is(':checked'),
+                    $("#year2007").is(':checked'),$("#year2008").is(':checked'),$("#year2009").is(':checked'),
+                    $("#year2010").is(':checked'),$("#year2011").is(':checked'),$("#year2012").is(':checked'),
+                    $("#year2013").is(':checked'));
             });
         });
     </script>
