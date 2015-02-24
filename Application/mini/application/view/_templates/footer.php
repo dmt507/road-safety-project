@@ -13,6 +13,9 @@
 
     <script src="<?php echo URL; ?>public/js/map.js"></script>
 
+    <script src="<?php echo URL; ?>public/js/bootstrap.min.js"></script>
+
+
     <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?libraries=geometry,places&key=AIzaSyApDnGnoYhR9Jw90js8WyGQcxv3qOIruko">
     </script>

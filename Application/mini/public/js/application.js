@@ -38,9 +38,9 @@ $(function() {
 
 });
 
-function getAccidents(routeBounds,routePath)
+function getAccidents(routeSteps)
 {
-    if (routeBounds=="")
+    if (routeSteps=="")
     {
         return;
     }
@@ -113,14 +113,21 @@ function getAccidents(routeBounds,routePath)
         title:"Hello World!"
     });*/
 
+    //get bounds for each step in the route
+    for(n=0;n<routeSteps.length;n++){
+        routeSteps[n].bounds = getBounds(routeSteps[n].lat_lngs);
+    }
 
-    var str = JSON.stringify(routeBounds);
+
+    var str = JSON.stringify(routeSteps);
     $.post(url + "/search/getaccidents",
-        {bounds: str},
+        {steps: str},
         function(data,status){
             if(status=="success"){
+                //$('#search-results').html(data);
+
                 var accidents = JSON.parse(data);
-                var accidentsOnRoute = filterAccidents(accidents,routePath);
+                var accidentsOnRoute = filterAccidents(accidents,routeSteps);
                 alert (accidentsOnRoute);
             }
         }
@@ -128,28 +135,49 @@ function getAccidents(routeBounds,routePath)
 
 }
 
-function filterAccidents(accidents,routePath){
+function filterAccidents(accidents,routeSteps){
     var accidentsOnRoute = 0;
 
-    var routeLine = new google.maps.Polyline({
-        path: routePath,
-        geodesic: true,
-        strokeColor: '#FF0000',
-        strokeOpacity: 1.0,
-        strokeWeight: 3
-    });
-    routeLine.setMap(map);
 
-    for (var i = 0; i<accidents.length;i++){
-        var accidentLatLng = new google.maps.LatLng(accidents[i].latitude,accidents[i].longitude);
-        if(google.maps.geometry.poly.isLocationOnEdge(accidentLatLng,routeLine,10e-6)){
-            accidentsOnRoute++;
-            var marker = new google.maps.Marker({
-                position: accidentLatLng,
-                map: map
-            })
+    for(var n=0;n<routeSteps.length;n++){
+
+        var stepLine = new google.maps.Polyline({
+            path: routeSteps[n].lat_lngs,
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 3
+        });
+
+        var accidentsOnStep=0;
+        for (var i = 0; i<accidents[n].length;i++){
+            var accidentLatLng = new google.maps.LatLng(accidents[n][i].latitude,accidents[n][i].longitude);
+            if(google.maps.geometry.poly.isLocationOnEdge(accidentLatLng,stepLine,10e-5)){
+                accidentsOnRoute++;
+                accidentsOnStep++;
+                /*var marker = new google.maps.Marker({
+                    position: accidentLatLng,
+                    map: map
+                })*/
+            }
         }
+
+        var distance = routeSteps[n].distance.value/1000;
+        if(accidentsOnStep/distance>10) {
+            stepLine.setMap(map);
+        }
+
     }
+
+
     return accidentsOnRoute;
 }
 
+
+function getBounds(latlngs){
+    var bounds = new google.maps.LatLngBounds();
+    for(var i=0;i<latlngs.length;i++) {
+        bounds.extend(latlngs[i]);
+    }
+    return bounds;
+}

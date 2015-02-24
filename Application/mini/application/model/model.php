@@ -147,10 +147,10 @@ class Model
             }
         }*/
 
-        $sql = "SELECT * FROM accidents0513 WHERE longitude>=:min_long AND
+        $sql = "SELECT accident_index,longitude,latitude FROM accidents0513 WHERE longitude>=:min_long AND
                     longitude<=:max_long AND latitude>=:min_lat AND latitude<=:max_lat";
-        $parameters = array(':max_long' => $bounds->ua->k,':min_long' => $bounds->ua->j,
-            ':max_lat'=>$bounds->Ba->j, ':min_lat'=>$bounds->Ba->k);
+        $parameters = array(':max_long' => $bounds->va->k,':min_long' => $bounds->va->j,
+            ':max_lat'=>$bounds->Ca->j, ':min_lat'=>$bounds->Ca->k);
         $query = $this->db->prepare($sql);
         $query->execute($parameters);
 

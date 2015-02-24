@@ -19,18 +19,18 @@ function calculateRoute(from, to) {
         origin: from,
         destination: to,
         travelMode: google.maps.DirectionsTravelMode.DRIVING,
-        unitSystem: google.maps.UnitSystem.IMPERIAL
+        unitSystem: google.maps.UnitSystem.METRIC
     };
 
     directionsService.route(
         directionsRequest,
         function (response, status) {
             if (status == google.maps.DirectionsStatus.OK) {
-                /*new google.maps.DirectionsRenderer({
+                new google.maps.DirectionsRenderer({
                     map: map,
                     directions: response
-                });*/
-                getAccidents(response.routes[0].bounds, response.routes[0].overview_path);
+                });
+                getAccidents(response.routes[0].legs[0].steps);
             }
             else
                 $("#error").append("Unable to retrieve your route<br />");
