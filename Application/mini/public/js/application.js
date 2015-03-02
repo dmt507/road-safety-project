@@ -1,122 +1,83 @@
-$(function() {
+var progress;
 
-    // just a super-simple JS demo
+function searchData(from, to, fatal, serious, slight, y2005, y2006, y2007, y2008, y2009, y2010, y2011, y2012, y2013) {
 
-    var demoHeaderBox;
-
-    // simple demo to show create something via javascript on the page
-    if ($('#javascript-header-demo-box').length !== 0) {
-    	demoHeaderBox = $('#javascript-header-demo-box');
-    	demoHeaderBox
-    		.hide()
-    		.text('Hello from JavaScript! This line has been added by public/js/application.js')
-    		.css('color', 'green')
-    		.fadeIn('slow');
+    var severity =[];
+    if(fatal==true){
+        severity.push(1);
+    }
+    if(serious==true){
+        severity.push(2);
+    }
+    if(slight==true){
+        severity.push(3);
     }
 
-    // if #javascript-ajax-button exists
-    if ($('#javascript-ajax-button').length !== 0) {
-
-        $('#javascript-ajax-button').on('click', function(){
-
-            // send an ajax-request to this URL: current-server.com/songs/ajaxGetStats
-            // "url" is defined in views/_templates/footer.php
-            $.ajax(url + "/songs/ajaxGetStats")
-                .done(function(result) {
-                    // this will be executed if the ajax-call was successful
-                    // here we get the feedback from the ajax-call (result) and show it in #javascript-ajax-result-box
-                    $('#javascript-ajax-result-box').html(result);
-                })
-                .fail(function() {
-                    // this will be executed if the ajax-call had failed
-                })
-                .always(function() {
-                    // this will ALWAYS be executed, regardless if the ajax-call was success or not
-                });
-        });
+    var years = [];
+    if(y2005==true){
+        years.push(2005);
+    }
+    if(y2006==true){
+        years.push(2006);
+    }
+    if(y2007==true){
+        years.push(2007);
+    }
+    if(y2008==true){
+        years.push(2008);
+    }
+    if(y2009==true){
+        years.push(2009);
+    }
+    if(y2010==true){
+        years.push(2010);
+    }
+    if(y2011==true){
+        years.push(2011);
+    }
+    if(y2012==true){
+        years.push(2012);
+    }
+    if(y2013==true){
+        years.push(2013);
     }
 
-});
+
+    var directionsService = new google.maps.DirectionsService();
+    var directionsRequest = {
+        origin: from,
+        destination: to,
+        travelMode: google.maps.DirectionsTravelMode.DRIVING,
+        unitSystem: google.maps.UnitSystem.METRIC
+    };
+
+    directionsService.route(
+        directionsRequest,
+        function (response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                var routeSteps = response.routes[0].legs[0].steps;
+
+                //get bounds for each step in the route
+                for(var n=0;n<routeSteps.length;n++){
+                    routeSteps[n].bounds = getBounds(routeSteps[n].lat_lngs);
+                }
+
+                getAccidents(routeSteps,severity,years);
+                map.fitBounds(response.routes[0].bounds);
+
+            }
+            else
+                $("#error").append("Unable to retrieve your route<br />");
+        }
+    );
+}
 
 function getAccidents(routeSteps,severity,years)
 {
-    if (routeSteps=="")
-    {
-        return;
-    }
 
-    /*var coords = [];
-    var colours = ['#FF0000','#FFFF00'];
-    var colour_index = 0;
-    var noOfSteps = routeSteps.length;
-    for (var step = 0; step < noOfSteps; step++) {
-        var step_line = new google.maps.Polyline({
-            path: routeSteps[step].lat_lngs,
-            geodesic: true,
-            strokeColor: colours[colour_index],
-            strokeOpacity: 1.0,
-            strokeWeight: 3
-        });
-        if (colour_index == 1){
-            colour_index=0;
-        }
-        else{
-            colour_index++;
-        }
-        step_line.setMap(map);
-
-        var noOfLatLngs = routeSteps[step].lat_lngs.length;
-        var test = 0;
-        for (var lat_lng = 0; lat_lng < noOfLatLngs; lat_lng++) {
-            if (step==0 || (step>0 && lat_lng>0)) {
-                var point = {D: routeSteps[step].lat_lngs[lat_lng].D.toFixed(6), k: routeSteps[step].lat_lngs[lat_lng].k.toFixed(6)};
-                coords.push(point);
-                if(google.maps.geometry.poly.isLocationOnEdge(routeSteps[step].lat_lngs[lat_lng],step_line,10e-6)){
-                    test++;
-                }
-            }
-        }
-        //alert(test);
-    }*/
-
-
-/*
-    var myLatlng = new google.maps.LatLng(bounds.Ba.j,bounds.ua.j);
-
-    var marker = new google.maps.Marker({
-        position: myLatlng,
-        map: map,
-        title:"Hello World!"
-    });
-
-    var myLatlng = new google.maps.LatLng(bounds.Ba.j,bounds.ua.k);
-
-    var marker = new google.maps.Marker({
-        position: myLatlng,
-        map: map,
-        title:"Hello World!"
-    });
-
-    var myLatlng = new google.maps.LatLng(bounds.Ba.k,bounds.ua.j);
-
-    var marker = new google.maps.Marker({
-        position: myLatlng,
-        map: map,
-        title:"Hello World!"
-    });
-
-    var myLatlng = new google.maps.LatLng(bounds.Ba.k,bounds.ua.k);
-
-    var marker = new google.maps.Marker({
-        position: myLatlng,
-        map: map,
-        title:"Hello World!"
-    });*/
-
-    //get bounds for each step in the route
-    for(n=0;n<routeSteps.length;n++){
-        routeSteps[n].bounds = getBounds(routeSteps[n].lat_lngs);
-    }
+    $('.accident-search-progress').css({"display":"block"});
+    progress = (1/(routeSteps.length+1)) * 100;
+    $('.progress-bar').css('width', progress+'%').attr('aria-valuenow', progress);
 
 
     var steps = JSON.stringify(routeSteps);
@@ -128,10 +89,9 @@ function getAccidents(routeSteps,severity,years)
         function(data,status){
             if(status=="success"){
                // $('#search-results').html(data);
-
                 var accidents = JSON.parse(data);
-                var accidentsOnRoute = filterAccidents(accidents,routeSteps);
-                alert (accidentsOnRoute);
+                filterAccidents(accidents,routeSteps);
+
             }
         }
     );
@@ -140,17 +100,24 @@ function getAccidents(routeSteps,severity,years)
 
 function filterAccidents(accidents,routeSteps){
     var accidentsOnRoute = 0;
+    var heatmapData = [];
 
 
     for(var n=0;n<routeSteps.length;n++){
 
+        progress = ((n+1)/(routeSteps.length+1)) * 100;
+        $('.progress-bar').css('width', progress+'%').attr('aria-valuenow', progress);
+
         var stepLine = new google.maps.Polyline({
             path: routeSteps[n].lat_lngs,
             geodesic: true,
-            strokeColor: '#FF0000',
+            strokeColor: '#005CE6',
             strokeOpacity: 1.0,
-            strokeWeight: 3
+            strokeWeight: 2
         });
+
+        stepLine.setMap(map);
+
 
         var accidentsOnStep=0;
         for (var i = 0; i<accidents[n].length;i++){
@@ -158,22 +125,33 @@ function filterAccidents(accidents,routeSteps){
             if(google.maps.geometry.poly.isLocationOnEdge(accidentLatLng,stepLine,10e-5)){
                 accidentsOnRoute++;
                 accidentsOnStep++;
-                var marker = new google.maps.Marker({
+                heatmapData.push(accidentLatLng);
+                /*var marker = new google.maps.Marker({
                     position: accidentLatLng,
                     map: map
-                })
+                })*/
             }
         }
 
-        var distance = routeSteps[n].distance.value/1000;
+
+
+      /*  var distance = routeSteps[n].distance.value/1000;
         if(accidentsOnStep/distance>10) {
             stepLine.setMap(map);
-        }
+        }*/
 
     }
 
+    var heatmap = new google.maps.visualization.HeatmapLayer({
+        data: heatmapData
+    });
+    heatmap.setMap(map);
 
-    return accidentsOnRoute;
+    $('.accident-search-progress').css({"display":"none"});
+    $('.accident-search-success').css({"display":"block"});
+
+
+
 }
 
 

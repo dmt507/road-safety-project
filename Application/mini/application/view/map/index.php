@@ -1,4 +1,28 @@
 <div class="container map-main">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="jumbotron">
+                <h1>
+                    Welcome to Road Risks
+                </h1>
+                <p>
+                    This application is designed to highlight accident hotspots on UK roads. Simply enter a journey, select which
+                    accident data to use, and then view the results on the map.
+                </p>
+            </div>
+
+            <div class="alert alert-success accident-search-success">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Success!</strong> Please see results below.
+            </div>
+
+            <div class="progress accident-search-progress progress-striped active">
+                <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100""><span class="sr-only">60% Complete</span></div>
+            </div>
+        </div
+
+    </div>
     <div class="row map-row">
         <div class="col-sm-3">
             <div class="panel panel-default">
@@ -9,6 +33,7 @@
                 </div>
                 <div class="panel-body">
                     <form id="calculate-route" name="calculate-route" action="#" method="get">
+                        <h4>Journey Details</h4>
                         <div class="form-group">
                             <label for="from">From:</label>
                             <input type="text" id="from" name="from" class="form-control" required="required" placeholder="An address" size="30" value="york" />
@@ -17,6 +42,7 @@
                             <label for="to">To:</label>
                             <input type="text" id="to" name="to" class="form-control" required="required" placeholder="Another address" size="30" value="leeds" />
                         </div>
+                        <h4>Filter Data</h4>
                         <div class="form-group">
                             <label for="severity">Accident Severity</label>
                             <div id="severity">
@@ -116,9 +142,10 @@
             <div class="panel panel-primary map-panel">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        Map
+                        Results
                     </h3>
                 </div>
+
                 <div class="panel-body map-panel-body">
                     <div id="map-canvas"></div>
                 </div>
