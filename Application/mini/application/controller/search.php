@@ -12,7 +12,9 @@ class Search extends Controller
         $years = json_decode($_POST['years']);
 
 
-        for($x=0;$x<count($steps);$x++){
+
+
+        for($x=0, $steps_length=count($steps);$x<$steps_length;$x++){
             $step_accidents[] = $this->model->getAccidents($steps[$x]->bounds,$severity,$years);
 
         }

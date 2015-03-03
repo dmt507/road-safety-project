@@ -71,11 +71,6 @@ function searchData(from, to, fatal, serious, slight, y2005, y2006, y2007, y2008
             if (status == google.maps.DirectionsStatus.OK) {
                 var routeSteps = response.routes[0].legs[0].steps;
 
-                //get bounds for each step in the route
-                for(var n=0;n<routeSteps.length;n++){
-                    routeSteps[n].bounds = getBounds(routeSteps[n].lat_lngs);
-                }
-
                 getAccidents(routeSteps,severity,years);
                 map.fitBounds(response.routes[0].bounds);
 
@@ -94,7 +89,62 @@ function getAccidents(routeSteps,severity,years)
     $('.progress-bar').css('width', progress+'%').attr('aria-valuenow', progress);
 
 
-    var steps = JSON.stringify(routeSteps);
+    var newRouteSteps=[];
+
+    //loop through each route step
+    for(var n= 0, routesteps_length = routeSteps.length; n<routesteps_length; n++){
+
+        var distance = routeSteps[n].distance.value;
+
+        //if step is longer than 5km
+        if(distance>2500){
+
+            //calculate how many new steps the current step should be split into
+            var splitSteps = Math.ceil(distance/2500);
+
+            //get number of coords for the step
+            var noOfLatLngs = routeSteps[n].lat_lngs.length;
+
+            //calculate how many coords each new step should contain
+            var latLngsPerStep = Math.ceil(noOfLatLngs/splitSteps);
+
+            var currentLatLng=0;
+
+            //for each new step, add the designated coords
+            for(var i=0;i<splitSteps;i++){
+                var counter=0;
+                var newStep=new Object();
+                newStep.lat_lngs=[];
+                while(counter<latLngsPerStep && currentLatLng<noOfLatLngs){
+                    newStep.lat_lngs.push(routeSteps[n].lat_lngs[currentLatLng]);
+                    counter++;
+                    currentLatLng++;
+
+                    if(counter==latLngsPerStep){
+                        if(noOfLatLngs-currentLatLng>1){
+                            newStep.lat_lngs.push(routeSteps[n].lat_lngs[currentLatLng]);
+                        }
+                        else if (noOfLatLngs-currentLatLng==1){
+                            currentLatLng++;
+                            newStep.lat_lngs.push(routeSteps[n].lat_lngs[currentLatLng]);
+                            i++;
+                        }
+                    }
+
+                }
+                newStep.bounds = getBounds(newStep.lat_lngs);
+                newRouteSteps.push(newStep);
+            }
+        }else{
+            var newStep = new Object();
+            newStep.lat_lngs = routeSteps[n].lat_lngs;
+            newStep.bounds = getBounds(newStep.lat_lngs);
+            newRouteSteps.push(newStep);
+
+        }
+    }
+
+    var steps = JSON.stringify(newRouteSteps);
     var accidentSeverity = JSON.stringify(severity);
     var accidentYear = JSON.stringify(years);
 
@@ -104,7 +154,7 @@ function getAccidents(routeSteps,severity,years)
             if(status=="success"){
                // $('#search-results').html(data);
                 var accidents = JSON.parse(data);
-                filterAccidents(accidents,routeSteps);
+                filterAccidents(accidents,newRouteSteps);
 
             }
         }
