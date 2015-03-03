@@ -52,3 +52,5 @@ define('DB_NAME', 'mini');
 define('DB_USER', 'root');
 define('DB_PASS', '');
 define('DB_CHARSET', 'utf8');
+
+ini_set('memory_limit', '512M');

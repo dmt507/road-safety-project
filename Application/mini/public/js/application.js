@@ -1,6 +1,20 @@
 var progress;
+var heatmap;
+var routeLines = [];
 
 function searchData(from, to, fatal, serious, slight, y2005, y2006, y2007, y2008, y2009, y2010, y2011, y2012, y2013) {
+
+    if(heatmap){
+        heatmap.setMap(null);
+    }
+
+    for(var i=routeLines.length;i--;){
+        routeLines[i].setMap(null);
+    }
+    routeLines=[];
+
+    $('.accident-search-success').css({"display":"none"});
+
 
     var severity =[];
     if(fatal==true){
@@ -103,7 +117,7 @@ function filterAccidents(accidents,routeSteps){
     var heatmapData = [];
 
 
-    for(var n=0;n<routeSteps.length;n++){
+    for(var n=routeSteps.length; n--;){
 
         progress = ((n+1)/(routeSteps.length+1)) * 100;
         $('.progress-bar').css('width', progress+'%').attr('aria-valuenow', progress);
@@ -116,11 +130,12 @@ function filterAccidents(accidents,routeSteps){
             strokeWeight: 2
         });
 
+        routeLines.push(stepLine);
         stepLine.setMap(map);
 
 
         var accidentsOnStep=0;
-        for (var i = 0; i<accidents[n].length;i++){
+        for (var i = accidents[n].length; i--;){
             var accidentLatLng = new google.maps.LatLng(accidents[n][i].latitude,accidents[n][i].longitude);
             if(google.maps.geometry.poly.isLocationOnEdge(accidentLatLng,stepLine,10e-5)){
                 accidentsOnRoute++;
@@ -142,13 +157,14 @@ function filterAccidents(accidents,routeSteps){
 
     }
 
-    var heatmap = new google.maps.visualization.HeatmapLayer({
+    heatmap = new google.maps.visualization.HeatmapLayer({
         data: heatmapData
     });
     heatmap.setMap(map);
 
     $('.accident-search-progress').css({"display":"none"});
     $('.accident-search-success').css({"display":"block"});
+    alert(accidentsOnRoute);
 
 
 
@@ -157,7 +173,7 @@ function filterAccidents(accidents,routeSteps){
 
 function getBounds(latlngs){
     var bounds = new google.maps.LatLngBounds();
-    for(var i=0;i<latlngs.length;i++) {
+    for(var i=latlngs.length;i--;) {
         bounds.extend(latlngs[i]);
     }
     return bounds;
