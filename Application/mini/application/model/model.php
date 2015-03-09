@@ -154,8 +154,10 @@ class Model
         $sql = "SELECT accident_index,longitude,latitude FROM accidents0513 WHERE longitude>=? AND
                     longitude<=? AND latitude>=? AND latitude<=? AND accident_severity IN ($sev) AND
                     YEAR(accident_date) IN ($yr)";
-        $parameters = array($bounds->va->j,$bounds->va->k,$bounds->Ca->k,$bounds->Ca->j);
-        $params = array_merge($parameters,$severity,$years);
+
+        //buffer bounds to ensure no accidents on the route are ignored
+        $bounds = array($bounds->va->j-0.0001,$bounds->va->k+0.0001,$bounds->Ca->k-0.0001,$bounds->Ca->j+0.0001);
+        $params = array_merge($bounds,$severity,$years);
         $query = $this->db->prepare($sql);
         $query->execute($params);
 

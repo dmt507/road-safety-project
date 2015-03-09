@@ -97,10 +97,10 @@ function getAccidents(routeSteps,severity,years)
         var distance = routeSteps[n].distance.value;
 
         //if step is longer than 5km
-        if(distance>2500){
+        if(distance>5000){
 
             //calculate how many new steps the current step should be split into
-            var splitSteps = Math.ceil(distance/2500);
+            var splitSteps = Math.ceil(distance/5000);
 
             //get number of coords for the step
             var noOfLatLngs = routeSteps[n].lat_lngs.length;
@@ -120,13 +120,9 @@ function getAccidents(routeSteps,severity,years)
                     counter++;
                     currentLatLng++;
 
-                    if(counter==latLngsPerStep){
-                        if(noOfLatLngs-currentLatLng>1){
-                            newStep.lat_lngs.push(routeSteps[n].lat_lngs[currentLatLng]);
-                        }
-                        else if (noOfLatLngs-currentLatLng==1){
-                            currentLatLng++;
-                            newStep.lat_lngs.push(routeSteps[n].lat_lngs[currentLatLng]);
+                    if(counter==latLngsPerStep && currentLatLng<noOfLatLngs){
+                        newStep.lat_lngs.push(routeSteps[n].lat_lngs[currentLatLng]);
+                        if (noOfLatLngs-currentLatLng==1){
                             i++;
                         }
                     }
@@ -139,6 +135,7 @@ function getAccidents(routeSteps,severity,years)
             var newStep = new Object();
             newStep.lat_lngs = routeSteps[n].lat_lngs;
             newStep.bounds = getBounds(newStep.lat_lngs);
+
             newRouteSteps.push(newStep);
 
         }
@@ -152,7 +149,7 @@ function getAccidents(routeSteps,severity,years)
         {steps: steps,severity: accidentSeverity,years:accidentYear},
         function(data,status){
             if(status=="success"){
-               // $('#search-results').html(data);
+                //$('#search-results').html(data);
                 var accidents = JSON.parse(data);
                 filterAccidents(accidents,newRouteSteps);
 
@@ -165,9 +162,11 @@ function getAccidents(routeSteps,severity,years)
 function filterAccidents(accidents,routeSteps){
     var accidentsOnRoute = 0;
     var heatmapData = [];
+    var data =[];
 
 
-    for(var n=routeSteps.length; n--;){
+    for(var n=routeSteps.length-1; n--;){
+
 
         progress = ((n+1)/(routeSteps.length+1)) * 100;
         $('.progress-bar').css('width', progress+'%').attr('aria-valuenow', progress);
@@ -183,7 +182,6 @@ function filterAccidents(accidents,routeSteps){
         routeLines.push(stepLine);
         stepLine.setMap(map);
 
-
         var accidentsOnStep=0;
         for (var i = accidents[n].length; i--;){
             var accidentLatLng = new google.maps.LatLng(accidents[n][i].latitude,accidents[n][i].longitude);
@@ -191,10 +189,7 @@ function filterAccidents(accidents,routeSteps){
                 accidentsOnRoute++;
                 accidentsOnStep++;
                 heatmapData.push(accidentLatLng);
-                /*var marker = new google.maps.Marker({
-                    position: accidentLatLng,
-                    map: map
-                })*/
+                data.push(accidents[n][i]);
             }
         }
 
@@ -211,6 +206,9 @@ function filterAccidents(accidents,routeSteps){
         data: heatmapData
     });
     heatmap.setMap(map);
+
+    $('#search-results').html(JSON.stringify(data));
+
 
     $('.accident-search-progress').css({"display":"none"});
     $('.accident-search-success').css({"display":"block"});
