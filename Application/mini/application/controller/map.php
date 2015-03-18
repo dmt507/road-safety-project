@@ -25,17 +25,4 @@ class Map extends Controller
     }
 
 
-
-    /**
-     * AJAX-ACTION: ajaxGetStats
-     * TODO documentation
-     */
-    public function ajaxGetStats()
-    {
-        $amount_of_songs = $this->model->getAmountOfSongs();
-
-        // simply echo out something. A supersimple API would be possible by echoing JSON here
-        echo $amount_of_songs;
-    }
-
 }
