@@ -93,7 +93,7 @@ On 9 May 2013, Barack Obama signed an executive order \citep{TheWhiteHouse-Offic
 %Tim O'Reilly played a big role in the Sebastopol meeting and the open data movement in the US as a whole. He has since written about how government can improve by embracing open data.  He believes that government can learn from open-source software, by becoming "an open platform that allows people inside and outside government to innovate" \citep{OReilly2011}. 
 
 
-\subsection{Uses of Road Traffic Data}
+\subsection{Uses of Road Safety Data}
 
 Before developing my own application, I will carry out a study of existing web applications that use road safety data. My aim is to identify common characteristics, principles and components that can be reused in my application. I will also look at the limitations of these applications, so that I can look to improve on them.
 
@@ -131,13 +131,97 @@ The data is presented in a manner that is easy to analyse for any user, and the 
 	\label{fig:motorcycle}
 \end{figure}
 
-\subsection{Research in Open Data}
+The final application that I will look at is Walkonomics \citep{Davies}. Walkonomics aims to rate the 'walkability' of streets around the world by combining the views of large groups of people, local communities and open data. You can search for a location, and the application will return a list of streets near that location, along with a map displaying markers for each street (see \autoref{fig:walkonomics}). You can then click on a street name in order to find out more information about that street. This page presents a list of reviews for that street, including one from 'Walkobot' which is based on various open datasets. Additionally, a user may add a review of their own on this page. 
 
-\section{Road Traffic Studies}
+Walkonomics extends what the other applications have achieved with open data. Not only does it use open data from different countries, but it also uses different types of data (road safety and crime are mentioned). In addition to this, it combines the use of open data with crowdsourcing. Beyond being a web application, Walkonomics is also available to download as an App on both Android and iOS devices.
+
+However, there are some major limitations to this application. For example, when searching for several major cities across the world (including Cardiff, Edinburgh, Paris, Sydney and Los Angeles), no results are found. It is unclear whether this is a bug or expected behaviour. Additionally, there is no transparency over which open datasets are used; it mentions the use of road safety and crime data, but doesn't specify which countries/states they have obtained this data from. As an application that claims to use data from various different sectors and sources, it should provide a more detailed list of datasets used.
+
+\begin{figure}
+	\includegraphics[scale=0.4]{walkonomics}
+	\caption{Walkonomics application}
+	\label{fig:walkonomics}
+\end{figure}
+
+A comparison of some properties of these four applications can be seen in \autoref{tab:applications}. It is immediately apparent that none of the applications are open source. As these applications rely on open data, it is disappointing that the developers do not want their code to be open. The community would benefit greatly from this, as people like myself looking to build new applications would be able to more thoroughly analyse the existing work. By sharing ideas about how to develop such applications, the community can work together to improve them and agree on the best approach.
+
+Another noticeable aspect from this comparison is the similarities between Crash Map and Collision Map. In fact, there are several other applications listed on \textit{data.gov.uk} that are similar to these. This led to the Department for Transport taking Collision Map offline in March 2015, as they felt it offered low value to taxpayers due to the number of alternatives available.  All of these applications operate in the same way; you zoom to an area of the map, and all accidents within that area are displayed. There are no advanced searching facilities available, such as searching for accidents on a particular route only. If you wanted to find such information, you would need to find the route yourself and manually pan the map, counting how many accidents are plotted. Clearly there is room for a new application that provides more advanced features like this.  
+
+
+\begin{table}[tbp]
+  \centering
+  \begin{tabular}{ p{2.5cm}  p{3.2cm}  p{2.2cm}  p{2.2cm} }
+      \textbf{Application} & \textbf{Data} & \textbf{Platform(s)} & \textbf{Open Source?} 
+    \\Crash Map & UK Road Safety 05-13 & Web & No
+	\\Collision Map & UK Road Safety 05-13 & Web & No
+	\\Motorcycle Accidents & UK Road Safety 11-13 (motorcycle only) & Web & No
+	\\Walkonomics & Road Safety, Crime & Web, iOS, Android & No
+  \end{tabular}
+  \caption{Comparison of applications that use road safety data}
+  \label{tab:applications}
+\end{table}
+
+\subsection{Research in Open Data}
 
 \section{Web Application Development}
 
+\subsection{Overview}
+
+Jazayeri's paper, 'Some trends in web application development', discusses the area of web application development from a software engineering perspective \citep{Jazayeri2007}. The Web is described as "an attractive playground for software engineers where you can quickly release an application to millions of users and receive instant feedback". It is argued that web applications reach "users that are varied in age, culture, language, education, interest, needs, etc.", and that providing for such varied users poses many interesting challenges. However, whilst all applications may be able to reach such a varied audience, I would argue that most have a specific target audience that the application can be catered to. Hence the challenges of providing for a varied user base is more dependent on the type of application, rather than the platform on which the application is available. 
+
+A major benefit of web applications over desktop applications is the ease in which new versions can be released. In a desktop application, even a small bug fix will require a new version to be installed for all clients. This can lead to numerous issues, as explained by Jazayeri \citep{Jazayeri2007}. In contrast, a web application exists on one server and the browser acts as a universal client. This means that features and bug fixes can be deployed as soon as they are ready, and users will instantly have access to the upgraded application without having to install an update. This leads more kindly to an agile development strategy, as small updates can be released at any time with no impact on users. Desktop applications are more likely to require updates to be grouped together in order to reduce the number of updates that the user must install. However, it is worth noting that some web applications may also require updates to be bundled if they require downtime in order to be applied.  
+
+Web development has been "driven by a move towards open source and standardised components" \citep{Jazayeri2007}. This trend is seen right through web development, from the application itself to the server that it is hosted on. The standard open source server environment used by many is commonly referred to as LAMP. This represents the operating system (Linux), the web server (Apache), the database server (MySQL), and the scripting language (PHP, Perl or Python). An example of a typical LAMP architecture can be seen in figure x. The main advantage of a  LAMP environment is that it can be assembled relatively easily and cheaply. PHP, MySQL and Apache are the three most commonly used tools in their respective categories. They have all been developed by programmers within the community who focus on writing features that they want and need \citep{Nixon2009}. As the code is available for all to see and change bugs can be resolved and potential security issues can be prevented before they happen.
+
+
+\subsection{Programming Languages}
+
+In this section I will compare and contrast some of the most popular programming languages used for web applications. I will focus on three of the most popular server-side scripting languages that are used in modern web applications; PHP, Python and Ruby. I will also look at the most popular client-side scripting language, JavaScript.
+
+PHP is a server scripting language designed by Rasmus Lerforf. It is fast, flexible and one of the most popular scripting languages available. According to Netcraft's Web Server Survey of January 2013, PHP was being used by 244M sites at this time \citep{Ide2013}. This equates to 39\% of all sites used in the survey. A large factor behind this popularity is the number of content management systems and ecommerce solutions that are written in PHP; WordPress, Joomla, Drupal, Zencart, osCommerce and Megento account for 32M of these sites. PHP's main advantages include the number of built-in libraries for common web tasks, the ease of learning and use, and its portability \citep{Welling2005}. Its flexible integration with HTML makes client tier integration easy. The main disadvantage of PHP stems from its huge popularity. Because of the huge number of applications authored in PHP, hackers are presented with a "huge and rather attractive attack surface" \citep{Ide2013}. Additionally, due to the open source nature of PHP, it is easier for hackers to find exploits. 
+
+Ruby is a dynamic, imperative object-oriented programming language developed by Yukihiro Matsumoto. Ruby on Rails is a popular framework for web application development based on the model view controller pattern. This framework adds a set of powerful functionalities such as scaffolding, active record, migrations, routing, environments, and many helper functions \citep{Jazayeri2007}. Advantages of Ruby include better security features, pure object-oriented programming, highly readable code and good testing frameworks. Disadvantages include a steep learning curve and a lack of informational resources.
+
+Python was first released in 1991 by Guido van Rossum. In contrast to PHP, it was initially designed as a full-featured general purpose language. It supports multiple programming paradigms, including object-oriented and functional programming. Its design philosophy emphases code readability. Python is quick and easy to learn and it has a large community who provide good support. Disadvantages of Python include its lack of true multiprocessor support and absence of commercial support. 
+
+Klaus Purer directly compares these three scripting languages in 'PHP vs. Python vs. Ruby - The web scripting language shootout' \citep{Purer2009}. In this paper, Purer aims to compare the languages objectively, using only facts rather than opinion. The first metric used to compare the languages is popularity, which is notoriously difficult to measure. Purer concludes that PHP is the most popular, followed by Python, with Ruby the least popular. This is based on search engine ratings, availability on hosting providers and discussion media ratings. It would have been interesting to include some additional metrics, such as the frequency in which the languages feature in GitHub repositories. GitHut is an online tool that visualises this data \citep{Zapponi2014}. It shows that in Q4 of 2014, Python featured in the most active repositories, with PHP second, and Ruby third. Whilst this suggests that the relative popularity may have changed since Purer's report of 2009, the TIOBE Index for March 2015 still shows PHP above Python \citep{TIOBESoftware2015}. 
+
+Purer goes on to compare the readability and usability of these languages. Once again this is difficult to measure scientifically. He states that PHP follows a "very classical approach" and will feel very familiar to former C-programmers, Python's strict indentation enforcements and small set of keywords make it suitable for programming beginners, and Ruby will be attractive for experienced programmers looking for "elegant and powerful programming expressiveness". He concludes that Python is the most readable due to its enforced program structure and Ruby is the most usable because of its "principle of least surprise". Whilst these conclusions seem valid, personal preference will have had an influence due to the unquantifiable nature of usability and readability. 
+
+In the next section, Purer compares some features of the three languages, including exception handling, database abstraction, functional language features, interactive development  with the interpreter and duck typing. It is argued that PHP has inferior exception handling as it was only added in version 5, meaning that some content management systems and frameworks lacked proper exception support in their code. As the report is focused on comparing the languages, I would argue that it is unfair to criticise PHP for a feature that it provides because it hasn't been utilised by some developers. A similar criticism is made of PHP regarding relational database abstraction. It is put forward that PHP is "a little bit behind the other two languages, as the abstraction has not been adapted by long-living PHP projects". I believe that an unbiased comparison of the three languages should focus purely on the features of the languages, rather than the implementation of the features by some developers. Additionally, no evidence is provided to back up these claims. 
+
+In the final sections, Purer compares the security and performance of the languages. It is concluded that the performance levels of the languages are very similar, and PHP is slightly inferior to the other languages in terms of security. PHP is mainly criticised for allowing poor programming practices which "result in many security related bugs". This is a valid criticism, but it is also worth noting that a skilled developer can create a secure PHP application. 
+
+Overall, this paper provides an interesting discussion and some useful information about the languages involved. As acknowledged by the author, choosing a programming language is often connected to personal experience and discussions can therefore be irrational. Whilst Purer tried to avoid this, it seems apparent that some of his conclusions are slightly irrational and not based on facts. Most features compared weren't quantifiable, making it very difficult to draw conclusions without some bias.
+
+Client-side JavaScript combines "the scripting ability of a JavaScript interpreter with the Document Object Model (DOM) defined by a web browser" \citep{Flanagan2006a}.This means that it can add behaviour to otherwise static web content. This technology is the core of web development techniques such as Dynamic HTML and architectures such as Ajax (Asynchronous JavaScript and XML). JavaScript helps reduce server usage, as functions that were typically performed on the server can be done on the client (e.g. form validation) \citep{Jazayeri2007}. Browsers are able to provide more responsive operations to the user by pushing some of the client-server communication to the background while the application is still interactive. This can be achieved using Ajax to introduce an intermediary 'engine' between the user and the server \citep{Garrett2005}. Every user action that would normally generate a HTTP request takes the form of a JavaScript call to the Ajax engine instead. If the engine needs something from the server to respond (e.g. retrieving new data), the engine makes those requests to the server asynchronously without interrupting the user's interaction with the application. 
+
+
+\subsection{Model-View-Controller}
+
+A large number of contemporary web frameworks make use of the Model-View-Controller (MVC) design pattern. The Model is the application object, the View is its screen representation, and the Controller defines the way the user interface reacts to user input \citep{Gamma1995}. The MVC pattern had been popular in software engineering for many years before it was realised that it could be applied just as well to web applications \citep{Jazayeri2007}.  The main problem with using the MVC design pattern when developing web applications is that the application must be partitioned between the client and the server \citep{Leff2001}.
+
+Morales-Chapar et al. provide an interesting discussion on the different implementations of MVC in web applications \citep{Morales-Chaparro2007}. This paper focuses on "large-scale web applications which are data dynamic and typically written in two programming languages", much like my application will be. A case study is used to compare the advantages and disadvantages of server-side MVC with two mixed client-side and server-side MVCs. 
+
+Server-side MVC is derived from desktop MVC, in that all components are usually programmed in the same language and the server runs all computations and operations. It is pointed out by Morales-Chaper et al. that this approach is useful when "applications capabilities requirements are poor at client side (e.g. mobile browsers without JavaScript functionality) or when application necessity is only to display information with low levels of user interaction". It is worth consideration that this paper was published in 2007, and since this time mobile devices and browsers have advanced significantly, so the first advantage given is of little relevance now. The disadvantages of this approach include the incapability of updating part of a view, increased bandwidth usage and the higher server usage due to the server validating forms, amongst other things.  
+
+The first mixed client-side and server-side MVC discussed by Morales-Chapar et al. was designed with a focus on resolving the previously raised issues. This MVC design involves dividing the Controller and View between the server and client, whilst leaving the model at server-side. In this system, some processing is now done on the client-side; for example, form validation using JavaScript. They raise the issue of different browsers and operating systems causing issues when accessing UI elements. Whilst the situation has improved since 2007, there still exists the issue of browsers not implementing exactly the same standard specifications. This approach still has the disadvantage of not being able to retrieve data asynchronously without refreshing the page. Without a model on the client-side, there are limitations on providing high interaction levels and data manipulation becomes more difficult. In comparison with the pure server-side approach, there is an increase in computation time and complexity due to the logic now present on client-side. 
+
+The second mixed client-side and server-side MVC discussed by Morales-Chapar et al. is similar to the previous design, but with part of the model on client-side. This design addresses the issue of not being able to retrieve data asynchronously without refreshing the page, by allowing for the use of Ajax. Limitations of this design include slower computation for tasks requiring access to the server, difficulty of designing a client-side model that is compatible with all browsers, and increased overhead on communications among MVC design elements. 
+
+
 \section{Software Development Methodologies}
+
+In this section, I will discuss some popular software engineering methodologies that I will consider using for this project. I will focus on those that are most beneficial to a project like this one, i.e. a web application developed by one person in a limited time frame. 
+
+Pfleeger and Atlee define software engineering as “an approach that combines computer science (which is made up of theories and computer functions) and the customer (who provides the problem to be solved) to develop a set of tools and techniques to solve problems” [1]. Software engineering methodologies can be defined as a group of methodologies used in the development of applications. Methodologies give details of “what should be done in each phase of the software development process” [2]. They do not necessarily give details of how things should be done, allowing for some tuning by those using them. 
+
+Agile software development is a conceptual framework for undertaking software engineering projects [3]. Agile methods generally try to minimise risk by developing software in iterations, which typically last one to four weeks. Each iteration of the project is like its own project, featuring its own planning, requirement analysis, design, coding, testing and documentation phases. At the end of each iteration, a new working version of the application should be available. The team is then able to reevaluate the project priorities ahead of the next iteration. Agile methods emphasise working software as a primary measure of progress.
+
+Scrum is a software-management process for iterative-incremental software development projects. Scrum relies on self-organisation, with the team deciding what to do while management removes roadblocks [4]. Scrum is focused on frequent intermediate delivers with working functionality. Alongside this, there are frequent risk and mitigation plans produced by the development team. There are daily ‘scrums’, where the development team meetup to explain progress, describe upcoming work and raise obstacles. 
+
+Extreme Programming is an iterative and incremental development methodology. Key practices of Extreme Programming include making a rough plan quickly and refining it as thing become clearer, test driven development, refactoring code, continuous integration of code and an on-site customer to clarify requirements and make crucial business decisions [4]. 
+
 
 \section{Usability of Interactive Applications}
 
