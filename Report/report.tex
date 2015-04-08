@@ -1,5 +1,6 @@
 \documentclass[authoryearcitations]{UoYCSproject}
 \usepackage{graphicx}
+\usepackage{framed}
 \graphicspath{ {images/} }
 \author{David M. Taylor}
 \title{Road Safety Advisory System}
@@ -254,15 +255,39 @@ The concepts discussed thus far will help to design a system that offers the fun
 
 \section{Introduction}
 
-In this chapter, I will use the goal-directed design process \citep{Cooper2007} to analyse the problem presented by the project. Firstly, I will create personas to represent potential users of the final application. I will then write scenarios describing how these personas would ideally interact with the application in order to achieve their goals. Finally, I will define the functional and non-functional requirements of the application, using the scenarios and findings of the literature review as motivation. 
+This chapter will analyse the problem presented by the project, with a focus on using the goal-directed design process \citep{Cooper2007}. Firstly, personas will be created to represent potential users of the application. Scenarios describing how these personas would ideally interact with the application in order to achieve their goals will then be written. Finally, the functional and non-functional requirements of the application will be defined, using the scenarios and findings of the literature review as motivation. 
 
 \section{Personas} 
 
-Unfortunately I did not have enough time to perform the necessary fieldwork in order to make 'rigorous' personas. Therefore, I will have to create 'provisional' personas based on my best guesses about behaviours, motivations and goals. 
+Unfortunately there wasn't enough time to perform the necessary fieldwork in order to make 'rigorous' personas. Therefore, 'provisional' personas were created based on available data and best guesses about behaviours, motivations and goals.
 
 Cooper et al. warn of some potential issues to avoid when creating provisional personas \citep{Cooper2007}. It is important to avoid focusing on the wrong design target. Even if you are focusing on the correct target, you must be careful to ensure that key behaviours that could differentiate the product aren't missed. It is important to focus on behaviours and motivations rather than demographics.
 
+Three personas have been created and are presented in \autoref{fig:personaA} and \autoref{fig:personaB}. Aspects of Persona A were based on information provided by West Sussex Council about the process used to improve road safety [1].
+
+
+[1]https://www.westsussex.gov.uk/roads-and-travel/road-safety/how-we-improve-road-safety/
+
+\begin{figure}
+	\begin{framed}
+ 		Linda is a member of the transport department in West Sussex County Council. Linda has good IT skills after taking several training courses and she is familiar with road safety data. One of the main objectives in her job is to improve road safety in the county. Due to the limited resources of the council, route improvements must be prioritised by Linda. In order to do this, she uses the council's 'accident location map' to find the number of casualties per kilometre on a route. This is a slow and tedious task, as she must manually pan the map to find each accident on the route before clicking on each one to find the details. Linda finds this process frustrating and boring, so often assigns the task to a junior member of staff. She believes that resources could be better spent on other tasks if there was an application that automated the process.
+  	\end{framed}
+  \caption{Persona A: Linda}
+  \label{fig:personaA}
+\end{figure}
+
+\begin{figure}
+	\begin{framed}
+ 		John is the owner of a company that delivers food products from manufacturers to supermarkets. John joined the company after graduating from his law and finance degree 12 years ago, before eventually inheriting it from this late father. John considers himself a 'tech enthusiast' and is always looking to innovate how the company do day-to-day tasks. He has recently become interested in open data, and how he can use it to benefit his business. He is curious about using road safety data to find out about accident hotspots, so that his drivers can avoid them. He hopes that this will reduce the risk of late deliveries due to traffic delays, whilst also reducing the risk of one of his drivers being involved in a collision. 	\end{framed}
+  \caption{Persona B: John}
+  \label{fig:personaB}
+\end{figure}
+
+
 \section{Scenarios}
+
+The company have recently acquired a lucrative contract to deliver fresh goods to a large supermarket chain. There is a strict deadline for when the food must be delivered each day, with little allowance for delays. In order to minimise risk, John wants his drivers to avoid roads with accident hotspots
+      		
 
 \section{Requirement Definition}
 
