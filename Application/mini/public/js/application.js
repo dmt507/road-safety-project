@@ -278,17 +278,26 @@ function filterCollisions(collisions,routeSteps){
             var collisionLatLng = new google.maps.LatLng(collisions[n][i].latitude,collisions[n][i].longitude);
             if(google.maps.geometry.poly.isLocationOnEdge(collisionLatLng,stepLine,0.00015)){
                 collisionsOnRoute++;
-                if(collisions[n][i].accident_severity == 1){
+
+                if(collisions[n][i].accident_severity == 1){ //if fatal
+                    var weight = 3;
                     weightedCollisionsOnRoute += 3;
                 }
-                else if(collisions[n][i].accident_severity == 2){
+                else if(collisions[n][i].accident_severity == 2){ //if serious
+                    var weight = 2;
                     weightedCollisionsOnRoute += 2;
                 }
                 else if(collisions[n][i].accident_severity == 3){
+                    var weight = 1;
                     weightedCollisionsOnRoute += 1;
                 }
                 casualtiesOnRoute += parseInt(collisions[n][i].number_of_casualties);
-                heatmapData.push(collisionLatLng);
+
+                var weightedCollision ={
+                    location:collisionLatLng,
+                    weight: weight
+                };
+                heatmapData.push(weightedCollision);
             }
 
            /*
