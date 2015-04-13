@@ -17,46 +17,58 @@ function searchData(from, to, fatal, serious, slight, y2005, y2006, y2007, y2008
 
 
     var severity =[];
-    if(fatal==true){
+    if(fatal){
         severity.push(1);
     }
-    if(serious==true){
+    if(serious){
         severity.push(2);
     }
-    if(slight==true){
+    if(slight){
         severity.push(3);
     }
 
     var years = [];
-    if(y2005==true){
+    if(y2005){
         years.push(2005);
     }
-    if(y2006==true){
+    if(y2006){
         years.push(2006);
     }
-    if(y2007==true){
+    if(y2007){
         years.push(2007);
     }
-    if(y2008==true){
+    if(y2008){
         years.push(2008);
     }
-    if(y2009==true){
+    if(y2009){
         years.push(2009);
     }
-    if(y2010==true){
+    if(y2010){
         years.push(2010);
     }
-    if(y2011==true){
+    if(y2011){
         years.push(2011);
     }
-    if(y2012==true){
+    if(y2012){
         years.push(2012);
     }
-    if(y2013==true){
+    if(y2013){
         years.push(2013);
     }
 
+    findRoute(from, to, function(route){
+        var routeSteps = route.legs[0].steps;
 
+        getAccidents(routeSteps,severity,years);
+
+        map.fitBounds(route.bounds);
+    });
+
+
+
+}
+
+function findRoute(from, to, callback){
     var directionsService = new google.maps.DirectionsService();
     var directionsRequest = {
         origin: from,
@@ -69,11 +81,7 @@ function searchData(from, to, fatal, serious, slight, y2005, y2006, y2007, y2008
         directionsRequest,
         function (response, status) {
             if (status == google.maps.DirectionsStatus.OK) {
-                var routeSteps = response.routes[0].legs[0].steps;
-
-                getAccidents(routeSteps,severity,years);
-                map.fitBounds(response.routes[0].bounds);
-
+                callback(response.routes[0]);
             }
             else
                 $("#error").append("Unable to retrieve your route<br />");
@@ -97,10 +105,10 @@ function getAccidents(routeSteps,severity,years)
         var distance = routeSteps[n].distance.value;
 
         //if step is longer than 5km
-        if(distance>5000){
+        if(distance>10000){
 
             //calculate how many new steps the current step should be split into
-            var splitSteps = Math.ceil(distance/5000);
+            var splitSteps = Math.ceil(distance/10000);
 
             //get number of coords for the step
             var noOfLatLngs = routeSteps[n].lat_lngs.length;
@@ -149,7 +157,7 @@ function getAccidents(routeSteps,severity,years)
         {steps: steps,severity: accidentSeverity,years:accidentYear},
         function(data,status){
             if(status=="success"){
-                //$('#search-results').html(data);
+                //$('#search-results-test').html(data);
                 var accidents = JSON.parse(data);
                 filterAccidents(accidents,newRouteSteps);
 
@@ -164,12 +172,20 @@ function filterAccidents(accidents,routeSteps){
     var heatmapData = [];
     var data =[];
 
-
     for(var n=routeSteps.length-1; n--;){
 
 
         progress = ((n+1)/(routeSteps.length+1)) * 100;
         $('.progress-bar').css('width', progress+'%').attr('aria-valuenow', progress);
+
+       /*
+       //for testing: for making each step of the route alternate colours
+        var colors=['#ffff00','#005CE6'];
+        if (c==0){
+            c=1;
+        }  else{
+            c=0;
+        }    */
 
         var stepLine = new google.maps.Polyline({
             path: routeSteps[n].lat_lngs,
@@ -182,23 +198,22 @@ function filterAccidents(accidents,routeSteps){
         routeLines.push(stepLine);
         stepLine.setMap(map);
 
-        var accidentsOnStep=0;
         for (var i = accidents[n].length; i--;){
             var accidentLatLng = new google.maps.LatLng(accidents[n][i].latitude,accidents[n][i].longitude);
-            if(google.maps.geometry.poly.isLocationOnEdge(accidentLatLng,stepLine,10e-5)){
+            if(google.maps.geometry.poly.isLocationOnEdge(accidentLatLng,stepLine,0.00015)){
                 accidentsOnRoute++;
-                accidentsOnStep++;
                 heatmapData.push(accidentLatLng);
                 data.push(accidents[n][i]);
             }
+
+           /*
+            //For testing: adds a marker for all collisions returned from database
+           var marker = new google.maps.Marker({
+                position: accidentLatLng,
+                map: map
+            });  */
         }
 
-
-
-      /*  var distance = routeSteps[n].distance.value/1000;
-        if(accidentsOnStep/distance>10) {
-            stepLine.setMap(map);
-        }*/
 
     }
 
@@ -207,12 +222,12 @@ function filterAccidents(accidents,routeSteps){
     });
     heatmap.setMap(map);
 
-    $('#search-results').html(JSON.stringify(data));
-
 
     $('.accident-search-progress').css({"display":"none"});
     $('.accident-search-success').css({"display":"block"});
-    alert(accidentsOnRoute);
+
+    $('#result-number-collisions').html(accidentsOnRoute);
+
 
 
 
@@ -224,5 +239,17 @@ function getBounds(latlngs){
     for(var i=latlngs.length;i--;) {
         bounds.extend(latlngs[i]);
     }
-    return bounds;
+
+    //get the min and max longitude and latitude from the bounds
+    var northEast = bounds.getNorthEast();
+    var southWest = bounds.getSouthWest();
+
+    var formattedBounds = {
+        maxlat: northEast.k,
+        minlat: southWest.k,
+        maxlong: northEast.D,
+        minlong: southWest.D
+    };
+
+    return formattedBounds;
 }

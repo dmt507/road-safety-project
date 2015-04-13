@@ -26,6 +26,9 @@
 
     <script type="text/javascript">
         $(document).ready(function(){
+            $(function () {
+                $('[data-toggle="popover"]').popover()
+            })
             $("#calculate-route").submit(function(event) {
                 event.preventDefault();
                 searchData($("#from").val(), $("#to").val(),$("#severityFatal").is(':checked'),$("#severitySerious").is(':checked')

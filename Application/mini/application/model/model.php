@@ -27,7 +27,7 @@ class Model
                     YEAR(accident_date) IN ($yr)";
 
         //buffer bounds to ensure no accidents on the route are ignored
-        $bounds = array($bounds->va->j-0.0001,$bounds->va->k+0.0001,$bounds->Ca->k-0.0001,$bounds->Ca->j+0.0001);
+        $bounds = array($bounds->minlong-0.0001,$bounds->maxlong+0.0001,$bounds->minlat-0.0001,$bounds->maxlat+0.0001);
         $params = array_merge($bounds,$severity,$years);
         $query = $this->db->prepare($sql);
         $query->execute($params);
