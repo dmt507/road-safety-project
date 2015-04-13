@@ -148,13 +148,13 @@
                             <th>CPKM  <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-placement="bottom" tabindex="0"  data-toggle="popover" data-trigger="hover" title="Collisions Per Kilometre" data-content="Total number of collisions divided by the length of the route."></span>
                                 <span class="sr-only">Collisions per kilometre.</span>
                             </th>
-                            <th>Weighted CPKM <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-placement="bottom" tabindex="0"  data-toggle="popover" data-trigger="hover" title="Weighted Collisions Per Kilometre" data-content=" Each collision is assigned a weighted value based on severity; 3 for fatal, 2 for serious and 1 for slight. These weighted values are summed together and divided by the length of the route to give the Weighted CPKM."></span>
+                            <th>Weighted CPKM <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-placement="bottom" tabindex="0"  data-toggle="popover" data-trigger="hover" title="Weighted Collisions Per Kilometre" data-content=" Each collision is assigned a value based on its severity; 3 for fatal, 2 for serious and 1 for slight. These weighted values are summed together and divided by the length of the route to give the Weighted CPKM."></span>
                                 <span class="sr-only">Weighted collisions per kilometre.</span>
                             </th>
                             <th>Casualties</th>
                             <th>CaPKM <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-placement="bottom" tabindex="0"  data-toggle="popover" data-trigger="hover" title="Casualties Per Kilometre" data-content="Total number of casualties divided by the length of the route."></span>
                                 <span class="sr-only">Collisions per kilometre.</span></th>
-                            <th>Weighted CaPKM <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-placement="bottom" tabindex="0"  data-toggle="popover" data-trigger="hover" title="Weighted Casualties Per Kilometre" data-content=" Each casualty is assigned a weighted value based on severity; 3 for fatal, 2 for serious and 1 for slight. These weighted values are summed together and divided by the length of the route to give the Weighted CaPKM."></span>
+                            <th>Weighted CaPKM <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-placement="bottom" tabindex="0"  data-toggle="popover" data-trigger="hover" title="Weighted Casualties Per Kilometre" data-content=" Each casualty is assigned a value based on severity; 3 for fatal, 2 for serious and 1 for slight. These weighted values are summed together and divided by the length of the route to give the Weighted CaPKM."></span>
                                 <span class="sr-only">Weighted collisions per kilometre.</span></th>
                         </tr>
                     </thead>

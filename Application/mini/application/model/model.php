@@ -14,7 +14,7 @@ class Model
         }
     }
 
-    public function getAccidents($bounds,$severity,$years)
+    public function getCollisions($bounds,$severity,$years)
     {
 
 
@@ -22,7 +22,7 @@ class Model
         $yr  = join(',', array_fill(0, count($years), '?'));
 
 
-        $sql = "SELECT accident_index,longitude,latitude FROM accidents WHERE longitude>=? AND
+        $sql = "SELECT accident_index,longitude,latitude,accident_severity,number_of_casualties FROM accidents WHERE longitude>=? AND
                     longitude<=? AND latitude>=? AND latitude<=? AND accident_severity IN ($sev) AND
                     YEAR(accident_date) IN ($yr)";
 

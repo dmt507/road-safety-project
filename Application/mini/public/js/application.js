@@ -84,7 +84,16 @@ function searchData(from, to, fatal, serious, slight, y2005, y2006, y2007, y2008
 
             var stats = filterCollisions(unfilteredCollisions,splitSteps);
 
+
+            var cpkm = stats.collisions / (route.legs[0].distance.value/1000);
+            var wcpkm = stats.weightedCollisions / (route.legs[0].distance.value/1000);
+            var capkm = stats.casualties / (route.legs[0].distance.value/1000);
+
             $('#result-number-collisions').html(stats.collisions);
+            $('#result-number-casualties').html(stats.casualties);
+            $('#result-collisions-km').html(cpkm.toFixed(2));
+            $('#result-weighted-collisions-km').html(wcpkm.toFixed(2));
+            $('#result-casualties-km').html(capkm.toFixed(2));
 
 
         });
@@ -213,7 +222,7 @@ function getCollisions(routeSteps,severity,years,callback)
     var collisionSeverity = JSON.stringify(severity);
     var collisionYear = JSON.stringify(years);
 
-    $.post(url + "/search/getaccidents",
+    $.post(url + "/search/getcollisions",
         {steps: steps,severity: collisionSeverity,years:collisionYear},
         function(data,status){
             if(status=="success"){
@@ -233,6 +242,8 @@ function getCollisions(routeSteps,severity,years,callback)
  */
 function filterCollisions(collisions,routeSteps){
     var collisionsOnRoute = 0;
+    var weightedCollisionsOnRoute = 0;
+    var casualtiesOnRoute = 0;
     var heatmapData = [];
 
     for(var n=routeSteps.length-1; n--;){
@@ -267,6 +278,16 @@ function filterCollisions(collisions,routeSteps){
             var collisionLatLng = new google.maps.LatLng(collisions[n][i].latitude,collisions[n][i].longitude);
             if(google.maps.geometry.poly.isLocationOnEdge(collisionLatLng,stepLine,0.00015)){
                 collisionsOnRoute++;
+                if(collisions[n][i].accident_severity == 1){
+                    weightedCollisionsOnRoute += 3;
+                }
+                else if(collisions[n][i].accident_severity == 2){
+                    weightedCollisionsOnRoute += 2;
+                }
+                else if(collisions[n][i].accident_severity == 3){
+                    weightedCollisionsOnRoute += 1;
+                }
+                casualtiesOnRoute += parseInt(collisions[n][i].number_of_casualties);
                 heatmapData.push(collisionLatLng);
             }
 
@@ -292,7 +313,9 @@ function filterCollisions(collisions,routeSteps){
     $('.accident-search-success').css({"display":"block"});
 
     var results={
-        collisions: collisionsOnRoute
+        collisions: collisionsOnRoute,
+        weightedCollisions: weightedCollisionsOnRoute,
+        casualties: casualtiesOnRoute
     };
 
 
