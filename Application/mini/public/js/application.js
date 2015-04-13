@@ -2,6 +2,23 @@ var progress;
 var heatmap;
 var routeLines = [];
 
+/**
+ * Called when user submits search. Uses form parameters to search road safety data.
+ * @param from
+ * @param to
+ * @param fatal
+ * @param serious
+ * @param slight
+ * @param y2005
+ * @param y2006
+ * @param y2007
+ * @param y2008
+ * @param y2009
+ * @param y2010
+ * @param y2011
+ * @param y2012
+ * @param y2013
+ */
 function searchData(from, to, fatal, serious, slight, y2005, y2006, y2007, y2008, y2009, y2010, y2011, y2012, y2013) {
 
     if(heatmap){
@@ -59,14 +76,32 @@ function searchData(from, to, fatal, serious, slight, y2005, y2006, y2007, y2008
     findRoute(from, to, function(route){
         var routeSteps = route.legs[0].steps;
 
-        getAccidents(routeSteps,severity,years);
-
         map.fitBounds(route.bounds);
+
+        var splitSteps = splitRouteSteps(routeSteps);
+
+        getCollisions(splitSteps,severity,years, function(unfilteredCollisions){
+
+            var stats = filterCollisions(unfilteredCollisions,splitSteps);
+
+            $('#result-number-collisions').html(stats.collisions);
+
+
+        });
+
+
     });
 
 
 
 }
+
+/**
+ * Uses the Google Maps Direction service to find route between two locations
+ * @param from
+ * @param to
+ * @param callback
+ */
 
 function findRoute(from, to, callback){
     var directionsService = new google.maps.DirectionsService();
@@ -89,22 +124,21 @@ function findRoute(from, to, callback){
     );
 }
 
-function getAccidents(routeSteps,severity,years)
-{
-
-    $('.accident-search-progress').css({"display":"block"});
-    progress = (1/(routeSteps.length+1)) * 100;
-    $('.progress-bar').css('width', progress+'%').attr('aria-valuenow', progress);
-
-
+/**
+ * Used to split route steps returned by google into smaller steps if they are over 10km
+ * @param routeSteps
+ */
+function splitRouteSteps(routeSteps){
     var newRouteSteps=[];
 
     //loop through each route step
     for(var n= 0, routesteps_length = routeSteps.length; n<routesteps_length; n++){
 
+        var newStep;
+
         var distance = routeSteps[n].distance.value;
 
-        //if step is longer than 5km
+        //if step is longer than 10km
         if(distance>10000){
 
             //calculate how many new steps the current step should be split into
@@ -121,56 +155,85 @@ function getAccidents(routeSteps,severity,years)
             //for each new step, add the designated coords
             for(var i=0;i<splitSteps;i++){
                 var counter=0;
-                var newStep=new Object();
-                newStep.lat_lngs=[];
+                var lat_lngs=[];
+
+                //while there are more coords to add to this new step
                 while(counter<latLngsPerStep && currentLatLng<noOfLatLngs){
-                    newStep.lat_lngs.push(routeSteps[n].lat_lngs[currentLatLng]);
+                    lat_lngs.push(routeSteps[n].lat_lngs[currentLatLng]);
                     counter++;
                     currentLatLng++;
 
+                    //if we are at the last coords for this new step, but not the last coords in the old step,
+                    //add the first coords of the next new step
                     if(counter==latLngsPerStep && currentLatLng<noOfLatLngs){
-                        newStep.lat_lngs.push(routeSteps[n].lat_lngs[currentLatLng]);
+                        lat_lngs.push(routeSteps[n].lat_lngs[currentLatLng]);
+
+                        //if there is only 1 coords left in the old step, do not create a new step for it
                         if (noOfLatLngs-currentLatLng==1){
                             i++;
                         }
                     }
 
                 }
-                newStep.bounds = getBounds(newStep.lat_lngs);
+                newStep={
+                    bounds: getBounds(lat_lngs),
+                    lat_lngs: lat_lngs
+                };
                 newRouteSteps.push(newStep);
             }
         }else{
-            var newStep = new Object();
-            newStep.lat_lngs = routeSteps[n].lat_lngs;
-            newStep.bounds = getBounds(newStep.lat_lngs);
+            newStep={
+                bounds: getBounds(routeSteps[n].lat_lngs),
+                lat_lngs: routeSteps[n].lat_lngs
+            };
 
             newRouteSteps.push(newStep);
 
         }
     }
 
-    var steps = JSON.stringify(newRouteSteps);
-    var accidentSeverity = JSON.stringify(severity);
-    var accidentYear = JSON.stringify(years);
+    return newRouteSteps;
+
+}
+
+/**
+ * Make Ajax call to find collisions close to the route
+ * @param routeSteps
+ * @param severity
+ * @param years
+ */
+function getCollisions(routeSteps,severity,years,callback)
+{
+
+    $('.accident-search-progress').css({"display":"block"});
+    progress = (1/(routeSteps.length+1)) * 100;
+    $('.progress-bar').css('width', progress+'%').attr('aria-valuenow', progress);
+
+    var steps = JSON.stringify(routeSteps);
+    var collisionSeverity = JSON.stringify(severity);
+    var collisionYear = JSON.stringify(years);
 
     $.post(url + "/search/getaccidents",
-        {steps: steps,severity: accidentSeverity,years:accidentYear},
+        {steps: steps,severity: collisionSeverity,years:collisionYear},
         function(data,status){
             if(status=="success"){
                 //$('#search-results-test').html(data);
-                var accidents = JSON.parse(data);
-                filterAccidents(accidents,newRouteSteps);
-
+                callback(JSON.parse(data));
             }
         }
     );
 
 }
 
-function filterAccidents(accidents,routeSteps){
-    var accidentsOnRoute = 0;
+/**
+ * filter the collisions returned from db using the google maps isLocationOnEdge function
+ * plot route on map and add heatmap
+ * @param accidents
+ * @param routeSteps
+ */
+function filterCollisions(collisions,routeSteps){
+    var collisionsOnRoute = 0;
     var heatmapData = [];
-    var data =[];
 
     for(var n=routeSteps.length-1; n--;){
 
@@ -187,6 +250,7 @@ function filterAccidents(accidents,routeSteps){
             c=0;
         }    */
 
+        //create line for this step and add it to the map
         var stepLine = new google.maps.Polyline({
             path: routeSteps[n].lat_lngs,
             geodesic: true,
@@ -198,12 +262,12 @@ function filterAccidents(accidents,routeSteps){
         routeLines.push(stepLine);
         stepLine.setMap(map);
 
-        for (var i = accidents[n].length; i--;){
-            var accidentLatLng = new google.maps.LatLng(accidents[n][i].latitude,accidents[n][i].longitude);
-            if(google.maps.geometry.poly.isLocationOnEdge(accidentLatLng,stepLine,0.00015)){
-                accidentsOnRoute++;
-                heatmapData.push(accidentLatLng);
-                data.push(accidents[n][i]);
+        //check if each collision is on the route
+        for (var i = collisions[n].length; i--;){
+            var collisionLatLng = new google.maps.LatLng(collisions[n][i].latitude,collisions[n][i].longitude);
+            if(google.maps.geometry.poly.isLocationOnEdge(collisionLatLng,stepLine,0.00015)){
+                collisionsOnRoute++;
+                heatmapData.push(collisionLatLng);
             }
 
            /*
@@ -217,6 +281,7 @@ function filterAccidents(accidents,routeSteps){
 
     }
 
+    //create the heat map
     heatmap = new google.maps.visualization.HeatmapLayer({
         data: heatmapData
     });
@@ -226,14 +291,20 @@ function filterAccidents(accidents,routeSteps){
     $('.accident-search-progress').css({"display":"none"});
     $('.accident-search-success').css({"display":"block"});
 
-    $('#result-number-collisions').html(accidentsOnRoute);
+    var results={
+        collisions: collisionsOnRoute
+    };
 
 
-
+    return results;
 
 }
 
-
+/**
+ * Get the bounds for an array of coords
+ * @param latlngs
+ * @returns {{maxlat: *, minlat: *, maxlong: *, minlong: *}}
+ */
 function getBounds(latlngs){
     var bounds = new google.maps.LatLngBounds();
     for(var i=latlngs.length;i--;) {
