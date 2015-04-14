@@ -22,11 +22,11 @@
                     <form id="search_collisions" name="search-collisions" action="#" method="get">
                         <div class="form-group">
                             <label for="from">From:</label>
-                            <input type="text" id="from" name="from" class="form-control" required="required" placeholder="An address" size="30" value="york" />
+                            <input type="text" id="from" name="from" class="form-control" required="required" placeholder="An address" size="30" />
                         </div>
                         <div class="form-group">
                             <label for="to">To:</label>
-                            <input type="text" id="to" name="to" class="form-control" required="required" placeholder="Another address" size="30" value="leeds" />
+                            <input type="text" id="to" name="to" class="form-control" required="required" placeholder="Another address" size="30" />
                         </div>
                         <div class="form-group">
                             <label for="severity">Collision Severity</label>
@@ -117,7 +117,9 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <div id="search-submit-button">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
                     </form>
                 </div>
             </div>

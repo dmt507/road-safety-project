@@ -1,4 +1,6 @@
-
+#search-submit-button{
+    float:right;
+}
 
 #map-canvas{ height: 500px;}
 
