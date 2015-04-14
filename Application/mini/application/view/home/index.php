@@ -17,11 +17,6 @@
             </div>
 
 
-            <div class="progress accident-search-progress progress-striped active">
-                <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                    <span class="sr-only">60% Complete</span>
-                </div>
-            </div>
         </div>
 
     </div>
@@ -139,6 +134,7 @@
         </div>
 
         <div class="col-sm-9 map-col">
+            
             <div id="search-results">
 
                 <table class="table table-bordered">

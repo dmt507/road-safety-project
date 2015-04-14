@@ -255,10 +255,6 @@ function splitRouteSteps(routeSteps){
 function getCollisions(routeSteps,severity,years,callback)
 {
 
-    $('.accident-search-progress').css({"display":"block"});
-    progress = (1/(routeSteps.length+1)) * 100;
-    $('.progress-bar').css('width', progress+'%').attr('aria-valuenow', progress);
-
     var steps = JSON.stringify(routeSteps);
     var collisionSeverity = JSON.stringify(severity);
     var collisionYear = JSON.stringify(years);
@@ -288,10 +284,6 @@ function filterCollisions(collisions,routeSteps){
     var heatmapData = [];
 
     for(var n=routeSteps.length-1; n--;){
-
-
-        progress = ((n+1)/(routeSteps.length+1)) * 100;
-        $('.progress-bar').css('width', progress+'%').attr('aria-valuenow', progress);
 
        /*
        //for testing: for making each step of the route alternate colours
