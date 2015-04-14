@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Road Risks</title>
+    <title>Route Risks</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -32,7 +32,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="<?php echo URL; ?>map">Route Risks</a>
+                <a class="navbar-brand" href="<?php echo URL; ?>">Route Risks</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
