@@ -2,16 +2,6 @@
     <div class="row">
         <div class="col-sm-12">
 
-            <!-- <div class="jumbotron">
-                 <h1>
-                     Welcome to Road Risks
-                 </h1>
-                 <p>
-                     This application is designed to highlight accident hotspots on UK roads. Simply enter a journey, select which
-                     accident data to use, and then view the results on the map.
-                 </p>
-             </div>-->
-
             <div id="application-alerts">
 
             </div>
@@ -134,9 +124,7 @@
         </div>
 
         <div class="col-sm-9 map-col">
-            
             <div id="search-results">
-
                 <table class="table table-bordered">
                     <thead>
                     <tr>
@@ -165,10 +153,10 @@
                     </tr>
                     </tbody>
                 </table>
+
+
+                <div id="map-canvas"></div>
             </div>
-
-
-            <div id="map-canvas"></div>
         </div>
 
     </div>

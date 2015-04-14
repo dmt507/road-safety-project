@@ -84,6 +84,7 @@ function searchData(from, to, fatal, serious, slight, y2005, y2006, y2007, y2008
     var validation = validateForm(severity,years);
 
     if(validation){
+        new ajaxLoader($('#search-results'));
 
         findRoute(from, to, function(route){
             var routeSteps = route.legs[0].steps;
@@ -105,6 +106,7 @@ function searchData(from, to, fatal, serious, slight, y2005, y2006, y2007, y2008
                 $('#result-collisions-km').html(cpkm.toFixed(2));
                 $('#result-weighted-collisions-km').html(wcpkm.toFixed(2));
                 $('#result-casualties-km').html(capkm.toFixed(2));
+                removeAjaxLoader();
                 $('#application-alerts').html("<div class='alert alert-success alert-dismissible collision-search-success' role='alert'> " +
                 "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span>" +
                 "</button><strong>Success!</strong> Please see results below. </div>")
@@ -388,4 +390,81 @@ function getBounds(latlngs){
     };
 
     return formattedBounds;
+}
+
+/**
+ * Displays loading animation while search is taking place.
+ * taken from http://www.aplusdesign.com.au/blog/jquery-ajax-loader-spinner/
+ * And CSS spinner from http://tobiasahlin.com/spinkit/
+ * @param el
+ * @param options
+ */
+function ajaxLoader (el, options) {
+    // Becomes this.options
+    var defaults = {
+        bgColor 		: '#fff',
+        duration		: 800,
+        opacity			: 0.9,
+        classOveride 	: false
+    };
+    this.options 	= jQuery.extend(defaults, options);
+    this.container 	= $(el);
+
+    this.init = function() {
+        var container = this.container;
+        // Delete any other loaders
+        removeAjaxLoader();
+        // Create the overlay
+        var overlay = $('<div></div>').css({
+            'background-color': this.options.bgColor,
+            'opacity':this.options.opacity,
+            'width':'100%',
+            'height':'100%',
+            'position':'absolute',
+            'top':'0px',
+            'left':'0px',
+            'z-index':99999
+        }).addClass('ajax_overlay');
+        // add an overiding class name to set new loader style
+        if (this.options.classOveride) {
+            overlay.addClass(this.options.classOveride);
+        }
+        // insert overlay and loader into DOM
+        container.append(
+            overlay.append(
+                '<div class="spinner">' +
+                    '<div class="spinner-container container1">'+
+                        '<div class="circle1"></div>' +
+                        '<div class="circle2"></div>' +
+                        '<div class="circle3"></div>' +
+                        '<div class="circle4"></div>' +
+                    '</div>' +
+                    '<div class="spinner-container container2">'+
+                        '<div class="circle1"></div>' +
+                        '<div class="circle2"></div>' +
+                        '<div class="circle3"></div>' +
+                        '<div class="circle4"></div>' +
+                    '</div>' +
+                    '<div class="spinner-container container3">'+
+                        '<div class="circle1"></div>' +
+                        '<div class="circle2"></div>' +
+                        '<div class="circle3"></div>' +
+                        '<div class="circle4"></div>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="loader-text">Analysing Data...</div>').fadeIn(this.options.duration)
+        );
+    };
+
+
+    this.init();
+}
+
+function removeAjaxLoader(){
+    var overlay = $(".ajax_overlay");
+    if (overlay.length) {
+        overlay.fadeOut(function() {
+            overlay.remove();
+        });
+    }
 }
