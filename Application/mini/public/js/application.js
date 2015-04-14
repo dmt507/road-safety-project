@@ -32,6 +32,13 @@ function searchData(from, to, fatal, serious, slight, y2005, y2006, y2007, y2008
 
     $('.accident-search-success').css({"display":"none"});
 
+    $('#application-alerts').html("");
+    $('#result-number-collisions').html("");
+    $('#result-number-casualties').html("");
+    $('#result-collisions-km').html("");
+    $('#result-weighted-collisions-km').html("");
+    $('#result-casualties-km').html("");
+
 
     var severity =[];
     if(fatal){
@@ -43,6 +50,7 @@ function searchData(from, to, fatal, serious, slight, y2005, y2006, y2007, y2008
     if(slight){
         severity.push(3);
     }
+
 
     var years = [];
     if(y2005){
@@ -73,36 +81,67 @@ function searchData(from, to, fatal, serious, slight, y2005, y2006, y2007, y2008
         years.push(2013);
     }
 
-    findRoute(from, to, function(route){
-        var routeSteps = route.legs[0].steps;
+    var validation = validateForm(severity,years);
 
-        map.fitBounds(route.bounds);
+    if(validation){
 
-        var splitSteps = splitRouteSteps(routeSteps);
-
-        getCollisions(splitSteps,severity,years, function(unfilteredCollisions){
-
-            var stats = filterCollisions(unfilteredCollisions,splitSteps);
+        findRoute(from, to, function(route){
+            var routeSteps = route.legs[0].steps;
 
 
-            var cpkm = stats.collisions / (route.legs[0].distance.value/1000);
-            var wcpkm = stats.weightedCollisions / (route.legs[0].distance.value/1000);
-            var capkm = stats.casualties / (route.legs[0].distance.value/1000);
+            var splitSteps = splitRouteSteps(routeSteps);
 
-            $('#result-number-collisions').html(stats.collisions);
-            $('#result-number-casualties').html(stats.casualties);
-            $('#result-collisions-km').html(cpkm.toFixed(2));
-            $('#result-weighted-collisions-km').html(wcpkm.toFixed(2));
-            $('#result-casualties-km').html(capkm.toFixed(2));
+            getCollisions(splitSteps,severity,years, function(unfilteredCollisions){
+                map.fitBounds(route.bounds);
+                var stats = filterCollisions(unfilteredCollisions,splitSteps);
+
+
+                var cpkm = stats.collisions / (route.legs[0].distance.value/1000);
+                var wcpkm = stats.weightedCollisions / (route.legs[0].distance.value/1000);
+                var capkm = stats.casualties / (route.legs[0].distance.value/1000);
+
+                $('#result-number-collisions').html(stats.collisions);
+                $('#result-number-casualties').html(stats.casualties);
+                $('#result-collisions-km').html(cpkm.toFixed(2));
+                $('#result-weighted-collisions-km').html(wcpkm.toFixed(2));
+                $('#result-casualties-km').html(capkm.toFixed(2));
+                $('#application-alerts').html("<div class='alert alert-success alert-dismissible collision-search-success' role='alert'> " +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span>" +
+                "</button><strong>Success!</strong> Please see results below. </div>")
+            });
 
 
         });
+    }
 
 
-    });
+}
 
+/**
+ * ensure that one severity/year has been selected
+ * @param severity
+ * @param years
+ * @returns {boolean}
+ */
+function validateForm(severity, years){
 
+    var validationPass = true;
 
+    if(severity.length == 0){
+        $('#application-alerts').append("<div class='alert alert-danger alert-dismissible collision-search-success' role='alert'> " +
+        "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span>" +
+        "</button><strong>Error!</strong> You must select at least one collision severity. </div>");
+        validationPass = false;
+    }
+
+    if(years.length == 0){
+        $('#application-alerts').append("<div class='alert alert-danger alert-dismissible collision-search-success' role='alert'> " +
+        "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span>" +
+        "</button><strong>Error!</strong> You must select at least one year. </div>");
+        validationPass = false;
+    }
+
+    return validationPass;
 }
 
 /**
@@ -128,7 +167,9 @@ function findRoute(from, to, callback){
                 callback(response.routes[0]);
             }
             else
-                $("#error").append("Unable to retrieve your route<br />");
+                $('#application-alerts').html("<div class='alert alert-danger alert-dismissible collision-search-success' role='alert'> " +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span>" +
+                "</button><strong>Error!</strong> Unable to find route for your given locations. </div>");
         }
     );
 }
@@ -237,7 +278,7 @@ function getCollisions(routeSteps,severity,years,callback)
 /**
  * filter the collisions returned from db using the google maps isLocationOnEdge function
  * plot route on map and add heatmap
- * @param accidents
+ * @param collisions
  * @param routeSteps
  */
 function filterCollisions(collisions,routeSteps){
@@ -319,7 +360,7 @@ function filterCollisions(collisions,routeSteps){
 
 
     $('.accident-search-progress').css({"display":"none"});
-    $('.accident-search-success').css({"display":"block"});
+
 
     var results={
         collisions: collisionsOnRoute,

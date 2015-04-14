@@ -29,7 +29,7 @@
             $(function () {
                 $('[data-toggle="popover"]').popover()
             })
-            $("#calculate-route").submit(function(event) {
+            $("#search_collisions").submit(function(event) {
                 event.preventDefault();
                 searchData($("#from").val(), $("#to").val(),$("#severityFatal").is(':checked'),$("#severitySerious").is(':checked')
                     ,$("#severitySlight").is(':checked'),$("#year2005").is(':checked'),$("#year2006").is(':checked'),

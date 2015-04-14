@@ -12,10 +12,10 @@
                  </p>
              </div>-->
 
-            <div class="alert alert-success accident-search-success">
-                <a href="#" class="close" data-dismiss="alert">&times;</a>
-                <strong>Success!</strong> Please see results below.
+            <div id="application-alerts">
+
             </div>
+
 
             <div class="progress accident-search-progress progress-striped active">
                 <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
@@ -34,7 +34,7 @@
                     </h3>
                 </div>
                 <div class="panel-body">
-                    <form id="calculate-route" name="calculate-route" action="#" method="get">
+                    <form id="search_collisions" name="search-collisions" action="#" method="get">
                         <div class="form-group">
                             <label for="from">From:</label>
                             <input type="text" id="from" name="from" class="form-control" required="required" placeholder="An address" size="30" value="york" />
@@ -44,7 +44,7 @@
                             <input type="text" id="to" name="to" class="form-control" required="required" placeholder="Another address" size="30" value="leeds" />
                         </div>
                         <div class="form-group">
-                            <label for="severity">Accident Severity</label>
+                            <label for="severity">Collision Severity</label>
                             <div id="severity">
                                 <div class="checkbox">
                                     <label>
@@ -67,7 +67,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="year">Year of Accident</label>
+                            <label for="year">Year of Collision</label>
                             <div id="year">
                                 <div>
                                     <div class="checkbox-inline">
