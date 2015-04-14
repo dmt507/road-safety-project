@@ -168,10 +168,12 @@ function findRoute(from, to, callback){
             if (status == google.maps.DirectionsStatus.OK) {
                 callback(response.routes[0]);
             }
-            else
+            else {
                 $('#application-alerts').html("<div class='alert alert-danger alert-dismissible collision-search-success' role='alert'> " +
                 "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span>" +
                 "</button><strong>Error!</strong> Unable to find route for your given locations. </div>");
+                removeAjaxLoader();
+            }
         }
     );
 }
