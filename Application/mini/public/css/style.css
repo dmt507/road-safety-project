@@ -12,6 +12,20 @@
     text-align: center;
 }
 
+#mobile-collision-results-table{
+    display:none;
+}
+
+@media (max-width:767px){
+    #collision-results-table{
+        display:none;
+    }
+
+    #mobile-collision-results-table{
+        display: inline-table;
+    }
+}
+
 /*
     CSS Spinner code from http://tobiasahlin.com/spinkit/
 */

@@ -33,11 +33,11 @@ function searchData(from, to, fatal, serious, slight, y2005, y2006, y2007, y2008
     $('.accident-search-success').css({"display":"none"});
 
     $('#application-alerts').html("");
-    $('#result-number-collisions').html("");
-    $('#result-number-casualties').html("");
-    $('#result-collisions-km').html("");
-    $('#result-weighted-collisions-km').html("");
-    $('#result-casualties-km').html("");
+    $('.result-number-collisions').html("");
+    $('.result-number-casualties').html("");
+    $('.result-collisions-km').html("");
+    $('.result-weighted-collisions-km').html("");
+    $('.result-casualties-km').html("");
 
 
     var severity =[];
@@ -101,15 +101,12 @@ function searchData(from, to, fatal, serious, slight, y2005, y2006, y2007, y2008
                 var wcpkm = stats.weightedCollisions / (route.legs[0].distance.value/1000);
                 var capkm = stats.casualties / (route.legs[0].distance.value/1000);
 
-                $('#result-number-collisions').html(stats.collisions);
-                $('#result-number-casualties').html(stats.casualties);
-                $('#result-collisions-km').html(cpkm.toFixed(2));
-                $('#result-weighted-collisions-km').html(wcpkm.toFixed(2));
-                $('#result-casualties-km').html(capkm.toFixed(2));
+                $('.result-number-collisions').html(stats.collisions);
+                $('.result-number-casualties').html(stats.casualties);
+                $('.result-collisions-km').html(cpkm.toFixed(2));
+                $('.result-weighted-collisions-km').html(wcpkm.toFixed(2));
+                $('.result-casualties-km').html(capkm.toFixed(2));
                 removeAjaxLoader();
-                $('#application-alerts').html("<div class='alert alert-success alert-dismissible collision-search-success' role='alert'> " +
-                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span>" +
-                "</button><strong>Success!</strong> Please see results below. </div>")
             });
 
 
