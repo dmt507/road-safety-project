@@ -399,25 +399,86 @@ Most of these requirements were inspired by software quality standards \citep{IS
 
 \section{System Architecture}
 
+\begin{figure}
+	\includegraphics[scale=0.6]{SystemArchitectureDiagram}
+	\caption{System Architecture Diagram}
+	\label{fig:sysarchitecture}
+\end{figure}
+
 \subsection{LAMP}
 
 \subsection{UML Diagram}
 
 \section{Development Process}
 
+
+
 \section{Technology Overview}
 
-\subsection{PHP}
-
-\subsection{MySQL}
+This section of the report provides a brief discussion of the technologies used in this project, with a justification of why they were chosen ahead of the alternatives available.
 
 \subsection{Google Maps API}
 
+The Google Maps API \citep{Google} was compared with Bing Maps and OpenLayers in the literature review. The findings suggested that Google Maps would be the ideal mapping API for this project. This section justifies the decision made by explaining how the Google Maps API can satisfy the functional requirements of the project.
+
+FR2 states that the system must be able to find a route between two locations. The Google Maps API features a Directions Service that receives direction requests and returns computed results. The response contains all relevant information about the route, including distance, duration, an overview path, and latitude/longitude coordinates along the route. This response can be handled by the developer or directly rendered on the map. Route origins and destinations may be entered as text strings or as latitude/longitude values. 
+
+FR2 also states that the system must determine which collisions are on the route. The Geometry library contains a function for computing whether a given point lies on or near to a polyline, within a specified tolerance. This function can be used to check if each collision is on the polyline returned from the Directions Service.
+
+The directions service can also help address FR9. It is possible to request alternative routes in the directions request, meaning that several routes could be returned and analysed by the system at the same time. Another option involves making the route on the map 'draggable' so that users can try changing the route to find a safer one.
+
+As discussed in the literature review, the API has a visualisation library that lets you create heatmaps. Heatmaps use colour and shape to represent the distribution of data. This would help to highlight collision hotspots as areas with a high density of collisions would be red, thus satisfying FR8. 
+
+\subsection{PHP}
+
+The evaluation of server-side scripting languages in the literature review pointed towards Python as the favourable option. However, the comparison in \autoref{tab:weblanguages} only ranks PHP below python for learnability and security. Learnabilty of PHP isn't an issue due to the author's familiarity with the language. Security isn't a major concern either, as the application won't contain any personal data or passwords (although the correct steps must still be taken to protect the application from malicious attacks). Time constraints on the project make it preferable to use a familiar language rather than learning a new one, so the decision to use PHP was made.
+
+PHP has a large number of popular frameworks that can help to develop projects faster by reusing components and modules. These frameworks also facilitate scalability and long-term maintenance by complying with development standards. Most functionality required by the application will be done on client-side using JavaScript, meaning that the server-side will only need to create dynamic pages and make some simple database calls. Many of the frameworks available are complex and would require a lot of time reading documentation in order to learn how to implement simple functionality. Hence, the decision was made to use Mini 1\citep{MINI}, an extremely simple barebone framework. Mini has a very clean MVC structure, example database calls, PDO for database requests and it uses only native PHP code. 
+
+\subsection{MySQL}
+
+A fundamental objective of the application involves the use of road safety data published by the UK Department for Transport. This data is published in the comma-separated value (CSV) format. The data must be imported into a database management system so that the application can perform searches on it.
+
+MySQL is a very fast, robust, relational database management system \citep{Welling2005}. The MySQL server controls access to data, enables concurrent access, makes access fast, and ensures that only authorised users are granted access. It uses Structured Query Language (SQL). MySQL is available under an open source license. Crucially for this project, it is possible to directly upload a CSV file to a MySQL database by writing a short script.
+
 \subsection{Version Control System}
+
+
 
 \section{Interface Design}
 
-\subsection{Wireframes}
+As discussed in the literature review, the design of a successful web application must focus on user interaction. It is important to follow common design conventions when creating the user interface for a web application, such as those mentioned by Lynch and Horton \citep{Lynch2009}. This section discusses the design of the interface for the road safety advisory system, with justifications for each design decision made.
+
+The wireframe for the home page of the application can be seen in \autoref{fig:homewireframe}. The menu at the top of the page includes the site name and links to the pages of the website; Home and About. The decision was made to include the application itself on the home page as users are likely to expect immediate access to it. There is a brief notice at the top of the page explaining how to operate the application in case it isn't immediately obvious to a user. A more detailed description of the application is included on the 'About' page in order to keep the home page as uncluttered as possible. 
+
+The main area of the page is split between search parameters and results. These are displayed alongside each other, with 25\% of the width used for parameters and 75\% for results. The results are allocated a larger section of the page as they are the main focus of the application. This creates a visual hierarchy whereby the results, and in particularly the interactive map, will dominate the interface. Displaying the empty results table and blank map on the home page is an example of feedforward, as it helps a user understand what will happen when they submit a search. A user who has never used the application before will immediately expect the statistics in the table to be calculated, and for some representation of the results to be displayed on the map. 
+
+All search parameters are presented in a panel on the left-hand side of the page. The location text fields are displayed at the top, as this is the key information required from the user in order to perform a search. Sample text is included in the field to make it clear that the user should be entering an address. Collision data is filtered by severity and year by using checkboxes. All severity levels and the last 3 years are checked by default. This is a design decision aimed at saving users time, as it is believed that most users won't be interested in data from more than 3 years ago. The submit button is blue in order to draw attention to it and signify that is the primary action on the page.
+
+\begin{figure}
+	\center
+	\includegraphics[scale=0.7]{HomePageWireframe}
+	\caption{Wireframe for home page}
+	\label{fig:homewireframe}
+\end{figure}
+
+Some statistic names are abbreviated as they are quite long and would make the table look cluttered and text-heavy. These abbreviations will be unfamiliar to new users, so help text is provided by hovering the cursor over the question mark symbol by the corresponding name. A 'popover' is displayed, explaining the abbreviation whilst also providing details about how the value is calculated. An example of this can be seen in \autoref{fig:resultswireframe}.This wireframe shows the application display after a search has completed. The help message at the top of the page is removed as it is no longer required for a user if they have already completed a search. The overall structure of the page remains consistent so that the user is able to submit a new search without complications.
+
+\begin{figure}
+	\center
+	\includegraphics[scale=0.7]{ResultsWireframe}
+	\caption{Wireframe for displaying search results}
+	\label{fig:resultswireframe}
+\end{figure}
+
+The final key design issue involves displaying error messages for the user. If a user submits an invalid request (e.g. submitting a search with all severity levels unchecked), the search will fail and they must be notified. It is crucial that the message is clearly visible and explains what the user did wrong so that they can correct their mistake. An example error message is shown in \autoref{fig:errorwireframe}. The message is displayed in red at the top of the page to grab the user's attention. Red is used as it is commonly associated with errors and warnings.
+
+\begin{figure}
+	\center
+	\includegraphics[scale=0.7]{ErrorWireframe}
+	\caption{Wireframe for displaying error messages}
+	\label{fig:errorwireframe}
+\end{figure}
 
 \section{Summary}
 
