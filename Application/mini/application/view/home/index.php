@@ -3,7 +3,12 @@
         <div class="col-sm-12">
 
             <div id="application-alerts">
-
+                <div class='alert alert-info alert-dismissible' role='alert'>
+                    <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                        <span aria-hidden='true'>&times;</span>
+                    </button>
+                    Enter start and end locations for a route in order to get collision statistics and view collision hotspots.
+                </div>
             </div>
 
 
@@ -54,60 +59,60 @@
                         <div class="form-group">
                             <label for="year">Year of Collision</label>
                             <div id="year">
-                                <div>
-                                    <div class="checkbox-inline">
+                                <div class="row">
+                                    <div class="col-xs-4">
                                         <label>
                                             <input type="checkbox" id="year2005">
                                             2005
                                         </label>
                                     </div>
-                                    <div class="checkbox-inline">
+                                    <div class="col-xs-4">
                                         <label>
                                             <input type="checkbox" id="year2006">
                                             2006
                                         </label>
                                     </div>
-                                    <div class="checkbox-inline">
+                                    <div class="col-xs-4">
                                         <label>
                                             <input type="checkbox" id="year2007">
                                             2007
                                         </label>
                                     </div>
                                 </div>
-                                <div>
-                                    <div class="checkbox-inline">
+                                <div class="row">
+                                    <div class="col-xs-4">
                                         <label>
                                             <input type="checkbox" id="year2008">
                                             2008
                                         </label>
                                     </div>
-                                    <div class="checkbox-inline">
+                                    <div class="col-xs-4">
                                         <label>
                                             <input type="checkbox" id="year2009">
                                             2009
                                         </label>
                                     </div>
-                                    <div class="checkbox-inline">
+                                    <div class="col-xs-4">
                                         <label>
                                             <input type="checkbox" id="year2010">
                                             2010
                                         </label>
                                     </div>
                                 </div>
-                                <div>
-                                    <div class="checkbox-inline">
+                                <div class="row">
+                                    <div class="col-xs-4">
                                         <label>
                                             <input type="checkbox" id="year2011" checked>
                                             2011
                                         </label>
                                     </div>
-                                    <div class="checkbox-inline">
+                                    <div class="col-xs-4">
                                         <label>
                                             <input type="checkbox" id="year2012" checked>
                                             2012
                                         </label>
                                     </div>
-                                    <div class="checkbox-inline">
+                                    <div class="col-xs-4">
                                         <label>
                                             <input type="checkbox" id="year2013" checked>
                                             2013

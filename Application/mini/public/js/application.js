@@ -127,14 +127,14 @@ function validateForm(severity, years){
     var validationPass = true;
 
     if(severity.length == 0){
-        $('#application-alerts').append("<div class='alert alert-danger alert-dismissible collision-search-success' role='alert'> " +
+        $('#application-alerts').append("<div class='alert alert-danger alert-dismissible' role='alert'> " +
         "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span>" +
         "</button><strong>Error!</strong> You must select at least one collision severity. </div>");
         validationPass = false;
     }
 
     if(years.length == 0){
-        $('#application-alerts').append("<div class='alert alert-danger alert-dismissible collision-search-success' role='alert'> " +
+        $('#application-alerts').append("<div class='alert alert-danger alert-dismissible' role='alert'> " +
         "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span>" +
         "</button><strong>Error!</strong> You must select at least one year. </div>");
         validationPass = false;
@@ -166,7 +166,7 @@ function findRoute(from, to, callback){
                 callback(response.routes[0]);
             }
             else {
-                $('#application-alerts').html("<div class='alert alert-danger alert-dismissible collision-search-success' role='alert'> " +
+                $('#application-alerts').html("<div class='alert alert-danger alert-dismissible' role='alert'> " +
                 "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span>" +
                 "</button><strong>Error!</strong> Unable to find route for your given locations. </div>");
                 removeAjaxLoader();
