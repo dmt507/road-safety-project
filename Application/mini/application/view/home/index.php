@@ -165,13 +165,13 @@
                             <td class="result-number-collisions"></td>
                         </tr>
                         <tr>
-                            <th>CPKM  <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-placement="bottom" tabindex="0"  data-toggle="popover" data-trigger="focus" title="Collisions Per Kilometre" data-content="Total number of collisions divided by the length of the route."></span>
+                            <th>CPKM  <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-placement="bottom" tabindex="0"  data-toggle="popover" data-trigger="click" title="Collisions Per Kilometre" data-content="Total number of collisions divided by the length of the route."></span>
                                 <span class="sr-only">Collisions per kilometre.</span>
                             </th>
                             <td class="result-collisions-km"></td>
                         </tr>
                         <tr>
-                            <th>Weighted CPKM <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-placement="bottom" tabindex="0"  data-toggle="popover" data-trigger="focus" title="Weighted Collisions Per Kilometre" data-content=" Each collision is assigned a value based on its severity; 3 for fatal, 2 for serious and 1 for slight. These weighted values are summed together and divided by the length of the route to give the Weighted CPKM."></span>
+                            <th>Weighted CPKM <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-placement="bottom" tabindex="0"  data-toggle="popover" data-trigger="click" title="Weighted Collisions Per Kilometre" data-content=" Each collision is assigned a value based on its severity; 3 for fatal, 2 for serious and 1 for slight. These weighted values are summed together and divided by the length of the route to give the Weighted CPKM."></span>
                                 <span class="sr-only">Weighted collisions per kilometre.</span>
                             </th>
                             <td class="result-weighted-collisions-km"></td>
@@ -181,7 +181,7 @@
                             <td class="result-number-casualties"></td>
                         </tr>
                         <tr>
-                            <th>CaPKM <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-placement="bottom" tabindex="0"  data-toggle="popover" data-trigger="focus" title="Casualties Per Kilometre" data-content="Total number of casualties divided by the length of the route."></span>
+                            <th>CaPKM <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-placement="bottom" tabindex="0"  data-toggle="popover" data-trigger="click" title="Casualties Per Kilometre" data-content="Total number of casualties divided by the length of the route."></span>
                                 <span class="sr-only">Collisions per kilometre.</span>
                             </th>
                             <td class="result-casualties-km"></td>
