@@ -248,7 +248,7 @@ Scrum is a software-management process for iterative-incremental software develo
 
 Extreme Programming is an iterative and incremental development methodology. Key practices of Extreme Programming include: making a rough plan quickly and refining it as thing become clearer, test driven development, re-factoring code, continuous integration of code, and an on-site customer to clarify requirements and make crucial business decisions \citep{Faridani2011}. 
 
-It is clear that the methodologies described are designed for team projects, rather than an individual project like this one. However, there are useful concepts that can be taken from each of them and applied to this project. It will be advantageous to split development work into iterations. This will encourage the delivery of a new, functional version of the application at regular intervals. This approach is particularly beneficial if there are issues to developing a complex piece of functionality in a later iteration, as there will still be a functional version of the application from the previous iteration. 
+It is clear that the methodologies described are designed for team projects, rather than an individual project like this one. However, there are useful concepts that can be taken from each of them and applied to this project. It will be advantageous to split development work into iterations. This will encourage the delivery of a new, functional version of the application at regular intervals. This approach is particularly beneficial if there are issues developing a complex piece of functionality in a later iteration, as there will still be a functional version of the application from the previous iteration. 
 
 
 \section{Design of Interactive Applications}
@@ -409,8 +409,6 @@ Most of these requirements were inspired by software quality standards \citep{IS
 
 \subsection{UML Diagram}
 
-\section{Development Process}
-
 
 
 \section{Technology Overview}
@@ -443,6 +441,50 @@ MySQL is a very fast, robust, relational database management system \citep{Welli
 
 \subsection{Version Control System}
 
+
+\section{Development Process}
+
+The road safety advisory system was developed using an agile development process. Agile methods are "incremental development methods in which the increments are small and, typically, new releases of the system are created and made available to customers every two or three weeks" \citep{Sommerville2005}. Each increment was designed to satisfy a set of functional requirements, and delivering a usable release of the application. This approach was important as it ensured a working final application, even if some requirements were not satisfied. The importance ratings assigned to the functional requirements in \autoref{tab:FunctionalReqs} helped to prioritise which pieces of functionality would be delivered in each increment. At the end of each increment, thorough system testing was completed to ensure that both new features, and features from previous increments, were all functioning correctly. Any significant issues were addressed before moving on to the next increment. This section includes a brief description of the development process for each increment of the application.
+
+The first increment of the system focuses on satisfying FR1, FR2, FR4 and FR6. It is important to satisfy FR1 and FR2 initially as they are both of high importance to the system, and all other requirements are dependant on this functionality. The successful implementation of FR4 is crucial to this increment as this proves to the end user that FR1 and FR2 have been satisfied. Outputting these statistics ensures that a usable release of the application is created. The interface design should present search parameters and results alongside each other, making it possible to immediately submit a new search after a previous search has finished, thus satisfying FR6. The following steps outline the development process for this increment:
+\begin{enumerate}
+	\item Create a table for collision data in the MySQL database.
+	\item Import collision data from the CSV file into the newly created table.
+	\item Set up the initial web application using the PHP Mini framework.
+	\item Create a form containing fields for the start and end addresses of a route. The form should submit a request to the Google Maps Directions Service.
+	\item Develop a method for querying the collision data in the database in order to find all collisions on the route.
+	\item Create a table that displays the statistics for the user.
+\end{enumerate}
+
+The second increment of the system focuses on FR8, as this is the only remaining functional requirement of high importance. The following steps outline the development process for this increment:
+\begin{enumerate}
+	\item Add an interactive map to the application using the Google Maps API.
+	\item Develop functionality that uses the coordinates of collisions on the route to create a heatmap using the Google Maps visualisation library.
+\end{enumerate}
+
+The third increment of the system addresses FR3 and FR7. These requirements are both of medium importance, and it is logical to include them in the same increment as they both involve adding data filters. The following steps outline the development process for this increment:
+\begin{enumerate}
+	\item Update the search form to include checkboxes for all severity levels and years.
+	\item Modify database query to only include results for the selected severity levels and years.
+\end{enumerate}
+
+The fourth increment of the system is aimed at satisfying FR5. The following steps outline the development process for this increment:
+\begin{enumerate}
+	\item Create a table for casualty data in the MySQL database.
+	\item Import casualty data from the CSV file into the newly created table. 
+	\item Create a query that finds the severity of each individual casualty involved in collisions on the route.
+	\item Develop a method that uses casualty data to calculate 'weighted casualties per km' and outputs the result.	
+\end{enumerate}
+
+The fifth, and final, increment of the application addresses the low importance requirements; FR9 and FR10. The following steps outline the development process for this increment:
+\begin{enumerate}
+	\item Modify the application to request multiple routes from the directions service.
+	\item Make the application run collision analysis for each route.
+	\item Create an output that summarises the results of the analysis for each route.
+	\item Create a script that periodically checks the \textit{data.gov.uk} website to see if a new dataset has been published.
+	\item Develop a method for automatically downloading the new dataset.
+	\item Create a script that imports the newly downloaded CSV file into the MySQL database table.
+\end{enumerate}
 
 
 \section{Interface Design}
