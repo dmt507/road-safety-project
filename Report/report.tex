@@ -4,10 +4,10 @@
 \graphicspath{ {images/} }
 \author{David M. Taylor}
 \title{Road Safety Advisory System}
-\date{Version 0.4, 2015-April-11}
+\date{Version 0.5, 2015-April-18}
 \supervisor{Dr. Radu Calinescu}
 \BEng
-\wordcount{8799}
+\wordcount{11643}
 
 
 \abstract{ ... }
@@ -397,20 +397,6 @@ Most of these requirements were inspired by software quality standards \citep{IS
 
 \chapter{Design}
 
-\section{System Architecture}
-
-\begin{figure}
-	\includegraphics[scale=0.6]{SystemArchitectureDiagram}
-	\caption{System Architecture Diagram}
-	\label{fig:sysarchitecture}
-\end{figure}
-
-\subsection{LAMP}
-
-\subsection{UML Diagram}
-
-
-
 \section{Technology Overview}
 
 This section of the report provides a brief discussion of the technologies used in this project, with a justification of why they were chosen ahead of the alternatives available.
@@ -431,7 +417,7 @@ As discussed in the literature review, the API has a visualisation library that 
 
 The evaluation of server-side scripting languages in the literature review pointed towards Python as the favourable option. However, the comparison in \autoref{tab:weblanguages} only ranks PHP below python for learnability and security. Learnabilty of PHP isn't an issue due to the author's familiarity with the language. Security isn't a major concern either, as the application won't contain any personal data or passwords (although the correct steps must still be taken to protect the application from malicious attacks). Time constraints on the project make it preferable to use a familiar language rather than learning a new one, so the decision to use PHP was made.
 
-PHP has a large number of popular frameworks that can help to develop projects faster by reusing components and modules. These frameworks also facilitate scalability and long-term maintenance by complying with development standards. Most functionality required by the application will be done on client-side using JavaScript, meaning that the server-side will only need to create dynamic pages and make some simple database calls. Many of the frameworks available are complex and would require a lot of time reading documentation in order to learn how to implement simple functionality. Hence, the decision was made to use Mini 1\citep{MINI}, an extremely simple barebone framework. Mini has a very clean MVC structure, example database calls, PDO for database requests and it uses only native PHP code. 
+PHP has a large number of popular frameworks that can help to develop projects faster by reusing components and modules. These frameworks also facilitate scalability and long-term maintenance by complying with development standards. Most functionality required by the application will be done on client-side using JavaScript, meaning that the server-side will only need to create dynamic pages and make some simple database calls. Many of the frameworks available are complex and would require a lot of time reading documentation in order to learn how to implement simple functionality. Hence, the decision was made to use MINI 1\citep{MINI}, an extremely simple barebone framework. Mini has a very clean MVC structure, example database calls, PDO for database requests and it uses only native PHP code. 
 
 \subsection{MySQL}
 
@@ -439,8 +425,51 @@ A fundamental objective of the application involves the use of road safety data 
 
 MySQL is a very fast, robust, relational database management system \citep{Welling2005}. The MySQL server controls access to data, enables concurrent access, makes access fast, and ensures that only authorised users are granted access. It uses Structured Query Language (SQL). MySQL is available under an open source license. Crucially for this project, it is possible to directly upload a CSV file to a MySQL database by writing a short script.
 
-\subsection{Version Control System}
+\subsection{Version Control Process}
 
+Having a good version control process is very important to this project. Firstly, it acts as a backup of the code base, allowing for easy restoration of code. This minimises the risk of losing work in the case of a disaster such as a corrupt hard drive. It also provides a history of changes made during the development process. This allows for traceability of changes, making it possible to revert specific changes that may have created issues. This is useful if there are issues during the development of a particular increment of the application, as it will simplify the process of reverting to the previous increment.
+
+The decision was made to use Git, a free and open source distributed version control system \citep{Git}. Whenever a new feature had been developed and tested, the change was committed, and pushed to a repository on GitHub \citep{GitHub}. GitHub is a useful tool for backing up source code and sharing open source projects online. Updates can be pulled directly from GitHub onto the web server, making deployment a straightforward task.
+
+\section{System Architecture}
+
+As discussed in the literature review, LAMP is a common open source sever environment. A LAMP environment is simple to set up, and can be done so cheaply. Amazon Web Services offer a 12-month free usage tier that offers all services required for setting up a LAMP environment \citep{AmazonWebServices}. Apache, PHP, and the application itself can all be installed on an EC2 instance running Ubuntu. An RDS instance running a MySQL engine can be used for hosting the database. A diagram showing how the Road Safety Advisory System can be deployed onto this architecture is presented in \autoref{fig:sysarchitecture}.
+
+\begin{figure}
+	\includegraphics[scale=0.7]{SystemArchitectureDiagram}
+	\caption{System Architecture Diagram}
+	\label{fig:sysarchitecture}
+\end{figure}
+
+\section{Activity Diagram}
+
+An activity diagram is "a UML behaviour diagram which shows flow of control or object flow with emphasis on the sequence and conditions of the flow" \citep{uml-diagrams}. Activity diagrams can be partitioned in order to group some actions that have a common characteristic.
+
+An activity diagram for the Road Safety Advisory System is presented in \autoref{fig:activitydiagram}. The diagram is partitioned into five sections in order to represent where each of the activities take place. These sections include: the user's view of the application, the user's web browser, the Road Safety Advisory System's application and database servers, and the Google Directions Service. The activities are defined as follows:
+
+\begin{enumerate}
+	\item \textbf{Submit search} - The user enters their parameters and submits a search.
+	\item \textbf{Validate user request} - Validation tests are run the user's search parameters.
+	\item \textbf{Submit directions request} - If the user's search is valid, the locations entered are submitted to the Google Directions Service in order to find a route.
+	\item \textbf{Get directions} - The Directions Service receives the request and attempts to find a route for the provided locations.
+	\item \textbf{Send response} - The results of the previous step are used to form a response, before sending it back to the user's browser.
+	\item \textbf{Receive directions response} - The response from the Directions Service is received and checked.
+	\item \textbf{Submit collision search} - If a route was found, the response data is processed to get the required data for a collision search. A request is then submitted to the Road Safety Advisory System application server.
+	\item \textbf{Submit database query} -  The application server receives the request, processes the data, and creates a query which is submitted to the database server.
+	\item \textbf{Execute database query} - The database server receives the request, and executes the query on the road safety data.
+	\item \textbf{Return query results} - The database server sends the query results to the application server.
+	\item \textbf{Return collisions} - The application server processes the data received from the database server and sends a response to the user's browser.
+	\item \textbf{Filter collisions} - The collisions returned are filtered to exclude those that are too far away from the route.
+	\item \textbf{Generate output} - Statistics for the collisions are calculated and the heatmap is created. The web page is dynamically updated to display the results.
+	\item \textbf{Results} - The user sees the results on the page.
+	\item \textbf{Error message} - The user sees an error message because their request failed validation, or a route was not found.
+\end{enumerate}
+
+\begin{figure}
+	\includegraphics[scale=0.6]{activitydiagram}
+	\caption{Activity Diagram}
+	\label{fig:activitydiagram}
+\end{figure}
 
 \section{Development Process}
 
@@ -524,9 +553,81 @@ The final key design issue involves displaying error messages for the user. If a
 
 \section{Summary}
 
+This chapter discussed the design decisions made when creating the Road Safety Advisory System. Key technologies used for the application were introduced, a system architecture diagram was presented, and an activity diagram was created to demonstrate the flow of control within the system. The development process was explained, and designs for the user interface were discussed. The next chapter focuses on the implementation of the system designed in this chapter.
+
 \chapter{Implementation and Testing}
 
+Three of the system increments specified in the design were implemented successfully. This chapter includes a discussion of the components developed for these increments, the techniques used, and the testing procedures followed.
+
 \section{Components}
+
+This section includes a description of some of the key components of the Road Safety Advisory System. The approach to developing these features is discussed, with an explanation of decisions made and outcomes of these decisions. 
+
+\subsection{Collision Search}
+
+The most complex feature of the Road Safety Advisory System is the collision search. Searching for collisions by route has not been achieved in any existing web applications, so a new approach needed to be designed and developed. 
+
+The first step in this process involved making the application find the route using the Google Maps API Directions Service. An example of using this is provided in the API documentation \citep{Google}. A HTML form was created with fields for the start and end locations of a route. On submission, a JavaScript function is called to handle the request. The request is validated to ensure that the form isn't empty, before sending a request to the Directions Service. If a route isn't found, an error message is dynamically inserted into the page and the search is stopped. 
+
+As discussed in the design chapter, the Google Maps API has a geometry library which has a function (isLocationOnEdge) for determining whether a point is on or near a line. This function is used to filter results from the database to determine whether they are close enough to the line to be considered on the route. However, calling this function for all collisions in the database would be highly inefficient, so it is necessary to apply an initial layer of filtering when searching the database. In order to do this, some data from the Directions Service response has to be used to create the database query. The first approach to this problem involved using the bounds of the route. 
+
+In order to do get the collisions from the database, data would need to be submitted from the user's browser to the server. The decision was made to use Ajax in order to exchange data with the server and update the page without reloading it. The jQuery \citep{ThejQueryFoundation} post method was used to request data from the server with a HTTP POST request. The post method sends a request to '/search/getcollisions' on the server, with the bounds of the route included as a JSON string. In the PHP application, a 'Search' controller was created with a function called 'getCollisions()'. This function is automatically called when the server receives the POST request, due to the routing methods defined by the MINI framework. The search controller calls a function in the model in order to perform the search. The model prepares and executes an SQL statement to select all collisions within the area defined by the route bounds. The results of this query are returned to the controller, where they are encoded into a JSON string and returned to the user's browser.
+
+When the browser receives a response from the server, the collisions are filtered using the 'isLocationOnEdge' function. An output is then generated using these filtered collisions. During the development of this functionality, the number of collisions was presented in an alert message, and an interactive map was employed to test the accuracy of the results. The collisions were plotted on the map along with the route path, in order to visually confirm that these collisions were on the route. In further tests, collisions returned from the database that did not pass the second layer of filtering were plotted, to ensure that they were not being incorrectly excluded. 
+
+The 'isLocationOnEdge' function has a 'tolerance' parameter that specifies how much distance there can be between a point and the line for it to return true. This value was initially specified as 0.000001 as the collisions in the dataset have 6 decimal places. However, during testing it became apparent that the tolerance value would need to be increased as a lot of collisions were being excluded despite clearly being on the route. \autoref{fig:collisionsoffroute} shows an example of two collisions that were excluded from the results of a search. This example demonstrates a key problem with analysing the collisions in this manner, as one collision should be included, whilst the other should be excluded as it occurred on the opposite lane of the carriageway. Both collisions are a similar distance from the line, as it is drawn on the middle of the carriageway. Thus, a tolerance value that includes all valid collisions is also likely to include some invalid collisions. Further discussion and analysis of this issue is included in the evaluation chapter. A trial and error approach was used to determine a suitable tolerance value, with the aim being to ensure that valid collisions weren't being excluded. A value of 0.00015 was accepted as the most suitable after testing a number of values for a set of defined routes, and comparing the results.
+
+\begin{figure}
+	\center
+	\includegraphics[scale=0.8]{collisionoffroute}
+	\caption{Example of collisions excluded by the second layer of filtering}
+	\label{fig:collisionsoffroute}
+\end{figure}
+
+At this point in the development process, the collision search was functional, but there was a significant issue with performance. For long journeys, it was proving inefficient to return all collisions within the bounds of the route. This would result in tens (or even hundreds) of thousands of collisions being returned from the server. Filtering this volume of collisions using 'isLocationOnEdge' was highly inefficient, and often caused the browser to become unresponsive. It was clear that a more intelligent approach to filtering collisions in the database query was required.
+
+The response returned from the Directions Service was inspected, and it was noticed that each route is split into a number of steps. As a result of this, a new approach was designed in order to produce more refined results during the initial layer of filtering. Before submitting the request to the server, bounds are calculated for each step of the route. An array containing all steps, with their bounds and coordinates, is then created. The Ajax request was updated to send this array, encoded as a JSON string, to the server. The controller decodes the JSON string and loops through the array, calling the model to perform a search for each step. This approach returns far less invalid results, making the second layer of filtering much faster. However, it was noticed that some collisions were being incorrectly excluded as they did not pass the first layer of filtering. \autoref{fig:nonbufferedbounds} presents an example situation where this issue occurs. In the image, the black boxes represent the bounding area of two different steps. A collision that previously passed the second phase of filtering is not within the bounds of either step. In order to resolve this issue, a buffer is added to the bounds of a step before executing the database query. This means that collisions marginally outside of the bounds are still included in the results of the first layer of filtering.
+
+\begin{figure}
+	\center
+	\includegraphics[scale=0.7]{nonbufferedbounds}
+	\caption{Example of a collision excluded by the first phase of filtering}
+	\label{fig:nonbufferedbounds}
+\end{figure}
+
+This change improved the performance for many routes, but the issue remained for others. This is due to the way in which different steps are defined in the response from the Directions Service. A new step is created each time a new direction is issued, which means that steps will vary considerably in terms of distance. Some routes will have a particularly long step if the route involves a long section of a motorway, for example. In an extreme case, this could lead to the database query for a step returning tens of thousands of collisions, causing the browser to become unresponsive when trying to filter these collisions. In order to prevent this, an algorithm was developed to ensure that no route step exceeds 10 kilometres in distance. A description and analysis of this algorithm is presented later in the chapter. 
+
+This final change improved the performance greatly, ensuring that all test searches completed in under 30 seconds, with the browser remaining responsive throughout. There were several challenges to overcome whilst developing this component of the system, particularly filtering database results to only include collisions near the route. This implementation has limitations in accuracy, but is far quicker and less tedious than the alternative methods available for analysing collisions on a specific route.
+
+\subsection{Statistics Output}
+
+The decision was made to output 5 different statistics for each search, all of which can be calculated by using data from the collisions dataset. These statistics are:
+
+\begin{itemize}
+	\item Total number of collisions.
+	\item Total number of casualties.
+	\item Number of collisions per kilometre.
+	\item Number of casualties per kilometre.
+	\item Weighted number of collisions per kilometre.
+\end{itemize}
+
+The first two are simple results to calculate, and should be of interest to most users of the application. These values are then divided by the length of the route to calculate the average number of collisions/casualties per kilometre for the route. These statistics are useful for comparing the relative safety of different routes. The anticipated use of such statistics would be for councils to compare the safety of different routes within their county, as described in Scenario A (\autoref{fig:scenarioA}). This scenario was based on information provided by West Sussex Council \citep{WestSussexCountyCouncil}, where they mention calculating and using the 'weighted casualties per km' to compare the safety of roads. Due to the time constraints of the project, increment 4 of the development cycle was not completed, so the application does not include the 'casualties' dataset. Therefore, the necessary data to compute this statistic is not available. As a viable alternative, the application calculates the 'weighted number of collisions per km'. This sums together a weighted value for each collision before dividing by the length of the route. Weighted values are assigned based on severity; 3 for fatal, 2 for serious and 1 for slight. 
+
+Variables for the number of collisions, number of casualties, and number of weighted collisions are updated every time a collision is confirmed to be on the route. These are all divided by the length of the route after all collisions have been analysed. After all statistics have been calculated, the results are dynamically inserted into the page using jQuery.
+
+The statistics are displayed using a HTML table, which is styled using Bootstrap \citep{Bootstrap}. As discussed in the interface design, the long statistic names are abbreviated in order to prevent the table from appearing too cluttered. The help messages were implemented using bootstrap popovers, and are displayed when the cursor is hovered over the question mark. During testing, an issue was discovered with the display of the results table on mobile devices. The table was too wide to fit within the narrow display, requiring the user to zoom out or scroll horizontally to view everything. This problem was overcome by creating a hidden mobile-specific results table, where the axis are flipped so that there are two columns and five rows. When the screen width is below 768px, the table displayed is switched using a CSS media query.
+
+\subsection{Heatmap}
+
+As discussed in the design, a heatmap was used to visually represent the intensity of collisions along the route. This functionality was implemented using the Google Maps API visualisation library.
+
+Whenever a collision is determined to be on the route, a weight is assigned to it (3 for serious, 2 for fatal and 1 for slight), and the collision is added to the heatmap data array. After all collisions have been filtered, a HeatMapLayer object is created using the heatmap data array. The HeatMapLayer is then added to the map. A coloured overlay is displayed on the map, where areas of high intensity are coloured red, and areas of low intensity are coloured green. Collisions with higher weights are rendered with greater intensity.
+
+\subsection{Data Filters}
+
+Filters were required for the search form so that users can specify year and severity of collisions to be included in the results. The first step of the implementation involved adding checkboxes to the search form for all available options. Validation had to be added to check that at least one severity level and at least one year has been selected before submitting a search. The validation is performed on client-side using JavaScript as soon as the form is submitted. If the validation fails, an error message explaining the problem is inserted into the page using jQuery, and the search is halted. 
+
+If the validation passes, the selected options are inserted into two arrays, one for years and one for severity levels. These arrays are included as additional parameters when the Ajax request is sent to the server to find collisions. The model doesn't directly insert the arrays into the SQL query, as this would make the application vulnerable to SQL injections. To avoid this issue, a prepared statement is used as it allows you to include placeholders in the SQL. Strings containing comma-separated '?' symbols, with each '?' representing an element in the original array are dynamically created. These strings are added to the SQL query, and when the query is executed, the real values from the original arrays are inserted safely.
 
 \section{Techniques}
 
