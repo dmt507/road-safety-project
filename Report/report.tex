@@ -1,6 +1,7 @@
 \documentclass[authoryearcitations]{UoYCSproject}
 \usepackage{graphicx}
 \usepackage{framed}
+\usepackage{algorithm}
 \graphicspath{ {images/} }
 \author{David M. Taylor}
 \title{Road Safety Advisory System}
@@ -591,7 +592,7 @@ The response returned from the Directions Service was inspected, and it was noti
 \begin{figure}
 	\center
 	\includegraphics[scale=0.7]{nonbufferedbounds}
-	\caption{Example of a collision excluded by the first phase of filtering}
+	\caption{Example of a valid collision excluded by the first layer of filtering}
 	\label{fig:nonbufferedbounds}
 \end{figure}
 
@@ -629,7 +630,28 @@ Filters were required for the search form so that users can specify year and sev
 
 If the validation passes, the selected options are inserted into two arrays, one for years and one for severity levels. These arrays are included as additional parameters when the Ajax request is sent to the server to find collisions. The model doesn't directly insert the arrays into the SQL query, as this would make the application vulnerable to SQL injections. To avoid this issue, a prepared statement is used as it allows you to include placeholders in the SQL. Strings containing comma-separated '?' symbols, with each '?' representing an element in the original array are dynamically created. These strings are added to the SQL query, and when the query is executed, the real values from the original arrays are inserted safely.
 
-\section{Techniques}
+\section{Techniques Used}
+
+\subsection{Importing The Data}
+
+To make the road safety data usable by the application, it needed to be imported into a MySQL database. The STATS19 data provided by the Department for Transport contains a CSV file with all collision data for the years 2005-2013. This file was inspected to get the name and type of each field, before building a new table using MySQL Workbench. It is important to use the correct types for each field, so that data can be queried and sorted effectively. For example, storing dates of collisions using the date type allows you to query the data using year of collision. When creating the table, the 'accident index' field was assigned as the primary key, as this is the unique identifier for each collision.
+
+A script was then created to import the data from the CSV file into the new table. An online tutorial was used to provide guidance for this task \citep{MySQLTutorial}. The date for each collision had to be transformed from 'dd/mm/yyyy' to 'yyyy-mm-dd' before inserting it into the database, in order to prevent an error from occurring.
+
+With the data in the database, some testing was performed to find the response times when searching for a collision using longitude and latitude. It was noticed that this process was initially too slow, and would lead to performance issues with the application. To resolve this issue, the longitude and latitude fields in the database were indexed. After indexing these fields, the duration of queries dropped from around 2.5 seconds, to under 0.02 seconds. This is a significant performance gain, without which the final application would be almost unusable.
+
+\subsubsection{Restricting The Distance of Route Steps}
+
+As discussed earlier in the chapter, an algorithm had to be developed in order to modify the 'steps' of a route returned from the Google Maps Directions Service. Some steps were too long, causing the database query for that step to return a huge number of collisions that were far away from the route. To demonstrate this issue, the code of the application was modified to draw each step in alternate colours. \autoref{fig:longroutestep} presents a route where there is a particularly long step (drawn in red). A black box has been drawn to represent the bounding area of this step. The database query returns all collisions in this bounding area, causing the browser to become unresponsive when trying to perform the second layer of filtering. 
+
+\begin{figure}
+	\center
+	\includegraphics[scale=0.7]{longroutestep}
+	\caption{Example of a long route step}
+	\label{fig:longroutestep}
+\end{figure}
+
+The envisaged solution to this problem was to break a step down into several smaller steps, leading to more database queries, but more refined results. Each step returned from the Directions Service contains a distance value and an array of coordinates, amongst other things. The application uses the array of coordinates to calculate the bounds for a step, and to draw the line on the map. In order to split the step up, it was therefore necessary to split the coordinates array and share them amongst a set of new steps. A pseudocode description of this algorithm follows.
 
 \section{Testing}
 
