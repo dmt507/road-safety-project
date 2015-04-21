@@ -2,6 +2,7 @@
 \usepackage{graphicx}
 \usepackage{framed}
 \usepackage{algorithm}
+\usepackage{algpseudocode}
 \graphicspath{ {images/} }
 \author{David M. Taylor}
 \title{Road Safety Advisory System}
@@ -651,7 +652,45 @@ As discussed earlier in the chapter, an algorithm had to be developed in order t
 	\label{fig:longroutestep}
 \end{figure}
 
-The envisaged solution to this problem was to break a step down into several smaller steps, leading to more database queries, but more refined results. Each step returned from the Directions Service contains a distance value and an array of coordinates, amongst other things. The application uses the array of coordinates to calculate the bounds for a step, and to draw the line on the map. In order to split the step up, it was therefore necessary to split the coordinates array and share them amongst a set of new steps. A pseudocode description of this algorithm follows.
+The envisaged solution to this problem was to break a step down into several smaller steps, leading to more database queries, but more refined results. Each step returned from the Directions Service contains a distance value and an array of coordinates, amongst other things. The application uses the array of coordinates to calculate the bounds for a step, and to draw the line on the map. In order to split the step up, it was therefore necessary to split the coordinates array and share them amongst a set of new steps. A pseudocode representation of this algorithm can be seen in \autoref{alg:algorithm}.
+
+\begin{algorithm}
+	\caption{Splitting Route Steps}
+	\label{alg:algorithm}
+	\begin{algorithmic}[1]
+		\Function{splitRouteSteps}{$routeSteps$}
+				\ForAll{$n$ such that $0\leq n < routeSteps.length$}
+					\State $distance\gets routeSteps[n].distance$
+					\State $latLngs \gets routeSteps[n].lat\_lngs$
+					\If{$distance> 10000$}
+						\State $numberOfNewSteps\gets \lceil distance/10000 \rceil$
+						\State $numberOfLatLngs\gets latLngs.length$
+						\State $latLngsPerNewStep\gets \lceil numberOfLatLngs/numberOfNewSteps \rceil$
+						\State $currentLatLng\gets 0$
+						\ForAll{$i$ such that $0\leq i < numberOfNewSteps$}
+							\State $newStepLatLngs\gets []$
+							\While{$counter<latLngsPerNewStep$ and $currentLatLng<numberOfLatLngs$}
+								\State $newStepLatLngs[]\gets latLngs[currentLatLng]$
+								\State $currentLatLng\gets currentLatLng+1$
+								\If{$newStepLatLngs.length==latLngsPerNewStep$ and $currentLatLng<numberOfLatLngs$}
+									\State $newStepLatLngs[]\gets latLngs[currentLatLng]$
+									\If{$numberOfLatLngs-currentLatLng==1$}
+										\State $i\gets i+1$
+									\EndIf
+								\EndIf
+							\EndWhile
+							\State $newStep \gets newStepLatLngs, getBounds(newStepLatLngs)$
+							\State $newRouteSteps[] \gets newStep$
+						\EndFor
+					\Else
+							\State $newStep \gets latLngs, getBounds(latLngs)$
+							\State $newRouteSteps[] \gets newStep$
+					\EndIf		
+				\EndFor
+				\State \textbf{return} $newRouteSteps$
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
 
 \section{Testing}
 
