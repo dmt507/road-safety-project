@@ -310,7 +310,7 @@ function filterCollisions(collisions,routeSteps){
         //check if each collision is on the route
         for (var i = collisions[n].length; i--;){
             var collisionLatLng = new google.maps.LatLng(collisions[n][i].latitude,collisions[n][i].longitude);
-            if(google.maps.geometry.poly.isLocationOnEdge(collisionLatLng,stepLine,0.00015)){
+            if(google.maps.geometry.poly.isLocationOnEdge(collisionLatLng,stepLine,0.0001)){
                 collisionsOnRoute++;
 
                 if(collisions[n][i].accident_severity == 1){ //if fatal
@@ -334,12 +334,12 @@ function filterCollisions(collisions,routeSteps){
                 heatmapData.push(weightedCollision);
             }
 
-           /*
+
             //For testing: adds a marker for all collisions returned from database
-           var marker = new google.maps.Marker({
-                position: accidentLatLng,
+           /*var marker = new google.maps.Marker({
+                position: collisionLatLng,
                 map: map
-            });  */
+            });*/
         }
 
 
