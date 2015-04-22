@@ -283,6 +283,7 @@ function filterCollisions(collisions,routeSteps){
     var weightedCollisionsOnRoute = 0;
     var casualtiesOnRoute = 0;
     var heatmapData = [];
+    var collisionIndexes=[];
 
     for(var n=routeSteps.length-1; n--;){
 
@@ -311,27 +312,37 @@ function filterCollisions(collisions,routeSteps){
         for (var i = collisions[n].length; i--;){
             var collisionLatLng = new google.maps.LatLng(collisions[n][i].latitude,collisions[n][i].longitude);
             if(google.maps.geometry.poly.isLocationOnEdge(collisionLatLng,stepLine,0.0001)){
-                collisionsOnRoute++;
 
-                if(collisions[n][i].accident_severity == 1){ //if fatal
-                    var weight = 3;
-                    weightedCollisionsOnRoute += 3;
-                }
-                else if(collisions[n][i].accident_severity == 2){ //if serious
-                    var weight = 2;
-                    weightedCollisionsOnRoute += 2;
-                }
-                else if(collisions[n][i].accident_severity == 3){
-                    var weight = 1;
-                    weightedCollisionsOnRoute += 1;
-                }
-                casualtiesOnRoute += parseInt(collisions[n][i].number_of_casualties);
+                //check that collision has not already been included in results
+                if ($.inArray(collisions[n][i].accident_index,collisionIndexes)==-1) {
 
-                var weightedCollision ={
-                    location:collisionLatLng,
-                    weight: weight
-                };
-                heatmapData.push(weightedCollision);
+                    //add collision id to array to ensure it doesn't get added multiple times
+                    collisionIndexes.push(collisions[n][i].accident_index);
+
+                    collisionsOnRoute++;
+
+                    if(collisions[n][i].accident_severity == 1){ //if fatal
+                        var weight = 3;
+                        weightedCollisionsOnRoute += 3;
+                    }
+                    else if(collisions[n][i].accident_severity == 2){ //if serious
+                        var weight = 2;
+                        weightedCollisionsOnRoute += 2;
+                    }
+                    else if(collisions[n][i].accident_severity == 3){
+                        var weight = 1;
+                        weightedCollisionsOnRoute += 1;
+                    }
+                    casualtiesOnRoute += parseInt(collisions[n][i].number_of_casualties);
+
+                    var weightedCollision ={
+                        location:collisionLatLng,
+                        weight: weight
+                    };
+                    heatmapData.push(weightedCollision);
+                }
+
+
             }
 
 
