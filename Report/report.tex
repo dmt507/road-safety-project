@@ -3,19 +3,35 @@
 \usepackage{framed}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\usepackage{geometry}
+
+\geometry{ a4paper,
+ total={210mm,297mm},
+ inner=35mm,
+ outer=25mm,
+ top=30mm,
+ bottom=35mm}
+ 
 \graphicspath{ {images/} }
 \author{David M. Taylor}
 \title{Road Safety Advisory System}
-\date{Version 0.5, 2015-April-18}
+\date{Version 0.6, 2015-April-21}
 \supervisor{Dr. Radu Calinescu}
 \BEng
-\wordcount{11643}
+\wordcount{13220}
 
 
 \abstract{ ... }
 
 
 \acknowledgements{ ... }
+
+\renewcommand\floatpagefraction{.99}
+\renewcommand\topfraction{.99} 
+\renewcommand\bottomfraction{.99}
+\renewcommand\textfraction{.01} 
+\renewcommand\dblfloatpagefraction{.95}
+\renewcommand\dbltopfraction{.95}
 
 \begin{document}
 \maketitle
@@ -115,7 +131,8 @@ The application uses the Google Maps API, but there is no further information ab
 Crash Map is useful for viewing where accidents have occurred within a specific area, and finding detailed information about them. However, it is reasonable to assume that a user may be more interested in finding out about accidents on a particular route from one location to another, rather than looking at an area. Crash Map is incapable of analysing the data in this way, which is a major limitation.
 
 \begin{figure}
-	\includegraphics[scale=0.3]{crashmap}
+	\center
+	\includegraphics[scale=0.25]{crashmap}
 	\caption{Crash Map application}
 	\label{fig:crashmap}
 \end{figure}
@@ -125,6 +142,7 @@ Collision Map \citep{DepartmentforTransport} is similar in purpose to Crash Map.
 Collision map has several useful features, but has similar limitations to Crash Map. The main advantage of this application is the grouping of accidents to signify hotspots. This makes it very easy to look at an area and see where the most accidents have occurred. A disadvantage in comparison to Crash Map is that you can only use accident data for one year in any search. Like Crash Map, it also lacks the capability of analysing particular routes. This becomes particularly difficult if a route passes through more than one highway authority as you would need to change the search parameters. 
 
 \begin{figure}
+	\center
 	\includegraphics[scale=0.3]{collisionmap}
 	\caption{Collision Map application}
 	\label{fig:collisionmap}
@@ -135,6 +153,7 @@ Motorcycle Accidents \citep{Mceinsurance} provides an interactive guide to motor
 The data is presented in a manner that is easy to analyse for any user, and the facts give a concise summary of the findings from the data. This is adequate to serve the application's purpose, but there are limitations that affect the overall usefulness. For example, it is not possible to view specific accident hotspots. The regions cover very large areas, and there is no breakdown of where the accidents occur within these areas.
 
 \begin{figure}
+	\center
 	\includegraphics[scale=0.3]{motorcycle}
 	\caption{Motorcycle Accidents application}
 	\label{fig:motorcycle}
@@ -147,6 +166,7 @@ Walkonomics extends what the other applications have achieved with Open Data. No
 However, there are some major limitations to this application. For example, when searching for several major cities across the world (including Cardiff, Edinburgh, Paris, Sydney and Los Angeles), no results are found (this behaviour was observed when exploring the application available online on 10/4/2015). It is unclear whether this is a bug or expected behaviour. Additionally, there is no transparency over which Open Datasets are used; it mentions the use of road safety and crime data, but does not specify which countries/states they have obtained this data from. As an application that claims to use data from various different sectors and sources, it should provide a more detailed list of datasets used.
 
 \begin{figure}
+	\center
 	\includegraphics[scale=0.4]{walkonomics}
 	\caption{Walkonomics application}
 	\label{fig:walkonomics}
@@ -350,6 +370,7 @@ The context scenario presented in \autoref{fig:scenarioA} describes how Linda wo
 Requirements can now be derived based on project objectives, findings of the literature review, personas and scenarios, software engineering best practices and software quality standards. The requirements will specify \textit{what} the application should do, and the design chapter will focus on \textit{how} this can be achieved.
 
 \subsection{Functional Requirements}
+\label{sect:functReqs}
 
 The functional requirements of the system are presented in \autoref{tab:FunctionalReqs}. The requirements have been ranked by importance to help prioritise them during the development phase. A brief justification of each requirement will now follow. 
 
@@ -438,6 +459,7 @@ The decision was made to use Git, a free and open source distributed version con
 As discussed in the literature review, LAMP is a common open source sever environment. A LAMP environment is simple to set up, and can be done so cheaply. Amazon Web Services offer a 12-month free usage tier that offers all services required for setting up a LAMP environment \citep{AmazonWebServices}. Apache, PHP, and the application itself can all be installed on an EC2 instance running Ubuntu. An RDS instance running a MySQL engine can be used for hosting the database. A diagram showing how the Road Safety Advisory System can be deployed onto this architecture is presented in \autoref{fig:sysarchitecture}.
 
 \begin{figure}
+	\center
 	\includegraphics[scale=0.7]{SystemArchitectureDiagram}
 	\caption{System Architecture Diagram}
 	\label{fig:sysarchitecture}
@@ -468,7 +490,8 @@ An activity diagram for the Road Safety Advisory System is presented in \autoref
 \end{enumerate}
 
 \begin{figure}
-	\includegraphics[scale=0.6]{activitydiagram}
+	\center
+	\includegraphics[scale=0.65]{activitydiagram}
 	\caption{Activity Diagram}
 	\label{fig:activitydiagram}
 \end{figure}
@@ -557,7 +580,7 @@ The final key design issue involves displaying error messages for the user. If a
 
 This chapter discussed the design decisions made when creating the Road Safety Advisory System. Key technologies used for the application were introduced, a system architecture diagram was presented, and an activity diagram was created to demonstrate the flow of control within the system. The development process was explained, and designs for the user interface were discussed. The next chapter focuses on the implementation of the system designed in this chapter.
 
-\chapter{Implementation and Testing}
+\chapter{Implementation}
 
 Three of the system increments specified in the design were implemented successfully. This chapter includes a discussion of the components developed for these increments, the techniques used, and the testing procedures followed.
 
@@ -577,7 +600,7 @@ In order to do get the collisions from the database, data would need to be submi
 
 When the browser receives a response from the server, the collisions are filtered using the 'isLocationOnEdge' function. An output is then generated using these filtered collisions. During the development of this functionality, the number of collisions was presented in an alert message, and an interactive map was employed to test the accuracy of the results. The collisions were plotted on the map along with the route path, in order to visually confirm that these collisions were on the route. In further tests, collisions returned from the database that did not pass the second layer of filtering were plotted, to ensure that they were not being incorrectly excluded. 
 
-The 'isLocationOnEdge' function has a 'tolerance' parameter that specifies how much distance there can be between a point and the line for it to return true. This value was initially specified as 0.000001 as the collisions in the dataset have 6 decimal places. However, during testing it became apparent that the tolerance value would need to be increased as a lot of collisions were being excluded despite clearly being on the route. \autoref{fig:collisionsoffroute} shows an example of two collisions that were excluded from the results of a search. This example demonstrates a key problem with analysing the collisions in this manner, as one collision should be included, whilst the other should be excluded as it occurred on the opposite lane of the carriageway. Both collisions are a similar distance from the line, as it is drawn on the middle of the carriageway. Thus, a tolerance value that includes all valid collisions is also likely to include some invalid collisions. Further discussion and analysis of this issue is included in the evaluation chapter. A trial and error approach was used to determine a suitable tolerance value, with the aim being to ensure that valid collisions weren't being excluded. A value of 0.00015 was accepted as the most suitable after testing a number of values for a set of defined routes, and comparing the results.
+The 'isLocationOnEdge' function has a 'tolerance' parameter that specifies how much distance there can be between a point and the line for it to return true. This value was initially specified as 0.000001 as the collisions in the dataset have 6 decimal places. However, during testing it became apparent that the tolerance value would need to be increased as a lot of collisions were being excluded despite clearly being on the route. \autoref{fig:collisionsoffroute} shows an example of two collisions that were excluded from the results of a search. This example demonstrates a key problem with analysing the collisions in this manner, as one collision should be included, whilst the other should be excluded as it occurred on the opposite lane of the carriageway. Both collisions are a similar distance from the line, as it is drawn on the middle of the carriageway. Thus, a tolerance value that includes all valid collisions is also likely to include some invalid collisions. Further discussion and analysis of this issue is included in the evaluation chapter. A trial and error approach was used to determine a suitable tolerance value, with the aim being to ensure that valid collisions weren't being excluded. A value of 0.0001 was accepted as the most suitable after testing a number of values for a set of defined routes, and comparing the results.
 
 \begin{figure}
 	\center
@@ -641,9 +664,9 @@ A script was then created to import the data from the CSV file into the new tabl
 
 With the data in the database, some testing was performed to find the response times when searching for a collision using longitude and latitude. It was noticed that this process was initially too slow, and would lead to performance issues with the application. To resolve this issue, the longitude and latitude fields in the database were indexed. After indexing these fields, the duration of queries dropped from around 2.5 seconds, to under 0.02 seconds. This is a significant performance gain, without which the final application would be almost unusable.
 
-\subsubsection{Restricting The Distance of Route Steps}
+\subsection{Restricting The Distance of Route Steps}
 
-As discussed earlier in the chapter, an algorithm had to be developed in order to modify the 'steps' of a route returned from the Google Maps Directions Service. Some steps were too long, causing the database query for that step to return a huge number of collisions that were far away from the route. To demonstrate this issue, the code of the application was modified to draw each step in alternate colours. \autoref{fig:longroutestep} presents a route where there is a particularly long step (drawn in red). A black box has been drawn to represent the bounding area of this step. The database query returns all collisions in this bounding area, causing the browser to become unresponsive when trying to perform the second layer of filtering. 
+As discussed earlier in the chapter, an algorithm had to be developed in order to modify the 'steps' of a route returned from the Google Maps Directions Service. Some steps were too long, causing the database query for that step to return a huge number of collisions that were far away from the route. To demonstrate this issue, the code of the application was modified to draw each step in alternate colours. \autoref{fig:longroutestep} presents a route where there is a particularly long step (drawn in red). A black rectangle has been drawn to represent the bounding area of this step. The database query returns all collisions in this bounding area, causing the browser to become unresponsive when trying to perform the second layer of filtering. 
 
 \begin{figure}
 	\center
@@ -652,13 +675,14 @@ As discussed earlier in the chapter, an algorithm had to be developed in order t
 	\label{fig:longroutestep}
 \end{figure}
 
-The envisaged solution to this problem was to break a step down into several smaller steps, leading to more database queries, but more refined results. Each step returned from the Directions Service contains a distance value and an array of coordinates, amongst other things. The application uses the array of coordinates to calculate the bounds for a step, and to draw the line on the map. In order to split the step up, it was therefore necessary to split the coordinates array and share them amongst a set of new steps. A pseudocode representation of this algorithm can be seen in \autoref{alg:algorithm}.
+The envisaged solution to this problem was to break a step down into several smaller steps, leading to more database queries, but more refined, and hence much fewer, results. Each step returned from the Directions Service contains a distance value and an array of coordinates, amongst other things. The application uses the array of coordinates to calculate the bounds for a step, and to draw the line on the map. In order to split the step up, it was therefore necessary to split the coordinates array and share them amongst a set of new steps. A pseudocode representation of this algorithm can be seen in Algorithm \autoref{alg:algorithm}.
 
 \begin{algorithm}
 	\caption{Splitting Route Steps}
 	\label{alg:algorithm}
 	\begin{algorithmic}[1]
 		\Function{splitRouteSteps}{$routeSteps$}
+				\State $stepCounter\gets 0$
 				\ForAll{$n$ such that $0\leq n < routeSteps.length$}
 					\State $distance\gets routeSteps[n].distance$
 					\State $latLngs \gets routeSteps[n].lat\_lngs$
@@ -669,22 +693,26 @@ The envisaged solution to this problem was to break a step down into several sma
 						\State $currentLatLng\gets 0$
 						\ForAll{$i$ such that $0\leq i < numberOfNewSteps$}
 							\State $newStepLatLngs\gets []$
-							\While{$counter<latLngsPerNewStep$ and $currentLatLng<numberOfLatLngs$}
-								\State $newStepLatLngs[]\gets latLngs[currentLatLng]$
+							\State $j \gets 0$
+							\While{$j<latLngsPerNewStep$ and $currentLatLng<numberOfLatLngs$}
+								\State $newStepLatLngs[j]\gets latLngs[currentLatLng]$
 								\State $currentLatLng\gets currentLatLng+1$
-								\If{$newStepLatLngs.length==latLngsPerNewStep$ and $currentLatLng<numberOfLatLngs$}
+								\State $j\gets j+1$
+								\If{$j==latLngsPerNewStep$ and $currentLatLng<numberOfLatLngs$}
 									\State $newStepLatLngs[]\gets latLngs[currentLatLng]$
 									\If{$numberOfLatLngs-currentLatLng==1$}
 										\State $i\gets i+1$
 									\EndIf
 								\EndIf
 							\EndWhile
-							\State $newStep \gets newStepLatLngs, getBounds(newStepLatLngs)$
-							\State $newRouteSteps[] \gets newStep$
+							\State $newStep \gets makeStep(newStepLatLngs)$
+							\State $newRouteSteps[stepCounter] \gets newStep$
+							\State $stepCounter\gets stepCounter + 1$
 						\EndFor
 					\Else
-							\State $newStep \gets latLngs, getBounds(latLngs)$
-							\State $newRouteSteps[] \gets newStep$
+							\State $newStep \gets makeStep(latLngs)$
+							\State $newRouteSteps[stepCounter] \gets newStep$
+							\State $stepCounter\gets stepCounter + 1$
 					\EndIf		
 				\EndFor
 				\State \textbf{return} $newRouteSteps$
@@ -692,25 +720,258 @@ The envisaged solution to this problem was to break a step down into several sma
 	\end{algorithmic}
 \end{algorithm}
 
-\section{Testing}
+This algorithm takes as input an array of route steps as returned from the Directions Service. Each element of the \textit{routeSteps} array is an object comprising:
+\begin{itemize}
+\item A \textit{distance} field that represents the total distance for the step in metres.
+\item A \textit{lat\_lngs} field that contains an array of coordinates for the step (as latitude and longitude pairs).
+\end{itemize}
+
+The algorithm returns a new array, \textit{newRouteSteps}. The new steps are created by passing the coordinates to the \textit{makeStep} function, which returns an object consisting of:
+\begin{itemize}
+\item A \textit{bounds} field containing the maximum and minimum latitude and longitudes for the step.
+\item A \textit{lat\_lngs} field that contains an array of coordinates for the step (as latitude and longitude pairs).
+\end{itemize}
+
+The algorithm begins by initialising the \textit{stepCounter} variable to 0. The for loop in lines 3-34 iterate through all route steps. The distance of the current step and the array of coordinates are assigned to variables. A check is then made to see if the distance of the step is over 10km (line 6). If it is under 10km, the bounds of the step are calculated and it is added to the array of new steps with no further changes (lines 30-31). If the step is over this distance, it must be split into multiple smaller steps. First of all, the number of new steps is calculated by dividing the distance by 10km and rounding up to the nearest whole value (line 7). It then calculates how many sets of coordinates should be assigned to each new step (line 9). The for loop in steps 11-28, creates each new route step. The while loop in lines 14-24 copies coordinates from the original step to the new step. The loop's conditions make it exit when the step has the maximum number of coordinates, or if there are no more coordinates to copy from the original step (line 14). After each pair of coordinates is added, a check is made to see if the new step is 'full', and there are more coordinates to copy from the original step (line 18). If this is the case, the next set of coordinates are added to the current step. This is necessary as the steps need to be connected to each other in order to form a line for the entire route. The 'if' statement on lines 20-22 is used to ensure that a new step isn't created if there is only 1 more set of coordinates to add. After all coordinates have been added to the new step, the bounds are calculated and it is added to the array of new steps (lines 25-26).
+
+The while loop on lines 14-24 is executed at most
+$$x = latLngsPerNewStep = \lceil \frac{numberofLatLngs}{numberOfNewSteps}\rceil$$ 
+times. 
+
+The inner for loop (lines 11-28) is executed at most 
+$$y = numberOfNewSteps$$ 
+times. 
+
+Hence the complexity of the inner for loop is
+$$xy = numberOfLatLngs$$
+
+The outer for loop (lines 3-34) is executed \textit{routeSteps.length} times, giving an overall complexity for the algorithm of
+$$\mathcal{O}(N \cdot M)$$
+where $N = routeSteps.length$ 
+
+and $M = max(routeSteps[n].lat\_lngs.length), 0\leq n<N$.
+
+Hence this algorithm is linear in complexity. The time taken by the algorithm is dependant on the number of route steps, and the number of coordinates in each step. It is important that this algorithm is linear, so that the time taken for longer routes does not exponentially increase.
+
+Careful consideration had to be made when deciding upon the distance threshold used within this algorithm. A lower value leads to more accurate results from the first layer of filtering, improving the time taken for the second layer of filtering. However, this also increases the number of database calls made for each route, which can have a negative affect on the performance. This creates a trade-off between the amount of computation required on client-side and sever-side. Tests were performed using several different distance thresholds for a set list of routes, and the computation times were compared. It was concluded that 10km is the optimal threshold, as it produced the results in the shortest times for all tested routes, and the browser never became unresponsive due to the amount of data to be processed. \autoref{fig:shortersteps} shows the results of running this algorithm on the long route step from \autoref{fig:longroutestep}. Black rectangles have been drawn to represent the bounding areas of each of the new steps. This clearly demonstrates that far less invalid collisions will be returned as a much smaller area is being analysed.
+
+\begin{figure}
+	\center
+	\includegraphics[scale=0.7]{shortersteps}
+	\caption{Example of route steps after using the splitRouteSteps function}
+	\label{fig:shortersteps}
+\end{figure}
+
 
 \section{Summary}
+This chapter discussed the challenges faced during the implementation of the Road Safety Advisory System and the solutions used to overcome them. There is a focus on the collision searching functionality as this is unique to this application and provided the most interesting challenges during development. The next chapter focuses on testing and evaluating the system.
 
-\chapter{Evaluation}
+\chapter{Testing and Evaluation}
 
-\section{Discussion}
+\section{Testing Plan}
 
-\section{Usability}
+This section of the report describes the testing methodology used for the Road Safety Advisory System.
+
+\subsection{Testing Methodology}
+
+Testing was conducted in 3 primary phases:
+
+\begin{enumerate}
+	\item Functional testing - A series of test cases have been designed to test that the system produced meets its functional requirements. These tests do not require knowledge of the code, and are focused on ensuring that everything is functional from the perspective of a user (black-box testing). After each increment of the system was developed, the relevant tests for the new functionality were run, along with tests for existing functionality. This regression testing ensures that code changes do not break previously functional parts of the application.
+	\item Accuracy testing - One of the main challenges of testing the application involves checking that the results produced are accurate. As there isn't an existing application that performs collision searching by route, there is no basis for comparison. Hence the decision was made to use Crash Map \citep{crashmap} in order to manually zoom/pan along a route and count the number of collisions. The results, and time taken to calculate them, are compared with the Road Safety Advisory System.
+	\item Non-functional testing - This phase of testing focuses on the non-functional requirements of the system. Performance analysis is carried out to determine how fast the system is, and to determine what impacts the speed. User evaluations are also carried out to test the usability of the application.
+\end{enumerate}
+
+\subsection{Testing Environment Specifications}
+
+\section{Functional Testing}
+
+Test cases were written to test each functional requirement specified in \autoref{sect:functReqs}. Each table specifies a test case, which consists of a description, test steps, expected outcome, and passing criteria. Tests were not written for FR5, FR9 and FR10 as they were not implemented due to the time constraints of the project.
+
+Test cases 1 to 6 were designed to test the functionality of the application using only its user interface. Therefore, these tests were carried out in the latest versions of Google Chrome, Mozilla Firefox and Internet Explorer. They were also carried out on mobile Safari using an iPhone 5 in both vertical and horizontal mode. This approach is required in order to confirm that the application is compatible with different browsers and devices, which is necessary due to NFR1 and NFR8.
+
+TC-007 requires the use of developer tools in the browser in order to inspect the response from the web server, so was only performed in Google Chrome. This test is necessary to ensure that the data filters are working correctly. The data filters are also (indirectly) tested in \autoref{sec:searchAnalysis} as different filters are used when analysing the accuracy of the collision search.
+
+The remained of this section describes each test case. All of the test cases passed when carried out on the final build of the application.
+
+\begin{tabular}{| p{2.5cm} | p{11cm} |}
+	\hline
+	\textit{Test Case ID} & TC-001 \\ \hline
+	\textit{Requirement(s) Covered} & FR1, FR2 \\ \hline
+	\textit{Description} & Check that it is possible to search UK road safety data using a route between two locations.  \\ \hline
+	\textit{Test Steps}& - Enter a start and end location.
+	\newline - Submit the search.
+	\newline - Verify that results returned are for the route entered.
+ \\ \hline
+	\textit{Expected Outcome} & The application uses the route to search for collisions, and presents the results to the user.  \\ \hline
+	\textit{Pass Criteria} & The user is presented with results relevant to the entered route.  \\ \hline
+\end{tabular}
+
+\begin{tabular}{| p{2.5cm} | p{11cm} |}
+	\hline
+	\textit{Test Case ID} & TC-002 \\ \hline
+	\textit{Requirement(s) Covered} & FR1, FR2, FR4 \\ \hline
+	\textit{Description} & Check that statistics are calculated when searching UK road safety data using a route between two locations.  \\ \hline
+	\textit{Test Steps}& - Enter start/end locations and submit a search.
+	\newline - Verify that statistics including number of collisions, collisions per kilometre (CPKM), weighted CPKM, casualties and casualties per kilometre (CaPKM) are all calculated.
+	\newline - Verify that $\frac{Collisions}{Collisions Per KM} = \frac{Casualties}{Casualties Per KM} $
+ \\ \hline
+	\textit{Expected Outcome} & The application uses the route to search for collisions and calculate the relevant statistics before presenting the results to the user.  \\ \hline
+	\textit{Pass Criteria} & The user can see each of the relevant statistics in a table. The same distance has been used to calculate CPKM and casualties per CaPKM. \\ \hline
+\end{tabular}
+
+
+\begin{tabular}{| p{2.5cm} | p{11cm} |}
+	\hline
+	\textit{Test Case ID} & TC-003 \\ \hline
+	\textit{Requirement(s) Covered} & FR1, FR2, FR8 \\ \hline
+	\textit{Description} & Check that collision density is represented on an interactive map when searching for collisions between two locations.  \\ \hline
+	\textit{Test Steps}& - Enter start/end locations and submit a search.
+	\newline - Verify that the route is displayed on the map, with a clear indication of where most collisions occur.
+	\newline - Verify that it is possible to interact with the map by zooming and panning. 
+ \\ \hline
+	\textit{Expected Outcome} & The application uses the route to search for collisions, displays the route on the map, and produces a heatmap to visualise the intensity of collisions along the route.  \\ \hline
+	\textit{Pass Criteria} & The user can interact with a map, which displays the route and a heatmap. The heatmap highlights sections of the route with the most collisions using red, whilst sections with less collisions are green.  \\ \hline
+\end{tabular}
+
+\begin{tabular}{| p{2.5cm} | p{11cm} |}
+	\hline
+	\textit{Test Case ID} & TC-004 \\ \hline
+	\textit{Requirement(s) Covered} & FR1, FR2, FR6 \\ \hline
+	\textit{Description} & Check that it is possible to immediately submit a new search after a previous search has completed. \\ \hline
+	\textit{Test Steps}& - Enter start/end locations and submit a search.
+	\newline - Verify that results returned are for the route entered.
+	\newline - Enter different start/end locations and submit a search.
+	\newline - Verify that previous results are cleared and new results are displayed.
+ \\ \hline
+	\textit{Expected Outcome} & The application clears the results of a search when a new search is submitted.  \\ \hline
+	\textit{Pass Criteria} & The user sees the results change after submitting a different search.  \\ \hline
+\end{tabular}
+
+\begin{tabular}{| p{2.5cm} | p{11cm} |}
+	\hline
+	\textit{Test Case ID} & TC-005 \\ \hline
+	\textit{Requirement(s) Covered} & FR1, FR2, FR3 \\ \hline
+	\textit{Description} & Check that it is possible to filter collisions included in results by year. \\ \hline
+	\textit{Test Steps}& - Enter start/end locations, choose a selection of years, and submit a search.
+	\newline - Verify that results returned are for the route entered.
+	\newline - Change the selection of years
+	\newline - Verify that the results produced correctly reflect the number of years selected.
+	\newline - Repeat the previous 2 steps five times.
+ \\ \hline
+	\textit{Expected Outcome} & The application uses the years selected by the user to filter collision results.  \\ \hline
+	\textit{Pass Criteria} & The results produced by the application reflect the selection of years. The number of collisions found for a selection of years is equal to the number of collisions found for each year individually.  \\ \hline
+\end{tabular}
+
+\begin{tabular}{| p{2.5cm} | p{11cm} |}
+	\hline
+	\textit{Test Case ID} & TC-006 \\ \hline
+	\textit{Requirement(s) Covered} & FR1, FR2, FR4, FR7 \\ \hline
+	\textit{Description} & Check that it is possible to filter collisions included in results by severity, and that weighted CPKM is calculated correctly. \\ \hline
+	\textit{Test Steps}& - Enter start/end locations, select slight severity, and submit a search.
+	\newline - Verify that results returned are for the route entered and that the Weighted CPKM is equal to the CPKM.
+	\newline - Change the severity selection to serious.
+	\newline - Verify that results returned are for the route entered and that the Weighted CPKM is double the CPKM.
+	\newline - Change the severity selection to fatal.
+	\newline - Verify that results returned are for the route entered and that the Weighted CPKM is triple the CPKM.
+	\newline - Change the severity selection all severities.
+	\newline - Verify that results returned are for the route entered and that the Weighted CPKM is equal to the previous 3 added together.
+ \\ \hline
+	\textit{Expected Outcome} & The application uses the severity levels selected by the user to filter collision results.  \\ \hline
+	\textit{Pass Criteria} & The results produced by the application reflect the selection of severities. The weighted CPKM is calculated according to the users selection each time. \\ \hline
+\end{tabular}
+
+\begin{tabular}{| p{2.5cm} | p{11cm} |}
+	\hline
+	\textit{Test Case ID} & TC-007 \\ \hline
+	\textit{Requirement(s) Covered} & FR1, FR2, FR3, FR7 \\ \hline
+	\textit{Description} & Check the response from the server to ensure that date and severity are filtered correctly. \\ \hline
+	\textit{Test Steps}& - Access the Google Chrome Developer tools to view network requests. 
+	\newline - Enter start/end locations, choose a selection of severity levels and years, and submit the search.
+	\newline - View the 'getcollisions' request and access the response.
+	\newline - Verify that there is an array of collision objects, with each object containing an accident index, longitude, latitude, severity and number of casualties.
+	\newline - Verify that the first 4 characters of all accident indexes correspond to a year that was selected in the search parameters.
+	\newline - Verify that all accident severity values correspond to the severity levels selected in the search parameters (where 1 is fatal, 2 is serious and 3 is slight).
+	\newline - Repeat this test 5 times using different search parameters.
+ \\ \hline
+	\textit{Expected Outcome} & The application uses the severity levels and years selected by the user to filter collision results.  \\ \hline
+	\textit{Pass Criteria} & The response from the server only contains results for the selected years and severity levels. \\ \hline
+\end{tabular}
+
+\section{Collision Search Analysis}
+\label{sec:searchAnalysis}
+
+\section{Performance}
+
+It is important to test the performance of the application for a number of routes in order to prove its scalability. It is reasonable to expect that longer routes will take longer to search as there is more data to process. However, it is important that the application is still able to respond in under 10 seconds for all routes, as specified by NFR5. 
+
+\subsection{Methodology}
+
+Twenty test routes were prepared for analysing the performance of the application. The locations of the routes were picked randomly from anywhere within the UK. The distance of the routes was highly influential for this process, as it was important to have a good variety. The routes vary in distance from 1.9km to 949km, with the majority under 50km as longer journeys are less likely to be important to users (e.g. councils looking to analyse routes within their county will not need to look at routes that are several hundreds of kilometres).
+
+The first tests focused purely on comparing response times for different distances. Hence, all severity levels and years were included in the searches to ensure a controlled experiment. Including data for all years and severity levels also ensures that the maximum amount of data is returned for each route, which should also lead to the worst-case response times. 
+
+The second tests focused on comparing response times for a different selection of years. Hence, all severity levels were included and the same route was used each time to ensure a controlled experiment. This test was performed for three different routes from the list of twenty. The routes were selected based on their distances in order to evaluate how the number of years affects response times for routes of different lengths.
+
+Response time was measured manually using a stop watch. The stop watch was started as soon as the search was submitted, and stopped as soon as the results were presented on the screen. Measuring time manually like this can be inaccurate as it relies on human reaction speed. To improve the reliability of the results, each test was performed five times and the average response time was taken.
+
+\subsection{Results}
+
+\begin{table}
+	\center
+	\caption{Comparison of response times for different routes}
+	\label{tab:performanceresults1}
+	\begin{tabular}{| l | l | l | l |}
+	\hline
+	\textbf{Start Location} & \textbf{End Location} & \textbf{Distance (km)} & \textbf{Response Time (s)} \\ \hline
+	YO31 0SH & YO10 5NL & 1.9 & 0.98 \\ \hline
+	N1 0QH & N1 5PH & 2.3 & 1.16 \\ \hline
+	Holt Heath & Little Witley & 4.1 & 1.13 \\ \hline
+	PH5 2AB & PH7 4HL & 4.1 & 1.2 \\ \hline
+	ML3 6AD & ML2 0EQ & 7.7 & 1.16 \\ \hline 
+	\end{tabular}
+\end{table}
+
+\section{User Evaluation}
+
+Users often behave in unexpected ways which are difficult to anticipate during the design of an interactive application. When an application is deemed to be sufficient by the developer, it is necessary to test it with real users. A small summative evaluation was carried out on the final version of the Road Safety Advisory System in order to evaluate the usability. 
+
+\subsection{Methodology}
+
+The user evaluations were carried out by asking users who had no prior knowledge of the application to complete a set of tasks. Users were only given a brief introduction to the site, which purposely held back information so that they would read help messages or the 'about' page if necessary. This was done in order to test NFR3 and NFR4, which state that users should be able to use the application without external assistance, and that results should be presented in a user-friendly manner. Users were asked to discuss their thought process while carrying out the tasks by using a concurrent verbal protocol. Any usability issues found would be discussed and given a severity rating using the scale defined by Nielsen \citep{Nielsen1995}; 1 for cosmetic problems, 2 for minor usability problems, 3 for major usability problems and 4 for usability catastrophes.
+
+All participants were briefed on the process used and informed that their responses would be completely anonymous. They were then asked to sign a consent form in order to confirm their understanding. 
+
+All users used the same testing environment; a Windows 7 PC with a 23" monitor, running a maximised Google Chrome window. The application was opened via \textit{routerisks.co.uk} in two different browser tabs in preparation for the users.
+
+The users were asked to complete the following tasks:
+
+\begin{enumerate}
+	\item Search for all collisions between Thirsk and Scarborough between 2011 and 2013 and point out where the collision hotspots are for the route.
+	\item In a separate tab, search for all collisions between Bridlington and Scarborough between 2011 and 2013.
+	\item Compare the results of the two searches and discuss which route is the most dangerous to drivers.
+\end{enumerate}
+
+These routes were chosen in order to see how users would use the statistics when comparing the danger of routes. The first route is far longer than the second, and has double the number of collisions/casualties. However, the second route has higher 'per kilometre' values. It was therefore interesting to evaluate which statistics users preferred to use as a basis for the comparison.
+
+\subsection{Results}
+
+
 
 \section{Maintainability}
 
-\section{Limitations}
+\section{Summary}
+
 
 \chapter{Conclusions}
 
 \section{Lessons Learnt}
 
 \section{Future Work}
+%accuracy of search
+%heatmap colour blind
+%data api
+%integrate with other services - weather
 
 
 \bibliography{library}
