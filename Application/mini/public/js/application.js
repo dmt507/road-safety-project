@@ -285,7 +285,7 @@ function filterCollisions(collisions,routeSteps){
     var heatmapData = [];
     var collisionIndexes=[];
 
-    for(var n=routeSteps.length-1; n--;){
+    for(var n=routeSteps.length; n--;){
 
        /*
        //for testing: for making each step of the route alternate colours
