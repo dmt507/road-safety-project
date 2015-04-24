@@ -410,7 +410,7 @@ Most of these requirements were inspired by software quality standards \citep{IS
 	NFR2 & The application should be open source. All code should be available on GitHub. & High \\ \hline
 	NFR3 & Users should be able to understand how to use the application without external assistance. & High \\ \hline
 	NFR4 & Results of data analysis must be presented in a user-friendly manner. & High \\ \hline
-	NFR5 & The time taken to perform data analysis should never exceed 30 seconds. & Medium \\ \hline
+	NFR5 & The time taken to perform data analysis should never exceed 10 seconds. & Medium \\ \hline
 	NFR6 & The system's progress should be displayed whilst data analysis is being performed. & High \\ \hline
 	NFR7 & Data model should allow new datasets to be added to the application in the future. & Medium \\ \hline
 \end{tabular}
@@ -734,22 +734,22 @@ The algorithm returns a new array, \textit{newRouteSteps}. The new steps are cre
 
 The algorithm begins by initialising the \textit{stepCounter} variable to 0. The for loop in lines 3-34 iterate through all route steps. The distance of the current step and the array of coordinates are assigned to variables. A check is then made to see if the distance of the step is over 10km (line 6). If it is under 10km, the bounds of the step are calculated and it is added to the array of new steps with no further changes (lines 30-31). If the step is over this distance, it must be split into multiple smaller steps. First of all, the number of new steps is calculated by dividing the distance by 10km and rounding up to the nearest whole value (line 7). It then calculates how many sets of coordinates should be assigned to each new step (line 9). The for loop in steps 11-28, creates each new route step. The while loop in lines 14-24 copies coordinates from the original step to the new step. The loop's conditions make it exit when the step has the maximum number of coordinates, or if there are no more coordinates to copy from the original step (line 14). After each pair of coordinates is added, a check is made to see if the new step is 'full', and there are more coordinates to copy from the original step (line 18). If this is the case, the next set of coordinates are added to the current step. This is necessary as the steps need to be connected to each other in order to form a line for the entire route. The 'if' statement on lines 20-22 is used to ensure that a new step isn't created if there is only 1 more set of coordinates to add. After all coordinates have been added to the new step, the bounds are calculated and it is added to the array of new steps (lines 25-26).
 
-The while loop on lines 14-24 is executed at most
-$$x = latLngsPerNewStep = \lceil \frac{numberofLatLngs}{numberOfNewSteps}\rceil$$ 
-times. 
-
-The inner for loop (lines 11-28) is executed at most 
-$$y = numberOfNewSteps$$ 
-times. 
-
-Hence the complexity of the inner for loop is
-$$xy = numberOfLatLngs$$
-
-The outer for loop (lines 3-34) is executed \textit{routeSteps.length} times, giving an overall complexity for the algorithm of
-$$\mathcal{O}(N \cdot M)$$
-where $N = routeSteps.length$ 
-
-and $M = max(routeSteps[n].lat\_lngs.length), 0\leq n<N$.
+To analyse the time complexity of the algorithm, first note that each execution of an assignment or conditional (i.e., `if') statement requires constant, $\mathcal{O}(1)$, time. The while loop on lines 14--24 is executed at most
+\[
+  \mathit{latLngsPerNewStep} = \left\lceil \frac{\mathit{numberOfLatLngs}}{\mathit{numberOfNewSteps}}\right\rceil
+\] 
+times, and the inner for loop (lines 11--28) at most $\mathit{numberOfNewSteps}$ times, so the constant-time statements in lines 15--23 are executed
+\[
+ \begin{array}{ll}
+  \left\lceil \frac{\mathit{numberOfLatLngs}}{\mathit{numberOfNewSteps}}\right\rceil \times \mathit{numberOfNewSteps} & \approx \mathit{numberOfLatLngs} = \\
+  & = \mathit{routeSteps[n].lat\_lngs.length}
+  \end{array}
+\]
+times. Finally, the outer for loop (lines 3--34) is executed $N=\mathit{routeSteps.length}$ times, and in the worst-case scenario $\mathit{distance}>10000$ in line 6 and the statements in lines 7--28 are carried out in every iteration of this loop. Accordingly, the overall complexity of the algorithm is $\mathcal{O}(N \cdot M)$, where 
+\[
+  M = \max_{0\leq n<N} \mathit{routeSteps[n].lat\_lngs.length}
+\]
+represents the maximum number of coordinates in a step of the processed route.
 
 Hence this algorithm is linear in complexity. The time taken by the algorithm is dependant on the number of route steps, and the number of coordinates in each step. It is important that this algorithm is linear, so that the time taken for longer routes does not exponentially increase.
 
@@ -762,7 +762,6 @@ Careful consideration had to be made when deciding upon the distance threshold u
 	\label{fig:shortersteps}
 \end{figure}
 
-
 \section{Summary}
 This chapter discussed the challenges faced during the implementation of the Road Safety Advisory System and the solutions used to overcome them. There is a focus on the collision searching functionality as this is unique to this application and provided the most interesting challenges during development. The next chapter focuses on testing and evaluating the system.
 
@@ -774,15 +773,27 @@ This section of the report describes the testing methodology used for the Road S
 
 \subsection{Testing Methodology}
 
-Testing was conducted in 3 primary phases:
+Testing and evaluation was conducted in 4 primary phases:
 
 \begin{enumerate}
 	\item Functional testing - A series of test cases have been designed to test that the system produced meets its functional requirements. These tests do not require knowledge of the code, and are focused on ensuring that everything is functional from the perspective of a user (black-box testing). After each increment of the system was developed, the relevant tests for the new functionality were run, along with tests for existing functionality. This regression testing ensures that code changes do not break previously functional parts of the application.
 	\item Accuracy testing - One of the main challenges of testing the application involves checking that the results produced are accurate. As there isn't an existing application that performs collision searching by route, there is no basis for comparison. Hence the decision was made to use Crash Map \citep{crashmap} in order to manually zoom/pan along a route and count the number of collisions. The results, and time taken to calculate them, are compared with the Road Safety Advisory System.
-	\item Non-functional testing - This phase of testing focuses on the non-functional requirements of the system. Performance analysis is carried out to determine how fast the system is, and to determine what impacts the speed. User evaluations are also carried out to test the usability of the application.
+	\item Performance testing -  Performance analysis is carried out to determine how fast the system is, and to determine what impacts the speed. The aim of this analysis is to ensure that the system is fully scalable. 
+	\item Usability testing - User evaluations are carried out to test the usability of the application. Participants were asked to perform a set of tasks using the application and raise any usability issues.
 \end{enumerate}
 
 \subsection{Testing Environment Specifications}
+
+Prior to testing, the application was deployed onto a web server hosted on Amazon Web Services \citep{AmazonWebServices}. All testing was performed by accessing the application on this server. The specifications of the test environment are presented in \autoref{tab:serverspecs}.
+
+\begin{table}
+	\caption{Web server specifications}
+	\label{tab:serverspecs}
+	\begin{tabular}{| l | l |}
+	\hline
+	Instance Type
+	\end{tabular}
+\end{table}
 
 \section{Functional Testing}
 
@@ -898,8 +909,119 @@ The remained of this section describes each test case. All of the test cases pas
 	\textit{Pass Criteria} & The response from the server only contains results for the selected years and severity levels. \\ \hline
 \end{tabular}
 
-\section{Collision Search Analysis}
+\section{Accuracy}
 \label{sec:searchAnalysis}
+
+In order to evaluate how successful the method used for collision searching is, it is important to analyse the accuracy of the results. The implementation is not expected to be 100\% accurate due to the following issues:
+
+\begin{itemize}
+	\item The accuracy of the latitude/longitude values recorded for each collision cannot be guaranteed. If the values recorded are far enough away from the road, they will be excluded from the results.
+	\item The application will include all collisions within a certain distance of the route. This can lead to collisions on different roads being included.
+\end{itemize}
+
+This section of the report includes a description of the methodology used to test the accuracy, and a discussion of the results.
+
+\subsection{Methodology}
+
+The accuracy of the application was tested by comparing the results of the Road Safety Advisory System (RSAS) with those manually obtained using Crash Map \citep{crashmap}. The following process was followed for each test route:
+
+\begin{enumerate}
+	\item Access Crash Map and search for the start of the route. Adjust the data filters accordingly.
+	\item Follow the route by panning and zooming on the map where necessary. Count the number of collisions on the route.
+	\item Record the total number of collisions found, and the time taken to carry out the search (to the nearest second).
+	\item Access the RSAS and perform a search using the specified details.
+	\item Record the total number of collisions found, and the time taken to carry out the search (to the nearest second).
+\end{enumerate}
+
+Fifteen test routes were prepared for analysing the accuracy of the application. The locations of the routes were picked randomly from anywhere in the UK. These tests focused on short distance routes (all under 20km, with the majority under 10km) because there was not enough time available to carry out tests for long routes with Crash Map. The test routes are specified in \autoref{tab:accuracyroutes}.
+
+\begin{table}
+	\center
+	\caption{Routes used for testing collision search accuracy}
+	\label{tab:accuracyroutes}
+	\begin{tabular}{| l | l | l | l |}
+	\hline
+	\textbf{Route ID} & \textbf{Start Location} & \textbf{End Location} & \textbf{Distance (km)}  \\ \hline
+	1 & Mulgrave St, Hull & Shaw St, Hull & 0.9  \\ \hline 	
+	2 & Edwin Road, Leeds & Hyde Terrace, Leeds & 1.2  \\ \hline 
+	3 & Merthyr Tydfil & Pen-y-Darren & 1.3  \\ \hline 
+	4 & YO31 0SH & YO10 5NL & 1.9 \\ \hline
+	5 & M5 3AW & M5 4LT & 2.2  \\ \hline 
+	6 & N1 0QH & N1 5PH & 2.3 \\ \hline
+	7 & Bowburn, Durham & Coxhoe, Durham & 2.5  \\ \hline 
+	8 & LL60 6HR & LL60 6NN & 3.3  \\ \hline 
+	9 & Welbeck Rd, Newcastle & Fairburne Avenue, Newcastle & 3.8  \\ \hline 
+	10 & Holt Heath & Little Witley & 4.1 \\ \hline
+	11 & PH5 2AB & PH7 4HL & 4.1 \\ \hline
+	12 & PL3 6RW & PL3 5BD & 4.8  \\ \hline 
+	13 & ML3 6AD & ML2 0EQ & 7.7  \\ \hline 
+	14 & YO19 4TA & YO19 5UP & 9  \\ \hline 
+	15 & Llanfyllin & Welshpool & 18.5  \\ \hline 
+	\end{tabular}
+\end{table}
+
+\subsection{Results}
+
+The results of the tests are presented in \autoref{tab:accuracyresults}. For 4 of the 15 tested routes, the number of collisions found using both applications was the same. For 3 routes the number of collisions found differed by 1, and for 5 it differed by 2. The graph shown in \autoref{fig:graphaccuracy} demonstrates how the number of collisions found for a route differs between the two applications. There is a strong positive correlation between the two sets of results, and the line of best fit is close to $y=x$. This shows that, on average, the application returns the correct number of collisions. However, these results are not conclusive due to the small sample of routes tested. In order to form a more concrete conclusion about the accuracy, far more routes need to be tested, including those of longer distances.
+
+\begin{table}
+	\center
+	\caption{Comparison of results from Crash Map and the Road Safety Advisory System (RSAS)}
+	\label{tab:accuracyresults}
+	\begin{tabular}{| p{1cm} | p{2cm} | p{2.5cm} | p{1.7cm} | p{1.7cm} | p{1.7cm} | p{1.7cm} |}
+	\hline
+	\multicolumn{3}{|c|}{} & \multicolumn{2}{c|}{\textbf{Crash Map}} & \multicolumn{2}{c|}{\textbf{RSAS}}  \\ \hline
+	Route & Years & Severity Levels & Collisions & Time(s) & Collisions & Time(s) \\ \hline
+	1 & All & All & 29 & 73 & 30 & 1 \\ \hline
+	2 & All & All &16 & 78 & 19 & 1 \\ \hline
+	3 & 2012 & Slight & 4 & 13 & 3 & 1 \\ \hline
+	4 & 2009-13 & All & 9 & 105 & 11 & 1 \\ \hline
+	5 & 2011-13 & All & 11 & 72 & 9 & 1 \\ \hline
+	6 & All & Serious & 7 & 163 & 11 & 1 \\ \hline
+	7 & 2012-13 & All & 5 & 41 & 5 & 1 \\ \hline
+	8 & 2005, 2007, 2009 & All & 3 & 25 & 1 & 1 \\ \hline
+	9 & 2008-10 & Slight, Serious & 22 & 148 & 14 & 1 \\ \hline
+	10 & All & Slight & 6 & 92 & 8 & 1 \\ \hline
+	11 & All & All & 2 & 85 & 2 & 1 \\ \hline
+	12 & All & Serious, Fatal & 6 & 35 & 6 & 1 \\ \hline
+	13 & 2011-13 & Serious, Fatal & 2 & 113 & 2 & 1 \\ \hline
+	14 & All & Fatal & 2 & 74 & 0 & 1 \\ \hline
+	15 & 2010-13 & Serious, Fatal & 3 & 131 & 2 & 1 \\ \hline
+	\end{tabular}
+\end{table}
+
+\begin{figure}
+	\center
+	\includegraphics[scale=1]{accuracycomparison}
+	\caption{Graph comparing the results from \autoref{tab:accuracyresults}}
+	\label{fig:graphaccuracy}
+\end{figure}
+
+\subsection{Discussion}
+
+The use of Crash Map to analyse the accuracy of the application has a number of issues. Firstly, the application isn't designed to analyse routes in this manner, so there isn't an automated process. Therefore, it is open to human error when counting up the number of collisions. Three of the tests carried out had to be restarted after forgetting how many collisions had been counted mid-way through. It is also down to the user to make a decision as to whether a collision is on the route or not. In many cases this will be obvious, but when a collision is on a junction between the route and an adjoining road, for example, some users may choose to include it in the results, whilst some may exclude it. Because of these factors, the results obtained when using Crash Map cannot be accepted as conclusively correct. However, as there is no better approach available, these figures are considered as correct for the basis of this experiment.
+
+Another issue with using Crash Map for these tests is the time taken. Manually navigating the route, and waiting for collisions to load each time the map is panned/zoomed is a long and tedious process. The results in \autoref{tab:accuracyresults} show that the time taken for each search ranged from 13 seconds to 2 minutes and 43 seconds. This issue would be accentuated further for longer routes. In comparison, the RSAS completed all searches in 1 second. 
+
+It is important to understand why the system sometimes returns too many or too few collisions. To do this, some of the routes tested were examined further. \autoref{fig:excludedcollisionsroute8} shows the 2 collisions that were included in the results for route 8 when testing with Crash Map, but excluded by the RSAS. Both collisions are plotted a considerable distance away from the road. A human viewing these points will still associate them with the route, because there is not another road nearby. However, the automated filtering performed by the RSAS will determine that they are too far away from the route to be relevant. This could be resolved by increasing the tolerance value used when filtering collisions, but this could have an adverse affect when analysing other routes.
+
+\begin{figure}
+	\center
+	\includegraphics[scale=0.5]{excludedcollisions}
+	\caption{Collisions excluded when testing route 8 in the Road Safety Advisory System (screen shot from Crash Map \citep{crashmap})}
+	\label{fig:excludedcollisionsroute8}
+\end{figure}
+
+\autoref{fig:includedcollisionroute6} shows a collision that is included in the results for route 6 by the RSAS, but excluded by the user when using Crash Map. To a user viewing the map it is clearly not on the route, but to the system it is considered close enough to the route to be relevant. An increase in the tolerance value to resolve the issue for route 8 would ultimately lead to more issues like this. Hence the tolerance value used is a trade-off, as it can lead to too many or too few collisions being included in the results for any given route. These tests suggest that the tolerance value used is suitable as the RSAS results are, on average, equivalent to the results found using Crash Map. 
+
+\begin{figure}
+	\center
+	\includegraphics[scale=1]{incorrectlyincluded}
+	\caption{Collision wrongly included when testing route 6 in the Road Safety Advisory System}
+	\label{fig:includedcollisionroute6}
+\end{figure}
+
+Whilst carrying out these tests, it was noticed that a large proportion of collisions are plotted far away from roads on both Crash Map and the RSAS. It is possible that the collision data provided is not accurate enough, which increases the difficulty of automatically filtering collisions by route. Another possible cause for these issues is the Google Maps API not correctly projecting the points onto the map. Further work is required in order to investigate these theories.
 
 \section{Performance}
 
@@ -917,6 +1039,11 @@ Response time was measured manually using a stop watch. The stop watch was start
 
 \subsection{Results}
 
+The results of the first set of tests are presented in \autoref{tab:performanceresults1}. As expected, there is a strong positive correlation between response times of the system and the distance of the route being analysed. Crucially, the longest route analysed completed in 6.1 seconds, which is considerably below the target of 10 seconds. \autoref{fig:graphrespdist} presents a graph to better demonstrate the relationship between distance and response time. Each of the results has been plotted and a line of best fit has been drawn using the data. This line can be used to estimate the response time for a route, given its distance. The equation of the line is as follows:
+$$ Response Time = 0.0057\times Distance + 1.14$$
+
+It is possible to use this equation to estimate what distance a route must be in order to exceed a response time of 10 seconds. This analysis suggests that searches for routes under 1500km in length will complete in under 10 seconds, assuming that the user's connection is not the bottleneck. The route from Land's End in South-West England to John O'Groats in North-East Scotland is widely considered to be the longest point-to-point route on the island of Great Britain, at a distance of 1348km. This suggests that the application will always respond in under 10 seconds, as no route in the UK is longer than 1500km. The route mentioned here was tested and the system responded in 6.3 seconds. 
+
 \begin{table}
 	\center
 	\caption{Comparison of response times for different routes}
@@ -929,8 +1056,63 @@ Response time was measured manually using a stop watch. The stop watch was start
 	Holt Heath & Little Witley & 4.1 & 1.13 \\ \hline
 	PH5 2AB & PH7 4HL & 4.1 & 1.2 \\ \hline
 	ML3 6AD & ML2 0EQ & 7.7 & 1.16 \\ \hline 
+	Knutsford & Chelford & 8.2 & 1.18 \\ \hline
+	Baschurch & Shrewsbury & 13.8 & 1.16 \\ \hline
+	CA8 1GH & CA1 2PD & 17.5 & 1.15 \\ \hline
+	Guildford & Farnborough & 21.2 & 1.23 \\ \hline
+	Ashford & Folkestone & 24.8 & 1.15 \\ \hline
+	Chesterfield & Buxton & 39.5 & 1.23 \\ \hline
+	Bala, Gwynedd & Barmouth & 44.2 & 1.26 \\ \hline
+	Liverpool & Manchester & 54.9 & 1.3 \\ \hline
+	Nottingham & Leeds & 115 & 2.23 \\ \hline
+	Plymouth & Bristol & 195 & 1.84 \\ \hline
+	London & Sheffield & 260 & 3.26 \\ \hline
+	Portsmouth & Lincoln & 350 & 3.4 \\ \hline
+	Swansea & Norwich & 497 & 4.26 \\ \hline
+	Exeter & Glasgow & 719 & 5.41 \\ \hline
+	Aberdeen & Bournemouth & 949 & 6.1 \\ \hline
 	\end{tabular}
 \end{table}
+
+\begin{figure}
+	\center
+	\includegraphics[scale=1]{performance-distance-responsetime}
+	\caption{Graph demonstrating the relationship between response time and route distance}
+	\label{fig:graphrespdist}
+\end{figure}
+
+The results for the second part of the performance analysis are presented in \autoref{tab:performanceresults2}. It is clear that there is a positive correlation between the number of years selected and the response time. This correlation becomes stronger for longer routes. The graph in \autoref{fig:graphrespyears} includes a line for each route, demonstrating how the response time changes as the number of years selected is changed. The shortest route shows little overall change in response time, whilst the longest route has a difference of almost 3 seconds from when there is just 1 year selected to when all 9 years are selected. This is because the difference in collisions found for the shortest route is only 238, whilst the difference for the longest route is 2406. This proves that distance is not the only influence on performance, and that the number of collisions found for the route also has a significant impact.
+
+\begin{table}
+	\center
+	\caption{Comparison of response times when the 'Year of Collision' filter is changed}
+	\label{tab:performanceresults2}
+	\begin{tabular}{| l | l | l | l | l |}
+	\hline
+	\textbf{Start Location} & \textbf{End Location} & \textbf{Distance (km)} & \textbf{Years} & \textbf{Response Time (s)} \\ \hline
+	Guildford & Farnborough &  21.2 & 2013 & 1.03 \\ \hline
+	 &  &  & 2011-2013 & 1.1 \\ \hline
+	 &  &  & 2008-2013 & 1.2 \\ \hline
+	 &  &  & 2005-2013 & 1.23 \\ \hline
+	 London & Sheffield &  260 & 2013 & 1.76 \\ \hline
+	 &  &  & 2011-2013 & 2.15 \\ \hline
+	 &  &  & 2008-2013 & 2.46 \\ \hline
+	 &  &  & 2005-2013 & 3.26 \\ \hline
+	 Exeter & Glasgow &  719 & 2013 & 2.65 \\ \hline
+	 &  &  & 2011-2013 & 3.31 \\ \hline
+	 &  &  & 2008-2013 & 4.06 \\ \hline
+	 &  &  & 2005-2013 & 5.41 \\ \hline
+	\end{tabular}
+\end{table}
+
+\begin{figure}
+	\center
+	\includegraphics[scale=1]{performance-years}
+	\caption{Graph demonstrating the relationship between response time and number of years specified}
+	\label{fig:graphrespyears}
+\end{figure}
+
+It is also worth consideration that other factors can impact the performance of the application, which may cause an increase in response times. A poor connection on the user's end may lead to slow download times which could significantly affect the performance for them. Furthermore, if there are a large number of users on the site concurrently, response times from the server may increase.
 
 \section{User Evaluation}
 
@@ -938,7 +1120,7 @@ Users often behave in unexpected ways which are difficult to anticipate during t
 
 \subsection{Methodology}
 
-The user evaluations were carried out by asking users who had no prior knowledge of the application to complete a set of tasks. Users were only given a brief introduction to the site, which purposely held back information so that they would read help messages or the 'about' page if necessary. This was done in order to test NFR3 and NFR4, which state that users should be able to use the application without external assistance, and that results should be presented in a user-friendly manner. Users were asked to discuss their thought process while carrying out the tasks by using a concurrent verbal protocol. Any usability issues found would be discussed and given a severity rating using the scale defined by Nielsen \citep{Nielsen1995}; 1 for cosmetic problems, 2 for minor usability problems, 3 for major usability problems and 4 for usability catastrophes.
+The user evaluations were carried out by asking users who had no prior knowledge of the application to complete a set of tasks. Users were only given a brief introduction to the site, which purposely held back information so that they would read help messages or the 'about' page if necessary. This was done in order to test NFR3 and NFR4, which state that users should be able to use the application without external assistance, and that results should be presented in a user-friendly manner. Users were asked to discuss their thought process while carrying out the tasks by using a concurrent verbal protocol. Any usability issues found were discussed and given a severity rating using the scale defined by Nielsen \citep{Nielsen1995}; 1 for cosmetic problems, 2 for minor usability problems, 3 for major usability problems and 4 for usability catastrophes.
 
 All participants were briefed on the process used and informed that their responses would be completely anonymous. They were then asked to sign a consent form in order to confirm their understanding. 
 
@@ -956,7 +1138,39 @@ These routes were chosen in order to see how users would use the statistics when
 
 \subsection{Results}
 
+A total of six participants took part in the user evaluation. The usability issues raised are presented in \autoref{tab:userevalprobs}. A total of 7 unique issues were raised, and all of these were assigned severity ratings of 1 or 2. One user did not raise any issues. The most common problem was that users wanted to see the distance of the routes when performing the comparison. As this issue was raised by 50\% of the participants, it was deemed a high priority, so a fix was immediately implemented. Other issues were considered less important as they were only raised by a single user and were not assigned a high severity rating. However, these issues are still worth consideration for future work.
 
+\begin{table}
+\caption{User Evaluation Problems}
+\begin{tabular}{| p{1.5cm} | p{1.5cm} | p{9cm} | p{1.5cm} |}
+	\hline
+	\textbf{Problem No.} & \textbf{User No.} & \textbf{Problem Description} & \textbf{Severity Rating} \\ \hline
+	1 & 1 & The user expected the locations field to provide a list of suggestions as they typed, as this is a common feature in other applications (such as Google Maps)  & 2 \\ \hline
+	2 & 1 & The user was unsure what the definition of a 'serious' collision was, and would have liked a description of the different severity levels. & 1 \\ \hline
+	3 & 1 & The user wanted to see the distance of the routes when carrying out the comparison. & 2 \\ \hline
+	4 & 2 & The user felt it was unclear what the different colours of the heatmap represented. They believed that a scale should be presented giving details of how many collisions each colour represents. & 2 \\ \hline
+	5 & 3 & The user did not like how the heatmap updates on zooming. They found it confusing that sections of the route in red were no longer red after zooming in.  & 1 \\ \hline
+	6 & 4 & The user wanted to see the distance of the routes when carrying out the comparison. & 2 \\ \hline
+	7 & 5 & The user wanted to view the road name when hovering over a collision hotspot. & 2 \\ \hline
+	8 & 5 & The user wanted to see the distance of the routes when carrying out the comparison. & 2 \\ \hline
+	9 & 5 & The user felt as though it wasn't obvious which statistics were the most important when comparing the danger of 2 routes. & 1 \\ \hline
+\end{tabular}
+\label{tab:userevalprobs}
+\end{table}
+
+The following additional observations were made whilst the users carried out the tasks:
+
+\begin{itemize}
+	\item All users concluded that the second route was the most dangerous as it has the highest 'per kilometre' statistics, and a higher proportion of the route is displayed in red.
+	\item Four of the users became completely immersed while using the interactive map, and took a long time to notice the presence of the statistics. 
+	\item After noticing the statistics, users had no issues with understanding what each statistic meant. They immediately recognised that the acronyms would be explained by hovering over the '?' symbol.
+	\item Only one of the users read the help message at the top of the page. This user was also the only one to immediately check the statistics after submitting a search.
+	\item All users felt comfortable using the interface without any assistance.
+\end{itemize}
+
+Whilst all users were comfortable using the application, it must be taken into consideration that all 6 participants were final-year computer science students. The participants all have strong technical skills and are familiar with using various web applications. It is almost certain that many future users of the application will not be as skilled, and hence may encounter more issues. It would be a valuable exercise to carry out this user evaluation with more participants, covering a larger demographic.
+
+The technical experience of the users also explains why so many ignored the help message. The users looked at the page and felt as though they knew what to do without reading anything. If they had read the message, as one user did, they would have been more aware of the statistics. The users' approach to analysing the routes prove that the map dominates the visual hierarchy of the page, as it was designed to do.
 
 \section{Maintainability}
 
