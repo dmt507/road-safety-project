@@ -784,14 +784,28 @@ Testing and evaluation was conducted in 4 primary phases:
 
 \subsection{Testing Environment Specifications}
 
-Prior to testing, the application was deployed onto a web server hosted on Amazon Web Services \citep{AmazonWebServices}. All testing was performed by accessing the application on this server. The specifications of the test environment are presented in \autoref{tab:serverspecs}.
+Prior to testing, the application was deployed onto an EC2 instance provided by Amazon Web Services \citep{AmazonWebServices}. All testing was performed by accessing the application via this server. The Database was hosted on an RDS instance, also provided by Amazon Web Services. The specifications of these servers are presented in \autoref{tab:serverspecs} and \autoref{tab:dbserverspecs}.
 
 \begin{table}
+	\center
 	\caption{Web server specifications}
 	\label{tab:serverspecs}
-	\begin{tabular}{| l | l |}
+	\begin{tabular}{| p{4cm} | p{9cm} |}
 	\hline
-	Instance Type
+	\textbf{Instance Type} & t2.micro (Variable ECUs, 1 vCPUs, 2.5 GHz, Intel Xeon Family, 1 GiB memory, EBS only) \\ \hline
+	\textbf{Operating System} & Ubuntu Server 14.04 LTS \\ \hline
+	\textbf{Deployed Components} & Apache, PHP, Git, Road Safety Advisory System. \\ \hline
+	\end{tabular}
+\end{table}
+
+\begin{table}
+	\center
+	\caption{Database server specifications}
+	\label{tab:dbserverspecs}
+	\begin{tabular}{| p{4cm} | p{9cm} |}
+	\hline
+	\textbf{Instance Type} & db.t2.micro - 1 vCPU, 1 GiB RAM \\ \hline
+	\textbf{DB Engine} & MySQL  5.6.22 \\ \hline
 	\end{tabular}
 \end{table}
 
@@ -1174,8 +1188,11 @@ The technical experience of the users also explains why so many ignored the help
 
 \section{Maintainability}
 
+It is important that the RSAS is maintainable, so that new datasets can be added in the future. New datasets are released annually, and will need to be immediately added to the application to keep it relevant and up-to-date. The database structure used for the RSAS is very simple and easily allows for the addition of new data. It uses one table, which is based on the 'accidents' CSV file provided by the UK Department for Transport for the years 2005 to 2013. When new data is released, provided the data is in the same format, it will be possible to add it directly to the existing table by running a script. The maintainability of the application could be improved in the future by looking into automating this process.
+
 \section{Summary}
 
+This chapter of the report analysed and evaluated the final version of the Road Safety Advisory System. Functional tests were carried out to ensure that the requirements of the system were satisfied. An in-depth evaluation was then carried out to assess the accuracy of the collision searching functionality. The performance of the application was tested thoroughly to ensure that it is scalable and responds in an acceptable time for all possible requests. A usability study was carried out to ensure that users found the application easy and satisfying to use. 
 
 \chapter{Conclusions}
 
