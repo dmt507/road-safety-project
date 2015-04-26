@@ -35,6 +35,7 @@ function searchData(from, to, fatal, serious, slight, y2005, y2006, y2007, y2008
     $('#application-alerts').html("");
     $('.result-number-collisions').html("");
     $('.result-number-casualties').html("");
+    $('.result-distance').html("");
     $('.result-collisions-km').html("");
     $('.result-weighted-collisions-km').html("");
     $('.result-casualties-km').html("");
@@ -103,6 +104,7 @@ function searchData(from, to, fatal, serious, slight, y2005, y2006, y2007, y2008
 
                 $('.result-number-collisions').html(stats.collisions);
                 $('.result-number-casualties').html(stats.casualties);
+                $('.result-distance').html(route.legs[0].distance.text);
                 $('.result-collisions-km').html(cpkm.toFixed(2));
                 $('.result-weighted-collisions-km').html(wcpkm.toFixed(2));
                 $('.result-casualties-km').html(capkm.toFixed(2));

@@ -7,7 +7,7 @@
                     <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                         <span aria-hidden='true'>&times;</span>
                     </button>
-                    Enter start and end locations for a route in order to get collision statistics and view collision hotspots.
+                    Enter start and end locations for a UK route in order to get collision statistics and view collision hotspots.
                 </div>
             </div>
 
@@ -20,17 +20,17 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        Search Parameters
+                        Search
                     </h3>
                 </div>
                 <div class="panel-body">
                     <form id="search_collisions" name="search-collisions" action="#" method="get">
                         <div class="form-group">
-                            <label for="from">From:</label>
+                            <label for="from">Driving From:</label>
                             <input type="text" id="from" name="from" class="form-control" required="required" placeholder="An address" size="30" />
                         </div>
                         <div class="form-group">
-                            <label for="to">To:</label>
+                            <label for="to">Driving To:</label>
                             <input type="text" id="to" name="to" class="form-control" required="required" placeholder="Another address" size="30" />
                         </div>
                         <div class="form-group">
@@ -136,13 +136,14 @@
                     <thead>
                     <tr>
                         <th>Collisions</th>
+                        <th>Casualties</th>
+                        <th>Distance</th>
                         <th>CPKM  <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-placement="bottom" tabindex="0"  data-toggle="popover" data-trigger="hover" title="Collisions Per Kilometre" data-content="Total number of collisions divided by the length of the route."></span>
                             <span class="sr-only">Collisions per kilometre.</span>
                         </th>
-                        <th>Weighted CPKM <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-placement="bottom" tabindex="0"  data-toggle="popover" data-trigger="hover" title="Weighted Collisions Per Kilometre" data-content=" Each collision is assigned a value based on its severity; 3 for fatal, 2 for serious and 1 for slight. These weighted values are summed together and divided by the length of the route to give the Weighted CPKM."></span>
+                        <th>WCPKM <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-placement="bottom" tabindex="0"  data-toggle="popover" data-trigger="hover" title="Weighted Collisions Per Kilometre" data-content=" Each collision is assigned a value based on its severity; 3 for fatal, 2 for serious and 1 for slight. These weighted values are then summed together and divided by the length of the route."></span>
                             <span class="sr-only">Weighted collisions per kilometre.</span>
                         </th>
-                        <th>Casualties</th>
                         <th>CaPKM <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-placement="bottom" tabindex="0"  data-toggle="popover" data-trigger="hover" title="Casualties Per Kilometre" data-content="Total number of casualties divided by the length of the route."></span>
                             <span class="sr-only">Collisions per kilometre.</span></th>
                     </tr>
@@ -150,9 +151,10 @@
                     <tbody>
                     <tr>
                         <td class="result-number-collisions"></td>
+                        <td class="result-number-casualties"></td>
+                        <td class="result-distance"></td>
                         <td class="result-collisions-km"></td>
                         <td class="result-weighted-collisions-km"></td>
-                        <td class="result-number-casualties"></td>
                         <td class="result-casualties-km"></td>
                     </tr>
                     </tbody>
@@ -165,20 +167,24 @@
                             <td class="result-number-collisions"></td>
                         </tr>
                         <tr>
+                            <th>Casualties</th>
+                            <td class="result-number-casualties"></td>
+                        </tr>
+                        <tr>
+                            <th>Distance</th>
+                            <td class="result-distance"></td>
+                        </tr>
+                        <tr>
                             <th>CPKM  <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-placement="bottom" tabindex="0"  data-toggle="popover" data-trigger="click" title="Collisions Per Kilometre" data-content="Total number of collisions divided by the length of the route."></span>
                                 <span class="sr-only">Collisions per kilometre.</span>
                             </th>
                             <td class="result-collisions-km"></td>
                         </tr>
                         <tr>
-                            <th>Weighted CPKM <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-placement="bottom" tabindex="0"  data-toggle="popover" data-trigger="click" title="Weighted Collisions Per Kilometre" data-content=" Each collision is assigned a value based on its severity; 3 for fatal, 2 for serious and 1 for slight. These weighted values are summed together and divided by the length of the route to give the Weighted CPKM."></span>
+                            <th>Weighted CPKM <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-placement="bottom" tabindex="0"  data-toggle="popover" data-trigger="click" title="Weighted Collisions Per Kilometre" data-content=" Each collision is assigned a value based on its severity; 3 for fatal, 2 for serious and 1 for slight. These weighted values are then summed together and divided by the length of the route."></span>
                                 <span class="sr-only">Weighted collisions per kilometre.</span>
                             </th>
                             <td class="result-weighted-collisions-km"></td>
-                        </tr>
-                        <tr>
-                            <th>Casualties</th>
-                            <td class="result-number-casualties"></td>
                         </tr>
                         <tr>
                             <th>CaPKM <span class="glyphicon glyphicon-question-sign" aria-hidden="true" data-placement="bottom" tabindex="0"  data-toggle="popover" data-trigger="click" title="Casualties Per Kilometre" data-content="Total number of casualties divided by the length of the route."></span>

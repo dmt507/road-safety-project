@@ -36,6 +36,6 @@
 
 <h3>Who made it?</h3>
 
-<p>My name is David Taylor, and I developed Route Risks for my final-year project whilst studying computer science at the University of York. If you have any questions, feedback or feature requests, please contact me at <a href="mailto:routerisks@gmail.com">routerisks@gmail.com</a>. </p>
+<p>My name is David Taylor, and I developed Route Risks for my final-year project whilst studying <a href="https://www.cs.york.ac.uk/" target="_blank"><span class="glyphicon glyphicon-new-window"></span> Computer Science</a> at the University of York (supervisor <a href="http://www-users.cs.york.ac.uk/~raduc/" target="_blank"><span class="glyphicon glyphicon-new-window"></span> Dr. R. Calinescu</a>). If you have any questions, feedback or feature requests, please contact me at <a href="mailto:routerisks@gmail.com">routerisks@gmail.com</a>. </p>
 
 </div>
