@@ -15,16 +15,24 @@
 \graphicspath{ {images/} }
 \author{David M. Taylor}
 \title{Road Safety Advisory System}
-\date{Version 0.6, 2015-April-21}
+\date{Version 0.8, 2015-April-25}
 \supervisor{Dr. Radu Calinescu}
 \BEng
-\wordcount{13220}
+\wordcount{19044}
 
 
-\abstract{ ... }
+\abstract{ As the Open Data movement continues to gain momentum, more and more web applications are being developed to exploit this data; creating useful tools for governments, businesses and the general public. Road safety data published by the UK Department for Transport is used by several web applications, all of which are very similar in purpose. These applications lack advanced search functionality, so it is not possible to analyse a specific route. The application developed for this project searches for collisions that have occurred on user-specified road journeys. The results are used to highlight collision hotspots on the route and calculate useful statistics. These results can be used as a basis for comparing the safety of different roads. The final version of the application is publicly available and can be accessed at \textit{routerisks.co.uk}. It has also been submitted to feature in the application catalogue on \textit{data.gov.uk}. }
 
 
-\acknowledgements{ ... }
+\acknowledgements{ 
+
+\noindent I would like to thank my supervisor, Dr. Radu Calinescu, for his guidance and invaluable advice throughout the project. I could not have asked for a better supervisor. \\
+
+\noindent I would also like to thank my fellow residents of the software labs, Alex Hetherington and Thomas Watkins, for providing company and moral support during the challenging final month. \\
+
+\noindent I'd like to thank my family and my girlfriend for all the support given to me over the course of my degree. \\
+
+\noindent Finally, I would like to thank Jeremy Jacob for providing the \LaTeX\ class used to create this report.  }
 
 \renewcommand\floatpagefraction{.99}
 \renewcommand\topfraction{.99} 
@@ -38,7 +46,6 @@
 \listoffigures
 \listoftables
 \renewcommand*{\lstlistlistingname}{List of Listings}
-\lstlistoflistings
 
 \cleardoublepage
 \label{sec:start}
@@ -58,12 +65,25 @@ The Open Data Institute (ODI), founded in 2012, is dedicated to promoting Open D
 
 \section{Project Aims and Objectives}
 
-The principal aim of this project is to build a web application that uses road safety data published by the UK Department for Transport. The application should feature an interactive map which will be used to visualise the road safety data. The application should have at least one unique feature that makes it significantly different to applications already available. The road safety advisory system should highlight collision hotspots on an interactive map.
+The principal aim of this project was to build a web application that analyses the safety of roads in the United Kingdom. It is envisaged that the final application will be a useful tool for councils and members of the general public interested in finding out about collision hotspots and the relative safety of different road journeys.
 
-Another aim is to establish a 'framework' that can be followed by other developers in the future, in order to simplify and encourage the development of similar applications. This will focus on how the data is imported, maintained and accessed within the application. This will hopefully lead to more Open Data sets being used for the benefit of the general public.
+Another aim was to establish a 'framework' that can be followed by other developers in the future, in order to simplify and encourage the development of similar applications. This focuses on how the data is imported, maintained and accessed within the application. This will hopefully lead to more Open Data sets being used for the benefit of the general public.
+
+Following on from these aims, the objectives of this project are outlined as follows:
+
+\begin{itemize}
+	\item Develop a web application, the Road Safety Advisory System, that uses publicly available road safety data published by the UK Department for Transport to analyse the safety of UK roads.
+	\item Include an interactive map in the application and use it to highlight collision hotspots.
+	\item Ensure that the application expands on existing applications in the field by implementing a new method for analysing the road safety data.
+	\item Make the final application publicly available, and submit it to \textit{data.gov.uk} to be included in their application library.
+	\item Use only open-source/free-to-use technologies to prove that similar applications can be built with minimal costs.
+	\item Make the application's source code publicly available.
+\end{itemize}
 
 \section{Statement of Ethics}
-All data and technologies used within this project are open source. No human participation is involved so there are no serious ethical concerns.
+All data used within this project is released by the UK Department for Transport under the Open Government License, and hence is available for anyone to use and exploit. The technologies used are all open-source, apart from the Google Maps API which is available under a propriety license.
+
+User participation was required for evaluations of the application. This was a simple procedure and thus did not raise any serious ethical concerns. Participants were briefed about the evaluation before signing a consent form confirming their understanding. All data obtained was treated anonymously.
 
 \section{Report Structure}
 The remainder of this report is structured as follows:
@@ -185,13 +205,15 @@ Another noticeable aspect from this comparison is the similarity between Crash M
 
 
 \begin{table}[tbp]
+	\center
    \caption{Comparison of applications that use road safety data}
-  \begin{tabular}{ p{2.2cm}  p{3.0cm}  p{2.2cm}  p{2.0cm} p{3.0cm} }
-      \textbf{Application} & \textbf{Data} & \textbf{Platform(s)} & \textbf{Mapping API} & \textbf{Data Filters}
-    \\Crash Map & UK Road Safety 05-13 & Web & Google Maps & Severity, Casualty Types, Year
-	\\Collision Map & UK Road Safety 05-13 & Web & Google Maps & Highway Authority, Year, Severity, Casualty Age, Vehicle Type
-	\\Motorcycle Accidents & UK Road Safety 2011 (Motorcycle Only) & Web & N/A & N/A
-	\\Walkonomics & Road Safety, Crime & Web, iOS, Android & Google Maps & N/A
+  \begin{tabular}{ | p{2.2cm} |  p{3.0cm} | p{2.2cm} |  p{2.0cm} | p{3.5cm} | }
+  	\hline
+      \textbf{Application} & \textbf{Data} & \textbf{Platform(s)} & \textbf{Mapping API} & \textbf{Data Filters} \\ \hline
+    Crash Map & UK Road Safety 05-13 & Web & Google Maps & Severity, Casualty Types, Year\\ \hline
+	Collision Map & UK Road Safety 05-13 & Web & Google Maps & Highway Authority, Year, Severity, Casualty Age, Vehicle Type\\ \hline
+	Motorcycle Accidents & UK Road Safety 2011 (Motorcycle Only) & Web & N/A & N/A\\ \hline
+	Walkonomics & Road Safety, Crime & Web, iOS, Android & Google Maps & N/A\\ \hline
   \end{tabular}
   \label{tab:applications}
 \end{table}
@@ -202,7 +224,7 @@ Another noticeable aspect from this comparison is the similarity between Crash M
 
 Jazayeri's study of trends in web application development discusses the area of web application development from a software engineering perspective \citep{Jazayeri2007}. The Web is described as "an attractive playground for software engineers where you can quickly release an application to millions of users and receive instant feedback". It is argued that web applications reach "users that are varied in age, culture, language, education, interest, needs, etc.", and that providing for such varied users poses many interesting challenges. However, whilst all applications may be able to reach such a varied audience, I would argue that most have a specific target audience that the application can be catered to. Hence the challenges of providing for a varied user base is more dependent on the type of application, rather than the platform on which the application is available. 
 
-A major benefit of web applications over desktop applications is the ease in which new versions can be released. In a desktop application, even a small bug fix will require a new version to be installed for all clients. This can lead to numerous issues, as explained by Jazayeri \citep{Jazayeri2007}. In contrast, a web application exists on one server and the browser acts as a universal client. This means that features and bug fixes can be deployed as soon as they are ready, and users will instantly have access to the upgraded application without having to install an update. This leads more kindly to an agile development strategy, as small updates can be released at any time with no impact on users. Desktop applications are more likely to require updates to be grouped together in order to reduce the number of updates that the user must install. However, it is worth noting that some web applications may also require updates to be bundled if they require downtime in order to be applied.  
+A major benefit of web applications over desktop applications is the ease in which new versions can be released. In a desktop application, even a small bug fix will require a new version to be installed for all clients. This can lead to numerous issues, as explained by Jazayeri \citep{Jazayeri2007}. In contrast, a web application exists on one server and the browser acts as a universal client. This means that features and bug fixes can be deployed as soon as they are ready, and users will instantly have access to the upgraded application without having to install an update. This leads more kindly to an agile development strategy, as small updates can be released at any time with no impact on users. In contrast, desktop applications are more likely to require updates to be grouped together in order to reduce the number of updates that the user must install. However, it is worth noting that some web applications may also require updates to be bundled if they require downtime in order to be applied.  
 
 Web development has been "driven by a move towards open source and standardised components" \citep{Jazayeri2007}. This trend is seen right through web development, from the application itself to the server that it is hosted on. The standard open source server environment used by many is commonly referred to as LAMP. This represents the operating system (Linux), the web server (Apache), the database server (MySQL), and the scripting language (PHP, Perl or Python). The main advantage of a  LAMP environment is that it can be assembled relatively easily and cheaply. PHP, MySQL and Apache are the three most commonly used tools in their respective categories. They have all been developed by programmers within the community who focus on writing features that they want and need \citep{Nixon2009}. As the code is available for all to see and change bugs can be resolved and potential security issues can be prevented before they happen.
 
@@ -220,13 +242,15 @@ Python was first released in 1991 by Guido van Rossum. In contrast to PHP, it wa
 A comparison of these three languages is presented in \autoref{tab:weblanguages}. The languages have been ranked based on several criterion, with 1 signifying the best rating and 3 the worst. The rankings are based on previous discussion, further research and Klaus Purer's study \citep{Purer2009}. Purer found PHP to be most popular, followed by Python, with Ruby the least popular. GitHut is an online tool that analyses how popular programming languages are on GitHub \citep{Zapponi2014}. It shows that in Q4 of 2014, Python featured in more active repositories than PHP and Ruby. Whilst this suggests that the relative popularity may have changed since Purer's report of 2009, the TIOBE Index for March 2015 still shows PHP above Python \citep{TIOBESoftware2015}. The next comparison is based on the ease with which the language can be learned ('learnability'). These rankings are based on Purer's discussion on readability, and personal opinion from looking at the languages. The rankings for security are based on Purer's conclusion where he found PHP to be slightly behind the others. PHP is mainly criticised for allowing poor programming practices which "result in many security related bugs". All of these languages are open source, which can raise security issues as hackers can use the source code to identify vulnerabilities before attacking sites. 
 
 \begin{table}[tbp]
-   \caption{Comparison of PHP, Ruby and Python}
-  \begin{tabular}{ p{4.0cm}  p{3.0cm}  p{3.0cm}  p{3.0cm} }
-      \textbf{Criterion} & \textbf{PHP} & \textbf{Ruby} & \textbf{Python}
-    \\Popularity & 1 & 3 & 2 
-    \\Learnability & 2 & 3 & 1
-	\\Security & 2 & 1 & 1 
-	\\Community & 1 & 2 & 1 
+	\center
+   \caption{Comparison of PHP, Ruby and Python, based on  \citep{Purer2009}}
+  \begin{tabular}{ | l | l | l | l | }
+  	\hline
+      \textbf{Criterion} & \textbf{PHP} & \textbf{Ruby} & \textbf{Python} \\ \hline
+      Popularity & 1 & 3 & 2 \\ \hline
+      Learnability & 2 & 3 & 1\\ \hline
+	  Security & 2 & 1 & 1 \\ \hline
+	  Community & 1 & 2 & 1 \\ \hline
   \end{tabular}
   \label{tab:weblanguages}
 \end{table}
@@ -249,7 +273,7 @@ Client-side JavaScript combines "the scripting ability of a JavaScript interpret
 
 A large number of contemporary web frameworks make use of the Model-View-Controller (MVC) design pattern. The Model is the application object, the View is its screen representation, and the Controller defines the way the user interface reacts to user input \citep{Gamma1995}. The MVC pattern had been popular in software engineering for many years before it was realised that it could be applied just as well to web applications \citep{Jazayeri2007}.  The main problem with using the MVC design pattern when developing web applications is that the application must be partitioned between the client and the server \citep{Leff2001}.
 
-Morales-Chapar et al. provide an interesting discussion on the different implementations of MVC in web applications \citep{Morales-Chaparro2007}. This paper focuses on "large-scale web applications which are data dynamic and typically written in two programming languages", much like my application will be. A case study is used to compare the advantages and disadvantages of server-side MVC with two mixed client-side and server-side MVCs. 
+Morales-Chapar et al. provide an interesting discussion on the different implementations of MVC in web applications \citep{Morales-Chaparro2007}. This paper focuses on "web applications which are data dynamic and typically written in two programming languages", much like my application will be. A case study is used to compare the advantages and disadvantages of server-side MVC with two mixed client-side and server-side MVCs. 
 
 Server-side MVC is derived from desktop MVC, in that all components are usually programmed in the same language and the server runs all computations and operations. It is pointed out by Morales-Chaper et al. that this approach is useful when "applications capabilities requirements are poor at client side (e.g. mobile browsers without JavaScript functionality) or when application necessity is only to display information with low levels of user interaction". It is worth consideration that this paper was published in 2007, and since this time mobile devices and browsers have advanced significantly, so the first advantage given is of little relevance now. The disadvantages of this approach include the incapability of updating part of a view, increased bandwidth usage and the higher server usage due to the server validating forms, amongst other things.  
 
@@ -275,22 +299,26 @@ It is clear that the methodologies described are designed for team projects, rat
 
 \section{Design of Interactive Applications}
 
-A key aspect of designing a successful web application involves focusing on user interaction. User-centred is a process in which the needs, wants, and limitations of end users of a product are given extensive attention at each stage of the design process. In this section, I will discuss some design principles that will help me to develop a user-friendly application. 
+A key aspect of designing a successful web application involves focusing on user interaction. User-centred is a process in which the needs, wants, and limitations of end users of a product are given extensive attention at each stage of the design process. This section includes a discussion of some design principles that will help to develop a user-friendly application. 
 
 Rogers et al. state that interaction design is about "developing interactive products that are easy, effective and pleasurable to use from the users' perspective" \citep{Rogers2011}. They define the process of interaction design as 4 basic activities: establishing requirements, designing alternatives, prototyping and evaluating. These activities are intended to inform one another and to be repeated. The repetition is necessary as, for example, you may find that new requirements are needed following feedback in the evaluation phase. Cooper et al. explain the concept of goal-directed design as designing and constructing products in such a way that the people who use them achieve their goals \citep{Cooper2007}. The users should be "satisfied, effective, and happy". The goal-directed design process is divided into six phases: research, modelling, requirements definition, framework definition, refinement and support. 
 
 Some key design principles from these books are presented in \autoref{tab:designprinciples}.
 
 \begin{table}[tbp]
+	\begin{small}
+	\center
    \caption{Interactive Design Principles}
-  \begin{tabular}{ p{2.0cm}  p{9.0cm}  p{3.0cm}   }
-      \textbf{Design Principle} & \textbf{Description} & \textbf{Source(s)} 
-    \\Usability Goals & There are six goals: effectiveness, efficiency, safety, utility, learnability and memorability. Typically assessed using questions. Developers can ask these questions during design process to be alerted early on about any design problems that they have not considered. It is possible to establish quantifiable criteria for some usability goals. For example; time to complete a task (efficiency) and time to learn a task (learnability).  &  Interaction Design: Beyond Human Computer Interaction \citep{Rogers2011}.
-     \\User experience goals & Cover a range of emotions and felt experiences, both desirable and undesirable. Concerned with how users experience an interactive product from their perspective, rather than assessing how useful a system is from its own perspective. Assessed using questions.  &  Interaction Design: Beyond Human Computer Interaction \citep{Rogers2011}.
-       \\Personas & Descriptive models of users created based on research. Cooper et al. state that personas "provide us with a precise way of thinking and communicating about how users behave, how they think, what they wish to accomplish, and why". They are not real people, but based on the behaviours and motivations of real people. Personas are depicted as specific individuals, but they also represent a class or type of user of a specific interactive product.  &  About Face 3 : The Essentials of Interaction Design \citep{Cooper2007}.
-       \\Scenarios & A means of imagining ideal user interaction. Persona-based scenarios are "concise narrative descriptions of one or more personas using a product to achieve specific goals". This lets a designer work with a story describing an ideal experience from the persona's perspective, with a focus on how they think and behave. These scenarios help drive requirement definition.  &  About Face 3 : The Essentials of Interaction Design \citep{Cooper2007}.
-       \\Requirement Definition & Requirements specify "what information and capabilities our personas require to accomplish their goals". The requirement definition process consists of five steps: creating problem and vision statements, brainstorming, identifying persona expectations, constructing context scenarios and identifying requirements. &  About Face 3 : The Essentials of Interaction Design \citep{Cooper2007}.
+  \begin{tabular}{| p{2.0cm}|  p{9.0cm}|  p{2.5cm} |  }
+  		\hline
+      \textbf{Design Principle} & \textbf{Description} & \textbf{Source(s)}\\ \hline
+    Usability Goals & There are six goals: effectiveness, efficiency, safety, utility, learnability and memorability. Typically assessed using questions. Developers can ask these questions during design process to be alerted early on about any design problems that they have not considered. It is possible to establish quantifiable criteria for some usability goals. For example; time to complete a task (efficiency) and time to learn a task (learnability).  &  Interaction Design: Beyond Human Computer Interaction \citep{Rogers2011}.\\  \hline
+     User experience goals & Cover a range of emotions and felt experiences, both desirable and undesirable. Concerned with how users experience an interactive product from their perspective, rather than assessing how useful a system is from its own perspective. Assessed using questions.  &  Interaction Design: Beyond Human Computer Interaction \citep{Rogers2011}.\\ \hline
+       Personas & Descriptive models of users created based on research. Cooper et al. state that personas "provide us with a precise way of thinking and communicating about how users behave, how they think, what they wish to accomplish, and why". They are not real people, but based on the behaviours and motivations of real people. Personas are depicted as specific individuals, but they also represent a class or type of user of a specific interactive product.  &  About Face 3 : The Essentials of Interaction Design \citep{Cooper2007}. \\  \hline
+       Scenarios & A means of imagining ideal user interaction. Persona-based scenarios are "concise narrative descriptions of one or more personas using a product to achieve specific goals". This lets a designer work with a story describing an ideal experience from the persona's perspective, with a focus on how they think and behave. These scenarios help drive requirement definition.  &  About Face 3 : The Essentials of Interaction Design \citep{Cooper2007}.\\ \hline
+       Requirement Definition & Requirements specify "what information and capabilities our personas require to accomplish their goals". The requirement definition process consists of five steps: creating problem and vision statements, brainstorming, identifying persona expectations, constructing context scenarios and identifying requirements. &  About Face 3 : The Essentials of Interaction Design \citep{Cooper2007}.\\ \hline
   \end{tabular}
+  \end{small}
   \label{tab:designprinciples}
 \end{table}
 
@@ -304,9 +332,9 @@ Google introduced the first mapping API in 2005. The Google Maps API \citep{Goog
 
 Microsoft's Bing Maps API \citep{Microsoft} is similar in scope to Google's API. Bing Maps also offers a free usage tier, with a limit of 125,000 cumulative billable transactions within any 12-month period. It was released five years after the Google Maps API and is still behind in terms of functionality offered, hence its lower popularity. There is a considerable amount of documentation available online, but it isn't structured or presented as well as Google's, making it far more frustrating to use. The core API doesn't have advanced geometry and visualisation libraries like Google Maps API. However, it is possible to import third party modules that offer some of this functionality (such as heat maps). 
 
-OpenLayers \citep{OpenLayers} is an open source mapping API that was initially released in 2006. It is very flexible and powerful but also complex and large. It has an extensive collection of documentation and samples, some of which can be difficult for beginners to grasp. It has a large developer community behind it who have provided plenty of tips and example uses. OpenLayers does not have its own directions service, making route calculation a difficult task. OpenLayers is far more complex than the alternatives and more suitable for GIS experts. A lot of the extra functionality that it offers is not required for this project.
+OpenLayers \citep{OpenLayers} is an open source mapping API that was initially released in 2006. It is very flexible and powerful but also complex and large. It has an extensive collection of documentation and samples, some of which can be difficult for beginners to grasp. It has a large developer community behind it who have provided plenty of tips and example uses. OpenLayers does not have its own directions service, making route calculation a difficult task. OpenLayers is far more complex than the alternatives and more suitable for GIS experts. A lot of the extra functionality that it offers is not required for a project like this.
 
-From this analysis, it is clear that Google Maps offers the most benefits to a project like this. It was created first, and has consistently grown to keep ahead of the competition. Detailed documentation is available online, and there is a large community of developers who are willing to provide support. The heat map functionality will be useful for visualising the density of collisions, thus highlighting collision hotspots. It is also notable that three of the existing applications analysed use the Google Maps API; demonstrating its popularity in the field.
+From this analysis, it is clear that Google Maps offers the most benefits to this type of project. It was created first, and has consistently grown to keep ahead of the competition. Detailed documentation is available online, and there is a large community of developers who are willing to provide support. The heat map functionality will be useful for visualising the density of collisions, thus highlighting collision hotspots. It is also notable that three of the existing applications analysed use the Google Maps API; demonstrating its popularity in the field.
 
 \chapter{Problem Analysis}
 
@@ -316,7 +344,7 @@ This chapter will analyse the problem presented by the project, with a focus on 
 
 \section{Personas} 
 
-Unfortunately there was not enough time to perform the necessary fieldwork in order to make 'rigorous' personas. Therefore, 'provisional' personas were created based on available data and best guesses about behaviours, motivations and goals. It is stated by Cooper et al. that the use of these provisional personas has proven more successful than not using user models at all \citep{Cooper2007}. 
+Due to the time constraints specific to this type of project, it was not possible to perform the necessary field-work in order to make 'rigorous' personas. Therefore, 'provisional' personas were created based on available data and best guesses about behaviours, motivations and goals. It is stated by Cooper et al. that the use of these provisional personas has proven more successful than not using user models at all \citep{Cooper2007}. 
 
 Cooper et al. warn of some potential issues to avoid when creating provisional personas. It is important to avoid focusing on the wrong design target. Even if you are focusing on the correct target, you must be careful to ensure that key behaviours that could differentiate the product are not missed. It is important to focus on behaviours and motivations rather than demographics.
 
@@ -324,7 +352,7 @@ Two personas have been created and are presented in \autoref{fig:personaA} and \
 
 \begin{figure}
 	\begin{framed}
- 		Linda is a member of the transport department in West Sussex County Council. Linda has good IT skills after taking several training courses and she is familiar with road safety data. One of the main objectives in her job is to improve road safety in the county. Due to the limited resources of the council, route improvements must be prioritised by Linda. In order to do this, she uses the council's 'accident location map' to find the number of casualties per kilometre on a route. This is a slow and tedious task, as she must manually pan the map to find each accident on the route before clicking on each one to find the details. Linda finds this process frustrating and boring, so often assigns the task to a junior member of staff. She believes that resources could be better spent on other tasks if there was an application that automated the process.
+ 		Linda is a member of the transport department in West Sussex County Council. Linda has good IT skills after taking several training courses and she is familiar with road safety data. One of the main objectives in her job is to improve road safety in the county. Due to the limited resources of the council, route improvements must be prioritised by Linda. In order to do this, she uses the council's 'accident location map' to find the number of casualties per kilometre on a route. This is a slow, tedious and error-prone task, as she must manually pan the map to find each accident on the route before clicking on each one to find the details. Linda finds this process frustrating and boring, so often assigns the task to a junior member of staff. She believes that resources could be better spent on other tasks if there was an application that automated the process.
   	\end{framed}
   \caption{Persona A: Linda}
   \label{fig:personaA}
@@ -332,9 +360,17 @@ Two personas have been created and are presented in \autoref{fig:personaA} and \
 
 \begin{figure}
 	\begin{framed}
- 		John is the owner of a company that delivers food products from manufacturers to supermarkets. John joined the company after graduating from his law and finance degree 12 years ago, before eventually inheriting it from this late father. John considers himself a 'tech enthusiast' and is always looking to innovate how the company do day-to-day tasks. He has recently become interested in Open Data, and how he can use it to benefit his business. He is curious about using road safety data to find out about accident hotspots, so that his drivers can avoid them. He hopes that this will reduce the risk of late deliveries due to traffic delays, whilst also reducing the risk of one of his drivers being involved in a collision. 	\end{framed}
+ 		John is the owner of a company that delivers food products from manufacturers to supermarkets. John joined the company after graduating from his law and finance degree 12 years ago, before eventually inheriting it from this late father. John considers himself a 'tech enthusiast' and is always looking to innovate how the company do day-to-day tasks. He has recently become interested in Open Data, and how he can use it to benefit his business. He is curious about using road safety data to find out about collision hotspots, so that his drivers can avoid them. He hopes that this will reduce the risk of late deliveries due to traffic delays caused by collisions, whilst also reducing the risk of one of his drivers being involved in a collision. 	\end{framed}
   \caption{Persona B: John}
   \label{fig:personaB}
+\end{figure}
+
+\begin{figure}
+	\begin{framed}
+ 		Bethan has recently completed her A levels at a sixth form college in her home town of Southampton, and is preparing to move away from home to study Chemistry at the University of Manchester. She is anxious about moving so far away from home, but also excited about the opportunities for meeting new people. Bethan has recently passed her driving test, but is a nervous driver due to her lack of experience. She owns a car and is determined to take it with her when she moves to Manchester, but she is concerned about the dangers involved with driving on motorways. Bethan has good basic IT skills having used computers regularly throughout her education, but does not have any significant interest in technology.		
+ 	\end{framed}
+  \caption{Persona C: Bethan}
+  \label{fig:personaC}
 \end{figure}
 
 
@@ -1194,16 +1230,41 @@ It is important that the RSAS is maintainable, so that new datasets can be added
 
 This chapter of the report analysed and evaluated the final version of the Road Safety Advisory System. Functional tests were carried out to ensure that the requirements of the system were satisfied. An in-depth evaluation was then carried out to assess the accuracy of the collision searching functionality. The performance of the application was tested thoroughly to ensure that it is scalable and responds in an acceptable time for all possible requests. A usability study was carried out to ensure that users found the application easy and satisfying to use. 
 
-\chapter{Conclusions}
+\chapter{Conclusion}
 
-\section{Lessons Learnt}
+\section{Evaluation of Objectives}
+
+The purpose of this project was to build a web application that analyses the safety of UK roads. The application needed to differ significantly from existing applications by using new methods for analysing the road safety data. Based on the evaluation of existing applications, and the personas and scenarios created, it was decided that the application should feature advanced searching functionality that analyses road safety data for user-specified routes. 
+
+Implementing this advanced searching functionality proved to be the most challenging aspect of the project. Issues with accuracy and performance had to be overcome before the solution was deemed to be acceptable. The evaluation of the system showed that the accuracy of results is not perfect, but the results do generally reflect the data. It is not possible to improve the accuracy further with the approach used, due to issues with the accuracy of the road safety data or the methods used by the Google Maps API to project the points onto the map. Evaluation of the performance found that the response time of the system never exceeds 10 seconds, even when analysing very long routes.
+
+Another objective of the project was to include an interactive map that highlights collision hotspots. This was successfully implemented using the Google Maps API. When a user searches for a route, it is drawn onto the map, and a heatmap that visualises the intensity of collisions on the route is rendered. Red areas of the heatmap represent collision hotspots for that route. This provides a good visual representation of the road safety data, and all participants in the user evaluation were able to interpret the heatmap. 
+
+The application developed has been made publicly available at \textit{routerisks.co.uk}. In order to advertise the application, it was submitted to \textit{data.gov.uk}, which includes a library of 350+ applications that use Open Data. It is envisaged that people interested in Open Data will find the application here and use it to analyse routes of interest to them. Councils may also find the application, and use it to analyse which roads are the most dangerous within their county. It is hoped that the application can be used to assist decisions made regarding which roads need safety improvements. 
+
+The technologies used for the application were all open-source, with the exclusion of the Google Maps API. The application is deployed using a LAMP environment, meaning it uses Linux (Ubuntu), Apache, MySQL and PHP; all of which are open-source. The Google Maps API is free to use for publicly available sites (providing the usage limits are not exceeded), so the only costs associated with the application are for web hosting. 
+
+The source code of the application is publicly available on GitHub \citep{Taylor2015}. A link to the repository is included on the website's 'about' page, so that users who are interested in the application will be able to find it. It is envisaged that other developers may use concepts from this project in their own applications.
 
 \section{Future Work}
-%accuracy of search
-%heatmap colour blind
-%data api
-%integrate with other services - weather
 
+\subsection{Search Accuracy}
+
+When collisions are plotted on the map, many of them appear far away from roads, making it difficult to accurately filter collisions by route. Further investigations should be carried out to find the root cause of this issue. It may be that the accuracy of the latitude and longitude values provided is not sufficient, in which case it is difficult to improve the searching functionality.
+
+However, it should also be considered that there may be an issue with how points are projected onto the map using the Google Maps API. This is unlikely to be the case, as the longitude and latitude values provided are based on the WGS1984 standard \citep{DepartmentforTransporta}, which is the same standard used by the Google Maps API. However, it is a plausible explanation for the issues found, so should not be dismissed without more thorough research and analysis.
+
+\subsection{Safest Route Advice}
+
+The application could be extended to provide more use to general users. For example, some users may wish to find out what the safest route is between two locations. The application could determine this by getting several routes from the Directions Service, and analysing each one before presenting the results to the user.
+
+\subsection{Accessibility}
+
+Accessibility problems with the application should be found and addressed. A known issue involves the use of heatmaps for showing collision hotspots. If a user is colour blind, they may struggle to spot the difference between areas of high and low collision density. This could be solved by letting the user toggle the colour scheme used for the heatmap, or by using other visual aids such as displaying numbers over areas to show how many collisions there are.
+
+\subsection{Automatically Retrieve New Datasets}
+
+When new road safety datasets are released, the current application will not be updated until an administrator downloads the file and manually updates the database. Future effort could be spent on developing a method for automating this process. \textit{Data.gov.uk} provides an API for accessing its data catalogue through both RESTful and functional interfaces \citep{Data.gov.uk}, which would be useful for this. 
 
 \bibliography{library}
 
