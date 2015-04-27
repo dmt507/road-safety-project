@@ -186,7 +186,7 @@
   {\equal{\UoYCSP@dedication}{\@empty}
          \and\equal{\UoYCSP@acknowledgements}{\@empty}}
   {}{
-    \cleardoublepage%
+    %\cleardoublepage%
     \thispagestyle{empty}
     \vspace*{\fill}%
     %
@@ -208,7 +208,7 @@
     \fi%
     \vspace*{\fill}%
   }%
-  \cleardoublepage%
+  %\cleardoublepage%
   \microtypesetup{protrusion=false}%
   \tableofcontents%  
   \microtypesetup{protrusion=true}%

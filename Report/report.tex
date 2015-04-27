@@ -15,22 +15,22 @@
 \graphicspath{ {images/} }
 \author{David M. Taylor}
 \title{Road Safety Advisory System}
-\date{Version 0.8, 2015-April-25}
 \supervisor{Dr. Radu Calinescu}
 \BEng
+\date{April, 2015}
 \wordcount{19044}
 
 
-\abstract{ As the Open Data movement continues to gain momentum, more and more web applications are being developed to exploit this data; creating useful tools for governments, businesses and the general public. Road safety data published by the UK Department for Transport is used by several web applications, all of which are very similar in purpose. These applications lack advanced search functionality, so it is not possible to analyse a specific route. The application developed for this project searches for collisions that have occurred on user-specified road journeys. The results are used to highlight collision hotspots on the route and calculate useful statistics. These results can be used as a basis for comparing the safety of different roads. The final version of the application is publicly available and can be accessed at \textit{routerisks.co.uk}. It has also been submitted to feature in the application catalogue on \textit{data.gov.uk}. }
+\abstract{As the movement behind Open Data (public-organisation data made freely available for exploitation and redistribution) continues to gain momentum, more and more web applications are being developed to exploit this data; creating useful tools for governments, businesses and the general public. Road safety data published by the UK Department for Transport is used by several web applications, all of which are very similar in purpose. These applications lack advanced search functionality, so it is not possible to analyse a specific route. Route Risks, the application developed for this project, searches for collisions that have occurred on user-specified road journeys. The results are used to highlight collision hotspots on the route and calculate useful statistics. These results can be used as a basis for comparing the safety of different roads. The final version of the application is publicly available and can be accessed at \url{routerisks.co.uk}. Route Risks is published in the application catalogue on the UK Government's Open Data application portal, \url{data.gov.uk}. }
 
 
 \acknowledgements{ 
 
 \noindent I would like to thank my supervisor, Dr. Radu Calinescu, for his guidance and invaluable advice throughout the project. I could not have asked for a better supervisor. \\
 
-\noindent I would also like to thank my fellow residents of the software labs, Alex Hetherington and Thomas Watkins, for providing company and moral support during the challenging final month. \\
-
 \noindent I'd like to thank my family and my girlfriend for all the support given to me over the course of my degree. \\
+
+\noindent I would also like to thank my fellow residents of the software labs, Alex Hetherington and Thomas Watkins, for providing company and moral support during the challenging final month. \\
 
 \noindent Finally, I would like to thank Jeremy Jacob for providing the \LaTeX\ class used to create this report.  }
 
@@ -50,6 +50,11 @@
 \cleardoublepage
 \label{sec:start}
 \thispagestyle{empty}\cleardoublepage
+
+\chapter*{Statement of Ethics}
+All data used within this project is released by the UK Department for Transport under the Open Government License, and hence is available for anyone to use and exploit. The technologies used are all open-source, apart from the Google Maps API which is available under a propriety license.
+
+User participation was required for evaluations of the application. This was a simple process and thus did not raise any serious ethical concerns. Participants were briefed about the evaluation before signing a consent form confirming their understanding. All data obtained was treated anonymously.
 
 \chapter{Introduction}
 
@@ -80,10 +85,6 @@ Following on from these aims, the objectives of this project are outlined as fol
 	\item Make the application's source code publicly available.
 \end{itemize}
 
-\section{Statement of Ethics}
-All data used within this project is released by the UK Department for Transport under the Open Government License, and hence is available for anyone to use and exploit. The technologies used are all open-source, apart from the Google Maps API which is available under a propriety license.
-
-User participation was required for evaluations of the application. This was a simple procedure and thus did not raise any serious ethical concerns. Participants were briefed about the evaluation before signing a consent form confirming their understanding. All data obtained was treated anonymously.
 
 \section{Report Structure}
 The remainder of this report is structured as follows:
@@ -127,6 +128,7 @@ The Open Data Institute (ODI) was founded by Sir Tim Berners-Lee and Nigel Shadb
 On 9 May 2013, Barack Obama signed an executive order \citep{TheWhiteHouse-OfficeofthePressSecretary2013} that made open and machine-readable data the new default for government information. The US government has launched a number of Open Data initiatives aimed at scaling up Open Data efforts across the Health, Energy, Climate, Education, Finance, Public Safety, and Global Development sectors. The number of available datasets on \textit{data.gov} has grown rapidly in recent years, with over 130,000 now available. This shows that, like the UK, the US administration has taken large steps to improve its openness.
 
 \subsection{Benefits and Challenges of Using Open Data}
+\label{sec:openDateBenefits&Challenges}
 
 Tim O'Reilly played a big role in the aforementioned Sebastopol meeting and the Open Data movement in the US as a whole. He has since written about how government can improve by embracing Open Data.  He believes that government can learn from open-source software, by becoming "an open platform that allows people inside and outside government to innovate" \citep{OReilly2011}. O'Reilly also warns of a potential challenge; "companies will find advantage in taking data created at public expense, and working to take control of that data for private gain". He cites a case in the US where a company was able to claim copyright on bus arrival data used for an application. However, this dispute was resolved with a win for the public sector and is likely to be a rare case.
 
@@ -199,24 +201,24 @@ The four applications discussed are compared in \autoref{tab:applications}. The 
   \item The applications are not capable of filtering collisions by route.
 \end{enumerate}
 
-As these applications all rely on Open Data, it is disappointing that the developers have not made their code available. The community would benefit greatly from this, as people like myself looking to build new applications would be able to more thoroughly analyse the existing work. By sharing ideas about how to develop such applications, the community can work together to improve them and agree on the best approach.
-
-Another noticeable aspect from this comparison is the similarity between Crash Map and Collision Map. In fact, there are several other applications listed on \textit{data.gov.uk} that are similar to these. This led to the Department for Transport taking Collision Map offline in March 2015, as they felt it offered low value to taxpayers due to the number of alternatives available.  All of these applications operate in the same way; you zoom to an area of the map, and all accidents within that area are displayed. There are no advanced searching facilities available, such as searching for collisions on a particular route only. If you wanted to find such information, you would need to find the route yourself and manually pan the map, counting how many accidents are plotted. Clearly there is room for a new application that provides more advanced features like this.  
-
-
 \begin{table}[tbp]
 	\center
    \caption{Comparison of applications that use road safety data}
-  \begin{tabular}{ | p{2.2cm} |  p{3.0cm} | p{2.2cm} |  p{2.0cm} | p{3.5cm} | }
+  \begin{tabular}{  p{2.2cm}   p{3.0cm} p{2.2cm}  p{2.0cm} p{3.5cm}  }
   	\hline
       \textbf{Application} & \textbf{Data} & \textbf{Platform(s)} & \textbf{Mapping API} & \textbf{Data Filters} \\ \hline
-    Crash Map & UK Road Safety 05-13 & Web & Google Maps & Severity, Casualty Types, Year\\ \hline
-	Collision Map & UK Road Safety 05-13 & Web & Google Maps & Highway Authority, Year, Severity, Casualty Age, Vehicle Type\\ \hline
-	Motorcycle Accidents & UK Road Safety 2011 (Motorcycle Only) & Web & N/A & N/A\\ \hline
+    Crash Map & UK Road Safety 05-13 & Web & Google Maps & Severity, Casualty Types, Year\\ 
+	Collision Map & UK Road Safety 05-13 & Web & Google Maps & Highway Authority, Year, Severity, Casualty Age, Vehicle Type\\ 
+	Motorcycle Accidents & UK Road Safety 2011 (Motorcycle Only) & Web & N/A & N/A\\ 
 	Walkonomics & Road Safety, Crime & Web, iOS, Android & Google Maps & N/A\\ \hline
   \end{tabular}
   \label{tab:applications}
 \end{table}
+
+As these applications all rely on Open Data, it is disappointing that the developers have not made their code available. The community would benefit greatly from this, as people like myself looking to build new applications would be able to more thoroughly analyse the existing work. By sharing ideas about how to develop such applications, the community can work together to improve them and agree on the best approach.
+
+Another noticeable aspect from this comparison is the similarity between Crash Map and Collision Map. In fact, there are several other applications listed on \textit{data.gov.uk} that are similar to these. This led to the Department for Transport taking Collision Map offline in March 2015, as they felt it offered low value to taxpayers due to the number of alternatives available.  All of these applications operate in the same way; you zoom to an area of the map, and all accidents within that area are displayed. There are no advanced searching facilities available, such as searching for collisions on a particular route only. If you wanted to find such information, you would need to find the route yourself and manually pan the map, counting how many accidents are plotted. Clearly there is room for a new application that provides more advanced features like this.  
+
 
 \section{Web Application Development}
 
@@ -230,12 +232,13 @@ Web development has been "driven by a move towards open source and standardised 
 
 
 \subsection{Programming Languages for Web Application Development}
+\label{webproglanguages}
 
 This section compares and contrasts some of the most popular programming languages used for web applications. The focus is on three of the most popular server-side scripting languages that are used in modern web applications; PHP, Python and Ruby. There is also a discussion of the most popular client-side scripting language, JavaScript.
 
 PHP is a server scripting language designed by Rasmus Lerforf. It is fast, flexible and one of the most popular scripting languages available. According to Netcraft's Web Server Survey of January 2013, PHP was being used by 244M sites at this time \citep{Ide2013}. This equates to 39\% of all sites used in the survey. A large factor behind this popularity is the number of content management systems and ecommerce solutions that are written in PHP; WordPress, Joomla, Drupal, Zencart, osCommerce and Megento account for 32M of these sites. PHP's main advantages include the number of built-in libraries for common web tasks, the ease of learning and use, and its portability \citep{Welling2005}. Its flexible integration with HTML makes client tier integration easy. The main disadvantage of PHP stems from its huge popularity. Because of the huge number of applications authored in PHP, hackers are presented with a "huge and rather attractive attack surface" \citep{Ide2013}. Additionally, due to the open source nature of PHP, it is easier for hackers to find exploits. 
 
-Ruby is a dynamic, imperative object-oriented programming language developed by Yukihiro Matsumoto. Ruby on Rails is a popular framework for web application development based on the model view controller pattern. This framework adds a set of powerful functionalities such as scaffolding, active record, migrations, routing, environments, and many helper functions \citep{Jazayeri2007}. Advantages of Ruby include better security features, pure object-oriented programming, highly readable code and good testing frameworks. Disadvantages include a steep learning curve and a lack of informational resources.
+Ruby is a dynamic, imperative object-oriented programming language developed by Yukihiro Matsumoto. Ruby on Rails is a popular framework for web application development based on the model view controller pattern. This framework adds a set of powerful functionalities such as "scaffolding, active record, migrations, routing, environments, and many helper functions" \citep{Jazayeri2007}. Advantages of Ruby include better security features, pure object-oriented programming, highly readable code and good testing frameworks. Disadvantages include a steep learning curve and a lack of informational resources.
 
 Python was first released in 1991 by Guido van Rossum. In contrast to PHP, it was initially designed as a full-featured general purpose language. It supports multiple programming paradigms, including object-oriented and functional programming. Its design philosophy emphases code readability. Python is quick and easy to learn and it has a large community who provide good support. Disadvantages of Python include its lack of true multiprocessor support and absence of commercial support. 
 
@@ -244,12 +247,12 @@ A comparison of these three languages is presented in \autoref{tab:weblanguages}
 \begin{table}[tbp]
 	\center
    \caption{Comparison of PHP, Ruby and Python, based on  \citep{Purer2009}}
-  \begin{tabular}{ | l | l | l | l | }
+  \begin{tabular}{l l l l}
   	\hline
       \textbf{Criterion} & \textbf{PHP} & \textbf{Ruby} & \textbf{Python} \\ \hline
-      Popularity & 1 & 3 & 2 \\ \hline
-      Learnability & 2 & 3 & 1\\ \hline
-	  Security & 2 & 1 & 1 \\ \hline
+      Popularity & 1 & 3 & 2 \\ 
+      Learnability & 2 & 3 & 1\\ 
+	  Security & 2 & 1 & 1 \\ 
 	  Community & 1 & 2 & 1 \\ \hline
   \end{tabular}
   \label{tab:weblanguages}
@@ -309,13 +312,13 @@ Some key design principles from these books are presented in \autoref{tab:design
 	\begin{small}
 	\center
    \caption{Interactive Design Principles}
-  \begin{tabular}{| p{2.0cm}|  p{9.0cm}|  p{2.5cm} |  }
+  \begin{tabular}{ p{2.0cm} p{9.0cm}  p{2.5cm} }
   		\hline
       \textbf{Design Principle} & \textbf{Description} & \textbf{Source(s)}\\ \hline
-    Usability Goals & There are six goals: effectiveness, efficiency, safety, utility, learnability and memorability. Typically assessed using questions. Developers can ask these questions during design process to be alerted early on about any design problems that they have not considered. It is possible to establish quantifiable criteria for some usability goals. For example; time to complete a task (efficiency) and time to learn a task (learnability).  &  Interaction Design: Beyond Human Computer Interaction \citep{Rogers2011}.\\  \hline
-     User experience goals & Cover a range of emotions and felt experiences, both desirable and undesirable. Concerned with how users experience an interactive product from their perspective, rather than assessing how useful a system is from its own perspective. Assessed using questions.  &  Interaction Design: Beyond Human Computer Interaction \citep{Rogers2011}.\\ \hline
-       Personas & Descriptive models of users created based on research. Cooper et al. state that personas "provide us with a precise way of thinking and communicating about how users behave, how they think, what they wish to accomplish, and why". They are not real people, but based on the behaviours and motivations of real people. Personas are depicted as specific individuals, but they also represent a class or type of user of a specific interactive product.  &  About Face 3 : The Essentials of Interaction Design \citep{Cooper2007}. \\  \hline
-       Scenarios & A means of imagining ideal user interaction. Persona-based scenarios are "concise narrative descriptions of one or more personas using a product to achieve specific goals". This lets a designer work with a story describing an ideal experience from the persona's perspective, with a focus on how they think and behave. These scenarios help drive requirement definition.  &  About Face 3 : The Essentials of Interaction Design \citep{Cooper2007}.\\ \hline
+    Usability Goals & There are six goals: effectiveness, efficiency, safety, utility, learnability and memorability. Typically assessed using questions. Developers can ask these questions during design process to be alerted early on about any design problems that they have not considered. It is possible to establish quantifiable criteria for some usability goals. For example; time to complete a task (efficiency) and time to learn a task (learnability).  &  Interaction Design: Beyond Human Computer Interaction \citep{Rogers2011}.\\  
+     User experience goals & Cover a range of emotions and felt experiences, both desirable and undesirable. Concerned with how users experience an interactive product from their perspective, rather than assessing how useful a system is from its own perspective. Assessed using questions.  &  Interaction Design: Beyond Human Computer Interaction \citep{Rogers2011}.\\ 
+       Personas & Descriptive models of users created based on research. Cooper et al. state that personas "provide us with a precise way of thinking and communicating about how users behave, how they think, what they wish to accomplish, and why". They are not real people, but based on the behaviours and motivations of real people. Personas are depicted as specific individuals, but they also represent a class or type of user of a specific interactive product.  &  About Face 3 : The Essentials of Interaction Design \citep{Cooper2007}. \\  
+       Scenarios & A means of imagining ideal user interaction. Persona-based scenarios are "concise narrative descriptions of one or more personas using a product to achieve specific goals". This lets a designer work with a story describing an ideal experience from the persona's perspective, with a focus on how they think and behave. These scenarios help drive requirement definition.  &  About Face 3 : The Essentials of Interaction Design \citep{Cooper2007}.\\ 
        Requirement Definition & Requirements specify "what information and capabilities our personas require to accomplish their goals". The requirement definition process consists of five steps: creating problem and vision statements, brainstorming, identifying persona expectations, constructing context scenarios and identifying requirements. &  About Face 3 : The Essentials of Interaction Design \citep{Cooper2007}.\\ \hline
   \end{tabular}
   \end{small}
@@ -348,7 +351,7 @@ Due to the time constraints specific to this type of project, it was not possibl
 
 Cooper et al. warn of some potential issues to avoid when creating provisional personas. It is important to avoid focusing on the wrong design target. Even if you are focusing on the correct target, you must be careful to ensure that key behaviours that could differentiate the product are not missed. It is important to focus on behaviours and motivations rather than demographics.
 
-Two personas have been created and are presented in \autoref{fig:personaA} and \autoref{fig:personaB}. Aspects of Persona A were based on information provided by West Sussex Council about the process used to improve road safety\citep{WestSussexCountyCouncil}.
+Three personas have been created and are presented in \autoref{fig:personaA}, \autoref{fig:personaB} and \autoref{fig:personaC}. Aspects of Persona A were based on information provided by West Sussex Council about the process used to improve road safety\citep{WestSussexCountyCouncil}.
 
 \begin{figure}
 	\begin{framed}
@@ -367,7 +370,7 @@ Two personas have been created and are presented in \autoref{fig:personaA} and \
 
 \begin{figure}
 	\begin{framed}
- 		Bethan has recently completed her A levels at a sixth form college in her home town of Southampton, and is preparing to move away from home to study Chemistry at the University of Manchester. She is anxious about moving so far away from home, but also excited about the opportunities for meeting new people. Bethan has recently passed her driving test, but is a nervous driver due to her lack of experience. She owns a car and is determined to take it with her when she moves to Manchester, but she is concerned about the dangers involved with driving on motorways. Bethan has good basic IT skills having used computers regularly throughout her education, but does not have any significant interest in technology.		
+ 		Bethan has recently completed her A levels at a sixth form college in her home town of Southampton, and is preparing to move away from home to study Chemistry at the University of Manchester. She is anxious about moving so far away from home, but also excited about the opportunities for meeting new people. Bethan has recently passed her driving test, but is a nervous driver due to her lack of experience. She owns a car and is determined to take it with her when she moves to Manchester, but she is concerned about the dangers involved with driving on motorways. Bethan has basic IT skills having used computers regularly throughout her education, but does not have any significant interest in technology.		
  	\end{framed}
   \caption{Persona C: Bethan}
   \label{fig:personaC}
@@ -378,11 +381,11 @@ Two personas have been created and are presented in \autoref{fig:personaA} and \
 
 Context scenarios are used to "explore, at a high-level, how the product can best serve the needs of the personas" \citep{Cooper2007}. These scenarios are used to imagine an ideal user experience whilst intentionally being broad and relatively shallow in scope.
 
-The context scenario presented in \autoref{fig:scenarioA} describes how Linda would use the application. Scenario B (see \autoref{fig:scenarioB}) describes an ideal user experience for John.
+The context scenario presented in \autoref{fig:scenarioA} describes how Linda would use the application. Scenarios B (\autoref{fig:scenarioB}) and C (\autoref{fig:scenarioC}) describe ideal user experiences for John and Bethan, respectively.
 
 \begin{figure}
 	\begin{framed}
-		The new financial year has recently began, and the West Sussex County Council have a new budget to allocate to road safety improvements. The council needs to prioritise the most dangerous routes in the county by using STATS19 data to see where the most casualties have occurred. Linda did this analysis last year, but the council wants new analysis to be done, making use of the latest data released by the Department for Transport.
+		The new financial year has recently began, and the West Sussex County Council have a new budget to allocate to road safety improvements. The council needs to prioritise the most dangerous routes in the county by using publicly available road safety data to see where the most casualties have occurred. Linda did this analysis last year, but the council wants new analysis to be done, making use of the latest data released by the Department for Transport.
 		
 		Linda accesses an online application for analysing road safety on her work computer. She enters the first route's start location and destination, and chooses to search all collision data for the last 3 years. The application returns the weighted casualties per kilometre for the route. Linda makes a note of this number, and then repeats the process for all routes. She is now able to suggest which routes need safety improvements based on these figures.
   	\end{framed}
@@ -400,6 +403,14 @@ The context scenario presented in \autoref{fig:scenarioA} describes how Linda wo
   \label{fig:scenarioB}
 \end{figure}
 
+\begin{figure}
+	\begin{framed}
+		As the time for moving away to university is drawing near, Bethan is becoming increasingly nervous about driving a long distance journey for the first time. She has never driven on a motorway before, and is worried about the risks involved. Before leaving, Bethan decides to plan her route using her iPad. She wants to find out about which sections of the journey are the most dangerous, so that she can avoid them. Whilst searching online, she finds an application that serves this purpose.
+		Bethan enters her home address and university address into the application, and selects to include collisions from the latest year only as she wants results for the most up-to-date roads. The application provides a visual representation of where the most dangerous sections of the route are. Bethan uses this information to plan a safer route which avoids the most dangerous roads.
+  	\end{framed}
+  \caption{Scenario C: Bethan using the application}
+  \label{fig:scenarioC}
+\end{figure}
 
 \section{Requirement Definition}
 
@@ -410,23 +421,29 @@ Requirements can now be derived based on project objectives, findings of the lit
 
 The functional requirements of the system are presented in \autoref{tab:FunctionalReqs}. The requirements have been ranked by importance to help prioritise them during the development phase. A brief justification of each requirement will now follow. 
 
-The project objectives make FR1 an absolute necessity, as using this data is fundamental to the project. The analysis of existing applications in the literature review led to the formation of FR2. This addresses the project objective of developing a unique piece of functionality that makes the application stand out. Additionally, both scenarios have demonstrated the need for this functionality. Scenario A raises the need for consecutive searches (FR6) and collision statistics as mentioned in FR4 and FR5. The need for additional data filters, as described in FR3 and FR7, is justified by each of the scenarios. It is also notable that two of the existing applications analysed included these filters. FR8 addresses the project objective of highlighting accident hotspots, and also satisfies the user goal described in Scenario B. FR9 can be inferred from Scenario B, as this functionality would help John in planning the diverted route. The implementation of FR10 would help satisfy the project objective of establishing a framework for web applications interacting with Open Data.
+The project objectives make FR1 an absolute necessity, as using this data is fundamental to the project. The analysis of existing applications in the literature review led to the formation of FR2. This also addresses the project objective of ensuring that the application implements a new method for analysing the road safety data. Additionally, the context scenarios have demonstrated the need for this functionality for three different types of users. 
+
+Scenario A raises the need for consecutive searches (FR3) and collision statistics as mentioned in FR6 and FR9. The need for additional data filters, as described in FR7 and FR8, is justified by each of the scenarios. It is also notable that two of the existing applications analysed included these filters. 
+
+FR4 addresses the project objective of highlighting collision hotspots, and also satisfies the user goals described in Scenarios B and C. This requirement resembles functionality from some of the applications analysed in the literature review, as it specifies the need for an interactive map.
+
+FR5 focuses on making the interface of the application compact and minimising the amount of effort required from the user. This was advised in the literature regarding interactive design, and also a common feature of existing applications.
 
 \begin{table}[tbp]
+\center
 \caption{Functional Requirements}
-\begin{tabular}{| p{1.5cm} | p{7.5cm} | p{2cm} |}
+\begin{tabular}{| p{1.5cm} | p{9.5cm} | p{2cm} |}
 	\hline
 	\textbf{ID} & \textbf{Description} & \textbf{Importance} \\ \hline
 	FR1 & The application should use road safety data published by the UK Department for Transport. & High \\ \hline
 	FR2 & The application should find a route between two user-entered locations and find collisions on this route. & High \\ \hline
-	FR3 & Users should be able to filter collisions included in results by year. & Medium \\ \hline
-	FR4 & The application should calculate and present some statistics using the 'accidents' dataset, such as number of collisions. & High \\ \hline
-	FR5 & The application should calculate and present some statistics using the 'casualties' dataset, such as 'weighted casualties per kilometre'. & Medium \\ \hline
-	FR6 & The user should be able to immediately submit a new search after a previous search has finished. & High \\ \hline
-	FR7 & Users should be able to filter collisions included in results by severity. & Medium \\ \hline
-	FR8 & Collision density should be represented visually on an interactive map in order to highlight hotspots. & High \\ \hline
-	FR9 & The application should suggest lower risk routes for the specified journey. & Low \\ \hline
-	FR10 & The datasets used should be automatically updated when new datasets are released. & Low \\ \hline
+	FR3 & The user should be able to immediately submit a new search after a previous search has finished. & High \\ \hline
+	FR4 & Collision density should be represented visually on an interactive map in order to highlight hotspots. & High \\ \hline
+	FR5 & The input fields and results should be presented on the same page. & High \\ \hline
+	FR6 & The application should calculate and present some statistics using data from the 'accidents' dataset, such as number of collisions, number of casualties, collisions per kilometre, weighted collisions per kilometre and casualties per kilometre. & High \\ \hline
+	FR7 & Users should be able to filter collisions included in results by year. & Medium \\ \hline
+	FR8 & Users should be able to filter collisions included in results by severity. & Medium \\ \hline
+	FR9 & The application should calculate and present some statistics using data from the 'casualties' dataset, such as 'weighted casualties per kilometre'. & Low \\ \hline
 \end{tabular}
 \label{tab:FunctionalReqs}
 \end{table}
@@ -435,77 +452,34 @@ The project objectives make FR1 an absolute necessity, as using this data is fun
 
 The non-functional requirements of the system are presented in \autoref{tab:NonFunctionalReqs}. These requirements have also been ranked by importance. A brief justification of each requirement will now follow. 
 
-Most of these requirements were inspired by software quality standards \citep{ISO9126}. NFR3, NFR4 and NFR6 all address the usability standard. NFR5 focuses on efficiency. In reality, most searches should take under 5 seconds, but if a user searches for all collisions on a very long route, there will be thousands of results to analyse. NFR7 addresses the maintainability standard. Finally, NFR1 is inspired by the portability standard.
+These requirements were derived using the software quality standards, ISO/IEC 9126-1\citep{InternationalOrganizationForStandardizationIso2001} and ISO/IEC 25010:2011 \citep{InternationalOrganizationForStandardizationIso2011}. These standards identify several quality characteristics and subcharacteristics that can be used to evaluate software. The six main quality characteristics specified in ISO 9126 are: functionality, reliability, usability, efficiency, maintainability and portability. The newer standard, ISO 25010, adds security and compatibility to this list of main quality characteristics, whilst also redefining some of the others.
+
+Both NFR1 and NFR7 address the compatibility characteristic. NFR2, NFR3 and NFR5 are all usability/operability related requirements. NFR4 relates to the performance efficiency quality characteristic. Finally, NFR6 focuses on the maintainability quality characteristic.
 
 \begin{table}[tbp]
+\center
 \caption{Non-functional Requirements}
-\begin{tabular}{| p{1.5cm} | p{7.5cm} | p{2cm} |}
+\begin{tabular}{| p{1.5cm} | p{9.5cm} | p{2cm} |}
 	\hline
 	\textbf{ID} & \textbf{Description} & \textbf{Importance} \\ \hline
 	NFR1 & The application should be compatible with the latest (desktop) versions of Google Chrome, Mozilla Firefox and Internet Explorer. & High \\ \hline
-	NFR2 & The application should be open source. All code should be available on GitHub. & High \\ \hline
-	NFR3 & Users should be able to understand how to use the application without external assistance. & High \\ \hline
-	NFR4 & Results of data analysis must be presented in a user-friendly manner. & High \\ \hline
-	NFR5 & The time taken to perform data analysis should never exceed 10 seconds. & Medium \\ \hline
-	NFR6 & The system's progress should be displayed whilst data analysis is being performed. & High \\ \hline
-	NFR7 & Data model should allow new datasets to be added to the application in the future. & Medium \\ \hline
+	NFR2 & Users should be able to understand how to use the application without external assistance. & High \\ \hline
+	NFR3 & Results of data analysis must be presented in a user-friendly manner. & High \\ \hline
+	NFR4 & The data analysis should be scalable, with response times never exceeding 10 seconds for any route within Great Britain. & High \\ \hline
+	NFR5 & The system's progress should be displayed whilst data analysis is being performed. & High \\ \hline
+	NFR6 & The data model should allow for new datasets to be added in the future. & Medium \\ \hline
+	NFR7 & The application should be compatible with tablets and smartphones. & Medium \\ \hline
 \end{tabular}
 \label{tab:NonFunctionalReqs}
 \end{table}
 
-
 \chapter{Design}
-
-\section{Technology Overview}
-
-This section of the report provides a brief discussion of the technologies used in this project, with a justification of why they were chosen ahead of the alternatives available.
-
-\subsection{Google Maps API}
-
-The Google Maps API \citep{Google} was compared with Bing Maps and OpenLayers in the literature review. The findings suggested that Google Maps would be the ideal mapping API for this project. This section justifies the decision made by explaining how the Google Maps API can satisfy the functional requirements of the project.
-
-FR2 states that the system must be able to find a route between two locations. The Google Maps API features a Directions Service that receives direction requests and returns computed results. The response contains all relevant information about the route, including distance, duration, an overview path, and latitude/longitude coordinates along the route. This response can be handled by the developer or directly rendered on the map. Route origins and destinations may be entered as text strings or as latitude/longitude values. 
-
-FR2 also states that the system must determine which collisions are on the route. The Geometry library contains a function for computing whether a given point lies on or near to a polyline, within a specified tolerance. This function can be used to check if each collision is on the polyline returned from the Directions Service.
-
-The directions service can also help address FR9. It is possible to request alternative routes in the directions request, meaning that several routes could be returned and analysed by the system at the same time. Another option involves making the route on the map 'draggable' so that users can try changing the route to find a safer one.
-
-As discussed in the literature review, the API has a visualisation library that lets you create heatmaps. Heatmaps use colour and shape to represent the distribution of data. This would help to highlight collision hotspots as areas with a high density of collisions would be red, thus satisfying FR8. 
-
-\subsection{PHP}
-
-The evaluation of server-side scripting languages in the literature review pointed towards Python as the favourable option. However, the comparison in \autoref{tab:weblanguages} only ranks PHP below python for learnability and security. Learnabilty of PHP isn't an issue due to the author's familiarity with the language. Security isn't a major concern either, as the application won't contain any personal data or passwords (although the correct steps must still be taken to protect the application from malicious attacks). Time constraints on the project make it preferable to use a familiar language rather than learning a new one, so the decision to use PHP was made.
-
-PHP has a large number of popular frameworks that can help to develop projects faster by reusing components and modules. These frameworks also facilitate scalability and long-term maintenance by complying with development standards. Most functionality required by the application will be done on client-side using JavaScript, meaning that the server-side will only need to create dynamic pages and make some simple database calls. Many of the frameworks available are complex and would require a lot of time reading documentation in order to learn how to implement simple functionality. Hence, the decision was made to use MINI 1\citep{MINI}, an extremely simple barebone framework. Mini has a very clean MVC structure, example database calls, PDO for database requests and it uses only native PHP code. 
-
-\subsection{MySQL}
-
-A fundamental objective of the application involves the use of road safety data published by the UK Department for Transport. This data is published in the comma-separated value (CSV) format. The data must be imported into a database management system so that the application can perform searches on it.
-
-MySQL is a very fast, robust, relational database management system \citep{Welling2005}. The MySQL server controls access to data, enables concurrent access, makes access fast, and ensures that only authorised users are granted access. It uses Structured Query Language (SQL). MySQL is available under an open source license. Crucially for this project, it is possible to directly upload a CSV file to a MySQL database by writing a short script.
-
-\subsection{Version Control Process}
-
-Having a good version control process is very important to this project. Firstly, it acts as a backup of the code base, allowing for easy restoration of code. This minimises the risk of losing work in the case of a disaster such as a corrupt hard drive. It also provides a history of changes made during the development process. This allows for traceability of changes, making it possible to revert specific changes that may have created issues. This is useful if there are issues during the development of a particular increment of the application, as it will simplify the process of reverting to the previous increment.
-
-The decision was made to use Git, a free and open source distributed version control system \citep{Git}. Whenever a new feature had been developed and tested, the change was committed, and pushed to a repository on GitHub \citep{GitHub}. GitHub is a useful tool for backing up source code and sharing open source projects online. Updates can be pulled directly from GitHub onto the web server, making deployment a straightforward task.
 
 \section{System Architecture}
 
-As discussed in the literature review, LAMP is a common open source sever environment. A LAMP environment is simple to set up, and can be done so cheaply. Amazon Web Services offer a 12-month free usage tier that offers all services required for setting up a LAMP environment \citep{AmazonWebServices}. Apache, PHP, and the application itself can all be installed on an EC2 instance running Ubuntu. An RDS instance running a MySQL engine can be used for hosting the database. A diagram showing how the Road Safety Advisory System can be deployed onto this architecture is presented in \autoref{fig:sysarchitecture}.
+\section{Request Handling}
 
-\begin{figure}
-	\center
-	\includegraphics[scale=0.7]{SystemArchitectureDiagram}
-	\caption{System Architecture Diagram}
-	\label{fig:sysarchitecture}
-\end{figure}
-
-\section{Activity Diagram}
-
-An activity diagram is "a UML behaviour diagram which shows flow of control or object flow with emphasis on the sequence and conditions of the flow" \citep{uml-diagrams}. Activity diagrams can be partitioned in order to group some actions that have a common characteristic.
-
-An activity diagram for the Road Safety Advisory System is presented in \autoref{fig:activitydiagram}. The diagram is partitioned into five sections in order to represent where each of the activities take place. These sections include: the user's view of the application, the user's web browser, the Road Safety Advisory System's application and database servers, and the Google Directions Service. The activities are defined as follows:
+The activity diagram in \autoref{fig:activitydiagram} depicts the operations carried out to handle a user request for details about collisions on a specified route. The diagram is partitioned into five sections in order to represent where each of the activities take place. These sections include: the user's view of the application, the user's web browser, the Road Safety Advisory System's application and database servers, and the mapping service. The activities are defined as follows:
 
 \begin{enumerate}
 	\item \textbf{Submit search} - The user enters their parameters and submits a search.
@@ -521,65 +495,20 @@ An activity diagram for the Road Safety Advisory System is presented in \autoref
 	\item \textbf{Return collisions} - The application server processes the data received from the database server and sends a response to the user's browser.
 	\item \textbf{Filter collisions} - The collisions returned are filtered to exclude those that are too far away from the route.
 	\item \textbf{Generate output} - Statistics for the collisions are calculated and the heatmap is created. The web page is dynamically updated to display the results.
-	\item \textbf{Results} - The user sees the results on the page.
+	\item \textbf{Receive results} - The user sees the results on the page.
 	\item \textbf{Error message} - The user sees an error message because their request failed validation, or a route was not found.
 \end{enumerate}
 
 \begin{figure}
 	\center
 	\includegraphics[scale=0.65]{activitydiagram}
-	\caption{Activity Diagram}
+	\caption{Activity diagram for request handling}
 	\label{fig:activitydiagram}
 \end{figure}
 
-\section{Development Process}
-
-The road safety advisory system was developed using an agile development process. Agile methods are "incremental development methods in which the increments are small and, typically, new releases of the system are created and made available to customers every two or three weeks" \citep{Sommerville2005}. Each increment was designed to satisfy a set of functional requirements, and delivering a usable release of the application. This approach was important as it ensured a working final application, even if some requirements were not satisfied. The importance ratings assigned to the functional requirements in \autoref{tab:FunctionalReqs} helped to prioritise which pieces of functionality would be delivered in each increment. At the end of each increment, thorough system testing was completed to ensure that both new features, and features from previous increments, were all functioning correctly. Any significant issues were addressed before moving on to the next increment. This section includes a brief description of the development process for each increment of the application.
-
-The first increment of the system focuses on satisfying FR1, FR2, FR4 and FR6. It is important to satisfy FR1 and FR2 initially as they are both of high importance to the system, and all other requirements are dependant on this functionality. The successful implementation of FR4 is crucial to this increment as this proves to the end user that FR1 and FR2 have been satisfied. Outputting these statistics ensures that a usable release of the application is created. The interface design should present search parameters and results alongside each other, making it possible to immediately submit a new search after a previous search has finished, thus satisfying FR6. The following steps outline the development process for this increment:
-\begin{enumerate}
-	\item Create a table for collision data in the MySQL database.
-	\item Import collision data from the CSV file into the newly created table.
-	\item Set up the initial web application using the PHP Mini framework.
-	\item Create a form containing fields for the start and end addresses of a route. The form should submit a request to the Google Maps Directions Service.
-	\item Develop a method for querying the collision data in the database in order to find all collisions on the route.
-	\item Create a table that displays the statistics for the user.
-\end{enumerate}
-
-The second increment of the system focuses on FR8, as this is the only remaining functional requirement of high importance. The following steps outline the development process for this increment:
-\begin{enumerate}
-	\item Add an interactive map to the application using the Google Maps API.
-	\item Develop functionality that uses the coordinates of collisions on the route to create a heatmap using the Google Maps visualisation library.
-\end{enumerate}
-
-The third increment of the system addresses FR3 and FR7. These requirements are both of medium importance, and it is logical to include them in the same increment as they both involve adding data filters. The following steps outline the development process for this increment:
-\begin{enumerate}
-	\item Update the search form to include checkboxes for all severity levels and years.
-	\item Modify database query to only include results for the selected severity levels and years.
-\end{enumerate}
-
-The fourth increment of the system is aimed at satisfying FR5. The following steps outline the development process for this increment:
-\begin{enumerate}
-	\item Create a table for casualty data in the MySQL database.
-	\item Import casualty data from the CSV file into the newly created table. 
-	\item Create a query that finds the severity of each individual casualty involved in collisions on the route.
-	\item Develop a method that uses casualty data to calculate 'weighted casualties per km' and outputs the result.	
-\end{enumerate}
-
-The fifth, and final, increment of the application addresses the low importance requirements; FR9 and FR10. The following steps outline the development process for this increment:
-\begin{enumerate}
-	\item Modify the application to request multiple routes from the directions service.
-	\item Make the application run collision analysis for each route.
-	\item Create an output that summarises the results of the analysis for each route.
-	\item Create a script that periodically checks the \textit{data.gov.uk} website to see if a new dataset has been published.
-	\item Develop a method for automatically downloading the new dataset.
-	\item Create a script that imports the newly downloaded CSV file into the MySQL database table.
-\end{enumerate}
-
-
 \section{Interface Design}
 
-As discussed in the literature review, the design of a successful web application must focus on user interaction. It is important to follow common design conventions when creating the user interface for a web application, such as those mentioned by Lynch and Horton \citep{Lynch2009}. This section discusses the design of the interface for the road safety advisory system, with justifications for each design decision made.
+As discussed in the literature review, the design of a successful web application must focus on user interaction. It is important to follow common design conventions when creating the user interface for a web application, such as those mentioned by Lynch and Horton \citep{Lynch2009}. This section discusses the design of the interface for the road safety advisory system, with justifications for each design decision made. All wireframes presented in this section were created using Lucidchart \citep{LucidSoftware}.
 
 The wireframe for the home page of the application can be seen in \autoref{fig:homewireframe}. The menu at the top of the page includes the site name and links to the pages of the website; Home and About. The decision was made to include the application itself on the home page as users are likely to expect immediate access to it. There is a brief notice at the top of the page explaining how to operate the application in case it isn't immediately obvious to a user. A more detailed description of the application is included on the 'About' page in order to keep the home page as uncluttered as possible. 
 
@@ -614,40 +543,105 @@ The final key design issue involves displaying error messages for the user. If a
 
 \section{Summary}
 
-This chapter discussed the design decisions made when creating the Road Safety Advisory System. Key technologies used for the application were introduced, a system architecture diagram was presented, and an activity diagram was created to demonstrate the flow of control within the system. The development process was explained, and designs for the user interface were discussed. The next chapter focuses on the implementation of the system designed in this chapter.
+This chapter discussed the design decisions made when creating the Road Safety Advisory System. An activity diagram was created to demonstrate the flow of control when handling requests within the system. Designs for the user interface were presented and discussed. The next chapter focuses on the implementation of the system designed in this chapter.
 
 \chapter{Implementation}
 
-Three of the system increments specified in the design were implemented successfully. This chapter includes a discussion of the components developed for these increments, the techniques used, and the testing procedures followed.
+\section{Technology Overview}
+
+This section of the report provides a brief discussion of the technologies used in this project, with a justification of why they were chosen ahead of the alternatives available.
+
+\subsection{Google Maps API}
+
+The Google Maps API \citep{Google} was compared with Bing Maps and OpenLayers in the literature review. The findings suggested that Google Maps would be the ideal mapping API for this project. This section justifies the decision made by explaining how the Google Maps API provides the interface specified by the design.
+
+The Google Maps API features a Directions Service that receives direction requests and returns computed results. The response contains all relevant information about the route, including distance, duration, an overview path, and latitude/longitude coordinates along the route. This response can be handled by the developer or directly rendered on the map. Route origins and destinations may be entered as text strings or as latitude/longitude values. 
+
+The API's Geometry library contains a function for computing whether a given point lies on or near to a polyline, within a specified tolerance. This function can be used to check if collisions are on the polyline returned from the Directions Service. As discussed in the literature review, the API has a visualisation library that lets you create heatmaps. Heatmaps use colour and shape to represent the distribution of data. This would help to highlight collision hotspots as areas with a high density of collisions would be red.
+
+\subsection{PHP}
+
+The evaluation of server-side scripting languages in the literature review pointed towards Python as the favourable option. However, the comparison in \autoref{webproglanguages} only ranks PHP below python for learnability and security. Learnabilty of PHP is not an issue due to the student's familiarity with the language. Security is not a major concern either, as the application will not contain any personal data or passwords (although the correct steps must still be taken to protect the application from malicious attacks). Time constraints on the project make it preferable to use a familiar language rather than learning a new one, so the decision to use PHP was made.
+
+PHP has a large number of popular frameworks (e.g. Laravel \citep{Laravel}, CodeIgniter \citep{codeIgniter} and Symfony \citep{SensioLabs}) that can help to develop projects faster by reusing components and modules. These frameworks also facilitate scalability and long-term maintenance by complying with development standards. Most functionality required by the application will be carried out on client-side using JavaScript, meaning that the server-side will only need to create dynamic pages and make some simple database calls. 
+
+Many of the frameworks available are complex and would require a lot of time reading documentation in order to learn how to implement simple functionality. Hence, the decision was made to use MINI 1\citep{mini}, an extremely simple 'barebone' framework. An exploration of MINI 1's capabilities carried out by this project indicated that it has a very clean MVC structure, PDO for database requests and it uses only native PHP code. It also provides example Ajax and database calls, meaning that most code required for the server-side of the application could be easily written by adapting these examples.
+
+\subsection{MySQL}
+
+A fundamental objective of the application involves the use of road safety data published by the UK Department for Transport. This data is published in the comma-separated value (CSV) format. The data must be imported into a database management system so that the application can perform searches on it.
+
+MySQL is a very fast, robust, relational database management system \citep{Welling2005}. The MySQL server controls access to data, enables concurrent access, makes access fast, and ensures that only authorised users are granted access. It uses Structured Query Language (SQL). MySQL is available under an open source license. Crucially for this project, it is possible to directly upload a CSV file to a MySQL database by writing a short script \citep{MySQLTutorial}.
+
+\subsection{Version Control Process}
+
+Having a good version control process is very important to this project. Firstly, it acts as a backup of the code base, allowing for easy restoration of code. This minimises the risk of losing work in the case of a disaster such as a corrupt hard drive. It also provides a history of changes made during the development process. This allows for traceability of changes, making it possible to revert specific changes that may have created issues. This is useful if there are issues during the development of a particular increment of the application, as it will simplify the process of reverting to the previous increment.
+
+The decision was made to use Git, a free and open source distributed version control system \citep{Git}. Whenever a new feature had been developed and tested, the change was committed, and pushed to a repository on GitHub \citep{GitHub}. GitHub is a useful tool for backing up source code and sharing open source projects online. Updates can be pulled directly from GitHub onto the web server, making deployment a straightforward task.
+
+\subsection{Deployment}
+
+As discussed in the literature review, LAMP is a common open source sever environment. A LAMP environment is simple to set up, and can be done so cheaply. Amazon Web Services offer a 12-month free usage tier that offers all services required for setting up a LAMP environment \citep{AmazonWebServices}. The Apache HTTP Server, PHP, and the application itself were all installed on an EC2 instance running Ubuntu. An RDS instance running a MySQL engine is used for hosting the database.
+
+\section{Development Process}
+
+The road safety advisory system was developed using an agile development process. Agile methods are "incremental development methods in which the increments are small and, typically, new releases of the system are created and made available to customers every two or three weeks" \citep{Sommerville2005}. Each increment was designed to satisfy a set of functional requirements, and delivering a usable release of the application. This approach was important as it ensured a working final application, even if some requirements were not satisfied. The importance ratings assigned to the functional requirements in \autoref{tab:FunctionalReqs} helped to prioritise which pieces of functionality would be delivered in each increment. At the end of each increment, thorough system testing was completed to ensure that both new features, and features from previous increments, were all functioning correctly. Any significant issues were addressed before moving on to the next increment. 
+
+Three 'essential' increments of the application were designed, each focusing on high/medium importance functional requirements. A further 'nice to have' increment was planned, which focused on the low importance requirement, FR9. This increment was not implemented due to the time constraints imposed on the project, and thus is included as future work. The three essential increments were implemented successfully and are described in the remainder of this section.
+
+The first increment of the system focuses on satisfying FR1, FR2, FR3, FR5 and FR6. It is important to satisfy FR1 and FR2 initially as they are both of high importance to the system, and all other requirements are dependant on this functionality. The successful implementation of FR6 is crucial to this increment as this proves to the end user that FR1 and FR2 have been satisfied. Outputting these statistics ensures that a usable release of the application is created. The interface design should present search parameters and results alongside each other (FR5), making it possible to immediately submit a new search after a previous search has finished, thus satisfying FR6. The following steps outline the development process for this increment:
+
+\begin{enumerate}
+	\item Create a table for collision data in the MySQL database.
+	\item Import collision data from the CSV file into the newly created table.
+	\item Set up the initial web application using the PHP Mini framework.
+	\item Create a form containing fields for the start and end addresses of a route. The form should submit a request to the Google Maps Directions Service.
+	\item Develop a method for querying the collision data in the database in order to find all collisions on the route.
+	\item Create a table that displays the statistics for the user.
+\end{enumerate}
+
+The second increment of the system focuses on FR4, as this is the only remaining functional requirement of high importance. The following steps outline the development process for this increment:
+\begin{enumerate}
+	\item Add an interactive map to the application using the Google Maps API.
+	\item Develop functionality that uses the coordinates of collisions on the route to create a heatmap using the Google Maps visualisation library.
+\end{enumerate}
+
+The third increment of the system addresses FR7 and FR8. These requirements are both of medium importance, and it is logical to include them in the same increment as they both involve adding data filters. The following steps outline the development process for this increment:
+\begin{enumerate}
+	\item Update the search form to include checkboxes for all severity levels and years.
+	\item Modify database query to only include results for the selected severity levels and years.
+\end{enumerate}
 
 \section{Components}
 
-This section includes a description of some of the key components of the Road Safety Advisory System. The approach to developing these features is discussed, with an explanation of decisions made and outcomes of these decisions. 
+This section describes some of the key components of the Road Safety Advisory System. The approach to developing these features is discussed, with an explanation of decisions made and outcomes of these decisions. 
 
 \subsection{Collision Search}
 
 The most complex feature of the Road Safety Advisory System is the collision search. Searching for collisions by route has not been achieved in any existing web applications, so a new approach needed to be designed and developed. 
 
-The first step in this process involved making the application find the route using the Google Maps API Directions Service. An example of using this is provided in the API documentation \citep{Google}. A HTML form was created with fields for the start and end locations of a route. On submission, a JavaScript function is called to handle the request. The request is validated to ensure that the form isn't empty, before sending a request to the Directions Service. If a route isn't found, an error message is dynamically inserted into the page and the search is stopped. 
+The first step in this process involved making the application find the route using the Google Maps API Directions Service. An example of using this is provided in the API documentation \citep{Google}. A HTML form was created with fields for the start and end locations of a route. On submission, a JavaScript function is called to handle the request. The request is validated to ensure that the form is nonempty, before sending a request to the Directions Service. If a route is not found, an error message is dynamically inserted into the page and the search is stopped. 
 
-As discussed in the design chapter, the Google Maps API has a geometry library which has a function (isLocationOnEdge) for determining whether a point is on or near a line. This function is used to filter results from the database to determine whether they are close enough to the line to be considered on the route. However, calling this function for all collisions in the database would be highly inefficient, so it is necessary to apply an initial layer of filtering when searching the database. In order to do this, some data from the Directions Service response has to be used to create the database query. The first approach to this problem involved using the bounds of the route. 
+As discussed earlier in this chapter, the Google Maps API has a geometry library which has a function (isLocationOnEdge) for determining whether a point is on or near a line. This function is used to filter results from the database to determine whether they are close enough to the line to be considered on the route. However, calling this function for all collisions in the database would be highly inefficient, so it is necessary to apply an initial layer of filtering when searching the database. In order to do this, the bounds of the route returned from the Directions Service are used to create the database query. 
 
 In order to do get the collisions from the database, data would need to be submitted from the user's browser to the server. The decision was made to use Ajax in order to exchange data with the server and update the page without reloading it. The jQuery \citep{ThejQueryFoundation} post method was used to request data from the server with a HTTP POST request. The post method sends a request to '/search/getcollisions' on the server, with the bounds of the route included as a JSON string. In the PHP application, a 'Search' controller was created with a function called 'getCollisions()'. This function is automatically called when the server receives the POST request, due to the routing methods defined by the MINI framework. The search controller calls a function in the model in order to perform the search. The model prepares and executes an SQL statement to select all collisions within the area defined by the route bounds. The results of this query are returned to the controller, where they are encoded into a JSON string and returned to the user's browser.
 
 When the browser receives a response from the server, the collisions are filtered using the 'isLocationOnEdge' function. An output is then generated using these filtered collisions. During the development of this functionality, the number of collisions was presented in an alert message, and an interactive map was employed to test the accuracy of the results. The collisions were plotted on the map along with the route path, in order to visually confirm that these collisions were on the route. In further tests, collisions returned from the database that did not pass the second layer of filtering were plotted, to ensure that they were not being incorrectly excluded. 
 
-The 'isLocationOnEdge' function has a 'tolerance' parameter that specifies how much distance there can be between a point and the line for it to return true. This value was initially specified as 0.000001 as the collisions in the dataset have 6 decimal places. However, during testing it became apparent that the tolerance value would need to be increased as a lot of collisions were being excluded despite clearly being on the route. \autoref{fig:collisionsoffroute} shows an example of two collisions that were excluded from the results of a search. This example demonstrates a key problem with analysing the collisions in this manner, as one collision should be included, whilst the other should be excluded as it occurred on the opposite lane of the carriageway. Both collisions are a similar distance from the line, as it is drawn on the middle of the carriageway. Thus, a tolerance value that includes all valid collisions is also likely to include some invalid collisions. Further discussion and analysis of this issue is included in the evaluation chapter. A trial and error approach was used to determine a suitable tolerance value, with the aim being to ensure that valid collisions weren't being excluded. A value of 0.0001 was accepted as the most suitable after testing a number of values for a set of defined routes, and comparing the results.
+The 'isLocationOnEdge' function has a 'tolerance' parameter that specifies how much distance there can be between a point and the line for it to return true. This value was initially specified as 0.000001 as the collisions in the dataset have 6 decimal places. However, during testing it became apparent that the tolerance value would need to be increased as a lot of collisions were being excluded despite clearly being on the route. \autoref{fig:collisionsoffroute} shows an example of two collisions that were excluded from the results of a search when using a tolerance as low as 0.000001. This example demonstrates a key problem with analysing the collisions in this manner, as one collision should be included, whilst the other should be excluded as it occurred on the opposite lane of the carriageway. Both collisions are a similar distance from the line, as it is drawn on the middle of the carriageway. Thus, a tolerance value that includes all valid collisions is also likely to include some invalid collisions. Further discussion and analysis of this issue can be found in \autoref{sec:searchAnalysis}. A trial and error approach was used to determine a suitable tolerance value, with the aim being to ensure that valid collisions weren't being excluded. A value of 0.0001 was accepted as the most suitable after testing a range of values for a set of defined routes, and comparing the results.
 
 \begin{figure}
 	\center
 	\includegraphics[scale=0.8]{collisionoffroute}
-	\caption{Example of collisions excluded by the second layer of filtering}
+	\caption{Example of collisions excluded by the second layer of filtering when using a tolerance of 0.000001}
 	\label{fig:collisionsoffroute}
 \end{figure}
 
 At this point in the development process, the collision search was functional, but there was a significant issue with performance. For long journeys, it was proving inefficient to return all collisions within the bounds of the route. This would result in tens (or even hundreds) of thousands of collisions being returned from the server. Filtering this volume of collisions using 'isLocationOnEdge' was highly inefficient, and often caused the browser to become unresponsive. It was clear that a more intelligent approach to filtering collisions in the database query was required.
 
-The response returned from the Directions Service was inspected, and it was noticed that each route is split into a number of steps. As a result of this, a new approach was designed in order to produce more refined results during the initial layer of filtering. Before submitting the request to the server, bounds are calculated for each step of the route. An array containing all steps, with their bounds and coordinates, is then created. The Ajax request was updated to send this array, encoded as a JSON string, to the server. The controller decodes the JSON string and loops through the array, calling the model to perform a search for each step. This approach returns far less invalid results, making the second layer of filtering much faster. However, it was noticed that some collisions were being incorrectly excluded as they did not pass the first layer of filtering. \autoref{fig:nonbufferedbounds} presents an example situation where this issue occurs. In the image, the black boxes represent the bounding area of two different steps. A collision that previously passed the second phase of filtering is not within the bounds of either step. In order to resolve this issue, a buffer is added to the bounds of a step before executing the database query. This means that collisions marginally outside of the bounds are still included in the results of the first layer of filtering.
+\subsection{Overcoming the Performance Bottleneck}
+
+The response returned from the Directions Service was inspected, and it was noticed that each route is split into a number of steps. As a result of this, a new approach was designed in order to produce more refined results during the initial layer of filtering. Before submitting the request to the server, bounds are calculated for each step of the route. An array containing all steps, with their bounds and coordinates, is then created. The Ajax request was updated to send this array, encoded as a JSON string, to the server. The controller decodes the JSON string and iterates through the array, calling the model to perform a search for each step. This approach returns far less invalid results, making the second layer of filtering much faster. However, it was noticed that some collisions were being incorrectly excluded as they did not pass the first layer of filtering. \autoref{fig:nonbufferedbounds} presents an example situation where this issue occurs. In the image, the black boxes represent the bounding area of two different steps. A collision that previously passed the second phase of filtering is not within the bounds of either step. In order to resolve this issue, a buffer is added to the bounds of a step before executing the database query. This means that collisions marginally outside of the bounds are still included in the results of the first layer of filtering.
 
 \begin{figure}
 	\center
@@ -656,9 +650,9 @@ The response returned from the Directions Service was inspected, and it was noti
 	\label{fig:nonbufferedbounds}
 \end{figure}
 
-This change improved the performance for many routes, but the issue remained for others. This is due to the way in which different steps are defined in the response from the Directions Service. A new step is created each time a new direction is issued, which means that steps will vary considerably in terms of distance. Some routes will have a particularly long step if the route involves a long section of a motorway, for example. In an extreme case, this could lead to the database query for a step returning tens of thousands of collisions, causing the browser to become unresponsive when trying to filter these collisions. In order to prevent this, an algorithm was developed to ensure that no route step exceeds 10 kilometres in distance. A description and analysis of this algorithm is presented later in the chapter. 
+This change improved the performance for many routes, but the issue remained for others. This is due to the way in which different steps are defined in the response from the Directions Service. A new step is created each time a new direction is issued, which means that steps will vary considerably in terms of distance. Some routes will have a particularly long step if the route involves a long section of a motorway, for example. In an extreme case, this could lead to the database query for a step returning tens of thousands of collisions, causing the browser to become unresponsive when trying to filter these collisions. In order to prevent this, an algorithm was developed to ensure that no route step exceeds 10 kilometres in distance. A description and analysis of this algorithm is presented in \autoref{sec:restrictAlgorithm}.
 
-This final change improved the performance greatly, ensuring that all test searches completed in under 30 seconds, with the browser remaining responsive throughout. There were several challenges to overcome whilst developing this component of the system, particularly filtering database results to only include collisions near the route. This implementation has limitations in accuracy, but is far quicker and less tedious than the alternative methods available for analysing collisions on a specific route.
+This final change improved the performance greatly, ensuring that all test searches completed in under ten seconds, with the browser remaining responsive throughout. There were several challenges to overcome whilst developing this component of the system, particularly filtering database results to only include collisions near the route. This implementation has limitations in accuracy, but is far quicker and less tedious than the alternative methods available for analysing collisions on a specific route.
 
 \subsection{Statistics Output}
 
@@ -701,6 +695,7 @@ A script was then created to import the data from the CSV file into the new tabl
 With the data in the database, some testing was performed to find the response times when searching for a collision using longitude and latitude. It was noticed that this process was initially too slow, and would lead to performance issues with the application. To resolve this issue, the longitude and latitude fields in the database were indexed. After indexing these fields, the duration of queries dropped from around 2.5 seconds, to under 0.02 seconds. This is a significant performance gain, without which the final application would be almost unusable.
 
 \subsection{Restricting The Distance of Route Steps}
+\label{sec:restrictAlgorithm}
 
 As discussed earlier in the chapter, an algorithm had to be developed in order to modify the 'steps' of a route returned from the Google Maps Directions Service. Some steps were too long, causing the database query for that step to return a huge number of collisions that were far away from the route. To demonstrate this issue, the code of the application was modified to draw each step in alternate colours. \autoref{fig:longroutestep} presents a route where there is a particularly long step (drawn in red). A black rectangle has been drawn to represent the bounding area of this step. The database query returns all collisions in this bounding area, causing the browser to become unresponsive when trying to perform the second layer of filtering. 
 
@@ -732,23 +727,23 @@ The envisaged solution to this problem was to break a step down into several sma
 							\State $j \gets 0$
 							\While{$j<latLngsPerNewStep$ and $currentLatLng<numberOfLatLngs$}
 								\State $newStepLatLngs[j]\gets latLngs[currentLatLng]$
-								\State $currentLatLng\gets currentLatLng+1$
-								\State $j\gets j+1$
+								\State $currentLatLng++$
+								\State $j++$
 								\If{$j==latLngsPerNewStep$ and $currentLatLng<numberOfLatLngs$}
 									\State $newStepLatLngs[]\gets latLngs[currentLatLng]$
 									\If{$numberOfLatLngs-currentLatLng==1$}
-										\State $i\gets i+1$
+										\State $i++$
 									\EndIf
 								\EndIf
 							\EndWhile
 							\State $newStep \gets makeStep(newStepLatLngs)$
 							\State $newRouteSteps[stepCounter] \gets newStep$
-							\State $stepCounter\gets stepCounter + 1$
+							\State $stepCounter++$
 						\EndFor
 					\Else
 							\State $newStep \gets makeStep(latLngs)$
 							\State $newRouteSteps[stepCounter] \gets newStep$
-							\State $stepCounter\gets stepCounter + 1$
+							\State $stepCounter++$
 					\EndIf		
 				\EndFor
 				\State \textbf{return} $newRouteSteps$
@@ -768,7 +763,7 @@ The algorithm returns a new array, \textit{newRouteSteps}. The new steps are cre
 \item A \textit{lat\_lngs} field that contains an array of coordinates for the step (as latitude and longitude pairs).
 \end{itemize}
 
-The algorithm begins by initialising the \textit{stepCounter} variable to 0. The for loop in lines 3-34 iterate through all route steps. The distance of the current step and the array of coordinates are assigned to variables. A check is then made to see if the distance of the step is over 10km (line 6). If it is under 10km, the bounds of the step are calculated and it is added to the array of new steps with no further changes (lines 30-31). If the step is over this distance, it must be split into multiple smaller steps. First of all, the number of new steps is calculated by dividing the distance by 10km and rounding up to the nearest whole value (line 7). It then calculates how many sets of coordinates should be assigned to each new step (line 9). The for loop in steps 11-28, creates each new route step. The while loop in lines 14-24 copies coordinates from the original step to the new step. The loop's conditions make it exit when the step has the maximum number of coordinates, or if there are no more coordinates to copy from the original step (line 14). After each pair of coordinates is added, a check is made to see if the new step is 'full', and there are more coordinates to copy from the original step (line 18). If this is the case, the next set of coordinates are added to the current step. This is necessary as the steps need to be connected to each other in order to form a line for the entire route. The 'if' statement on lines 20-22 is used to ensure that a new step isn't created if there is only 1 more set of coordinates to add. After all coordinates have been added to the new step, the bounds are calculated and it is added to the array of new steps (lines 25-26).
+The algorithm begins by initialising \textit{stepCounter}, a variable that counts how many steps have been created so far by the algorithm, to 0. The for loop in lines 3-34 iterate through all route steps. The distance of the current step and the array of coordinates are assigned to variables. A check is then made to see if the distance of the step is over 10km (line 6). If it is under 10km, the bounds of the step are calculated and it is added to the array of new steps with no further changes (lines 30-31). If the step is over this distance, it must be split into multiple smaller steps. First of all, the number of new steps is calculated by dividing the distance by 10km and rounding up to the nearest whole value (line 7). It then calculates how many sets of coordinates should be assigned to each new step (line 9). The for loop in steps 11-28, creates each new route step. The while loop in lines 14-24 copies coordinates from the original step to the new step. The loop's conditions make it exit when the step has the maximum number of coordinates, or if there are no more coordinates to copy from the original step (line 14). After each pair of coordinates is added, a check is made to see if the new step is 'full', and there are more coordinates to copy from the original step (line 18). If this is the case, the next set of coordinates are added to the current step. This is necessary as the steps need to be connected to each other in order to form a line for the entire route. The 'if' statement on lines 20-22 is used to ensure that a new step isn't created if there is only 1 more set of coordinates to add; this is done by incrementing $i$ so that the inner for loop terminates early. After all coordinates have been added to the new step, the bounds are calculated and it is added to the array of new steps (lines 25-26).
 
 To analyse the time complexity of the algorithm, first note that each execution of an assignment or conditional (i.e., `if') statement requires constant, $\mathcal{O}(1)$, time. The while loop on lines 14--24 is executed at most
 \[
@@ -787,7 +782,7 @@ times. Finally, the outer for loop (lines 3--34) is executed $N=\mathit{routeSte
 \]
 represents the maximum number of coordinates in a step of the processed route.
 
-Hence this algorithm is linear in complexity. The time taken by the algorithm is dependant on the number of route steps, and the number of coordinates in each step. It is important that this algorithm is linear, so that the time taken for longer routes does not exponentially increase.
+Hence the complexity of the algorithm is linear in the number of elements from $routeSteps$, and in the number of coordinates in the largest step. It is important that this algorithm is linear, so that the time taken for longer routes does not increase, for instance, exponentially.
 
 Careful consideration had to be made when deciding upon the distance threshold used within this algorithm. A lower value leads to more accurate results from the first layer of filtering, improving the time taken for the second layer of filtering. However, this also increases the number of database calls made for each route, which can have a negative affect on the performance. This creates a trade-off between the amount of computation required on client-side and sever-side. Tests were performed using several different distance thresholds for a set list of routes, and the computation times were compared. It was concluded that 10km is the optimal threshold, as it produced the results in the shortest times for all tested routes, and the browser never became unresponsive due to the amount of data to be processed. \autoref{fig:shortersteps} shows the results of running this algorithm on the long route step from \autoref{fig:longroutestep}. Black rectangles have been drawn to represent the bounding areas of each of the new steps. This clearly demonstrates that far less invalid collisions will be returned as a much smaller area is being analysed.
 
@@ -803,22 +798,18 @@ This chapter discussed the challenges faced during the implementation of the Roa
 
 \chapter{Testing and Evaluation}
 
-\section{Testing Plan}
+\section{Testing and Evaluation Methodology}
 
-This section of the report describes the testing methodology used for the Road Safety Advisory System.
-
-\subsection{Testing Methodology}
-
-Testing and evaluation was conducted in 4 primary phases:
+The testing and evaluation of the Road Safety Advisory System were conducted in four primary stages:
 
 \begin{enumerate}
 	\item Functional testing - A series of test cases have been designed to test that the system produced meets its functional requirements. These tests do not require knowledge of the code, and are focused on ensuring that everything is functional from the perspective of a user (black-box testing). After each increment of the system was developed, the relevant tests for the new functionality were run, along with tests for existing functionality. This regression testing ensures that code changes do not break previously functional parts of the application.
 	\item Accuracy testing - One of the main challenges of testing the application involves checking that the results produced are accurate. As there isn't an existing application that performs collision searching by route, there is no basis for comparison. Hence the decision was made to use Crash Map \citep{crashmap} in order to manually zoom/pan along a route and count the number of collisions. The results, and time taken to calculate them, are compared with the Road Safety Advisory System.
-	\item Performance testing -  Performance analysis is carried out to determine how fast the system is, and to determine what impacts the speed. The aim of this analysis is to ensure that the system is fully scalable. 
-	\item Usability testing - User evaluations are carried out to test the usability of the application. Participants were asked to perform a set of tasks using the application and raise any usability issues.
+	\item Performance testing -  Performance analysis was carried out to determine how fast the system is, and to determine what impacts the speed. The aim of this analysis is to ensure that the system is fully scalable. 
+	\item Usability testing - User evaluations were carried out to test the usability of the application. Participants were asked to perform a set of tasks using the application and raise any usability issues.
 \end{enumerate}
 
-\subsection{Testing Environment Specifications}
+\section{Testing and Evaluation Environment}
 
 Prior to testing, the application was deployed onto an EC2 instance provided by Amazon Web Services \citep{AmazonWebServices}. All testing was performed by accessing the application via this server. The Database was hosted on an RDS instance, also provided by Amazon Web Services. The specifications of these servers are presented in \autoref{tab:serverspecs} and \autoref{tab:dbserverspecs}.
 
@@ -845,11 +836,20 @@ Prior to testing, the application was deployed onto an EC2 instance provided by 
 	\end{tabular}
 \end{table}
 
+This is the intended final deployment of the Road Safety Advisory System, and its end users can currently access the application at \url{RouteRisks.co.uk} (\autoref{fig:routerisks}).
+
+\begin{figure}
+	\center
+	\includegraphics[scale=0.55]{routerisks}
+	\caption{Route Risks application accessed at \url{RouteRisks.co.uk}}
+	\label{fig:routerisks}
+\end{figure}
+
 \section{Functional Testing}
 
-Test cases were written to test each functional requirement specified in \autoref{sect:functReqs}. Each table specifies a test case, which consists of a description, test steps, expected outcome, and passing criteria. Tests were not written for FR5, FR9 and FR10 as they were not implemented due to the time constraints of the project.
+Test cases were written to test each functional requirement specified in \autoref{tab:FunctionalReqs}. Each table presented later in this section specifies a test case, which consists of a description, test steps, expected outcome, and passing criteria.
 
-Test cases 1 to 6 were designed to test the functionality of the application using only its user interface. Therefore, these tests were carried out in the latest versions of Google Chrome, Mozilla Firefox and Internet Explorer. They were also carried out on mobile Safari using an iPhone 5 in both vertical and horizontal mode. This approach is required in order to confirm that the application is compatible with different browsers and devices, which is necessary due to NFR1 and NFR8.
+Test cases 1 to 6 were designed to test the functionality of the application using only its user interface. Therefore, these tests were carried out in the latest versions of Google Chrome, Mozilla Firefox and Internet Explorer. They were also carried out on mobile Safari using an iPhone 5 in both vertical and horizontal mode. This approach is required in order to confirm that the application is compatible with different browsers and devices, which is necessary due to NFR1 and NFR8 (\autoref{tab:NonFunctionalReqs}).
 
 TC-007 requires the use of developer tools in the browser in order to inspect the response from the web server, so was only performed in Google Chrome. This test is necessary to ensure that the data filters are working correctly. The data filters are also (indirectly) tested in \autoref{sec:searchAnalysis} as different filters are used when analysing the accuracy of the collision search.
 
@@ -871,21 +871,21 @@ The remained of this section describes each test case. All of the test cases pas
 \begin{tabular}{| p{2.5cm} | p{11cm} |}
 	\hline
 	\textit{Test Case ID} & TC-002 \\ \hline
-	\textit{Requirement(s) Covered} & FR1, FR2, FR4 \\ \hline
+	\textit{Requirement(s) Covered} & FR1, FR2, FR6 \\ \hline
 	\textit{Description} & Check that statistics are calculated when searching UK road safety data using a route between two locations.  \\ \hline
 	\textit{Test Steps}& - Enter start/end locations and submit a search.
 	\newline - Verify that statistics including number of collisions, collisions per kilometre (CPKM), weighted CPKM, casualties and casualties per kilometre (CaPKM) are all calculated.
-	\newline - Verify that $\frac{Collisions}{Collisions Per KM} = \frac{Casualties}{Casualties Per KM} $
+	\newline - Verify that $\frac{Collisions}{Distance} = CPKM $ and $\frac{Casualties}{Distance} = CaPKM$
  \\ \hline
 	\textit{Expected Outcome} & The application uses the route to search for collisions and calculate the relevant statistics before presenting the results to the user.  \\ \hline
-	\textit{Pass Criteria} & The user can see each of the relevant statistics in a table. The same distance has been used to calculate CPKM and casualties per CaPKM. \\ \hline
+	\textit{Pass Criteria} & The user can see each of the relevant statistics in a table. The distance has been used to calculate CPKM and CaPKM. \\ \hline
 \end{tabular}
 
 
 \begin{tabular}{| p{2.5cm} | p{11cm} |}
 	\hline
 	\textit{Test Case ID} & TC-003 \\ \hline
-	\textit{Requirement(s) Covered} & FR1, FR2, FR8 \\ \hline
+	\textit{Requirement(s) Covered} & FR1, FR2, FR4 \\ \hline
 	\textit{Description} & Check that collision density is represented on an interactive map when searching for collisions between two locations.  \\ \hline
 	\textit{Test Steps}& - Enter start/end locations and submit a search.
 	\newline - Verify that the route is displayed on the map, with a clear indication of where most collisions occur.
@@ -898,7 +898,7 @@ The remained of this section describes each test case. All of the test cases pas
 \begin{tabular}{| p{2.5cm} | p{11cm} |}
 	\hline
 	\textit{Test Case ID} & TC-004 \\ \hline
-	\textit{Requirement(s) Covered} & FR1, FR2, FR6 \\ \hline
+	\textit{Requirement(s) Covered} & FR1, FR2, FR3, FR5 \\ \hline
 	\textit{Description} & Check that it is possible to immediately submit a new search after a previous search has completed. \\ \hline
 	\textit{Test Steps}& - Enter start/end locations and submit a search.
 	\newline - Verify that results returned are for the route entered.
@@ -912,7 +912,7 @@ The remained of this section describes each test case. All of the test cases pas
 \begin{tabular}{| p{2.5cm} | p{11cm} |}
 	\hline
 	\textit{Test Case ID} & TC-005 \\ \hline
-	\textit{Requirement(s) Covered} & FR1, FR2, FR3 \\ \hline
+	\textit{Requirement(s) Covered} & FR1, FR2, FR7 \\ \hline
 	\textit{Description} & Check that it is possible to filter collisions included in results by year. \\ \hline
 	\textit{Test Steps}& - Enter start/end locations, choose a selection of years, and submit a search.
 	\newline - Verify that results returned are for the route entered.
@@ -927,7 +927,7 @@ The remained of this section describes each test case. All of the test cases pas
 \begin{tabular}{| p{2.5cm} | p{11cm} |}
 	\hline
 	\textit{Test Case ID} & TC-006 \\ \hline
-	\textit{Requirement(s) Covered} & FR1, FR2, FR4, FR7 \\ \hline
+	\textit{Requirement(s) Covered} & FR1, FR2, FR6, FR8 \\ \hline
 	\textit{Description} & Check that it is possible to filter collisions included in results by severity, and that weighted CPKM is calculated correctly. \\ \hline
 	\textit{Test Steps}& - Enter start/end locations, select slight severity, and submit a search.
 	\newline - Verify that results returned are for the route entered and that the Weighted CPKM is equal to the CPKM.
@@ -945,7 +945,7 @@ The remained of this section describes each test case. All of the test cases pas
 \begin{tabular}{| p{2.5cm} | p{11cm} |}
 	\hline
 	\textit{Test Case ID} & TC-007 \\ \hline
-	\textit{Requirement(s) Covered} & FR1, FR2, FR3, FR7 \\ \hline
+	\textit{Requirement(s) Covered} & FR1, FR2, FR7, FR8 \\ \hline
 	\textit{Description} & Check the response from the server to ensure that date and severity are filtered correctly. \\ \hline
 	\textit{Test Steps}& - Access the Google Chrome Developer tools to view network requests. 
 	\newline - Enter start/end locations, choose a selection of severity levels and years, and submit the search.
@@ -971,7 +971,7 @@ In order to evaluate how successful the method used for collision searching is, 
 
 This section of the report includes a description of the methodology used to test the accuracy, and a discussion of the results.
 
-\subsection{Methodology}
+\subsection{Method}
 
 The accuracy of the application was tested by comparing the results of the Road Safety Advisory System (RSAS) with those manually obtained using Crash Map \citep{crashmap}. The following process was followed for each test route:
 
@@ -983,7 +983,7 @@ The accuracy of the application was tested by comparing the results of the Road 
 	\item Record the total number of collisions found, and the time taken to carry out the search (to the nearest second).
 \end{enumerate}
 
-Fifteen test routes were prepared for analysing the accuracy of the application. The locations of the routes were picked randomly from anywhere in the UK. These tests focused on short distance routes (all under 20km, with the majority under 10km) because there was not enough time available to carry out tests for long routes with Crash Map. The test routes are specified in \autoref{tab:accuracyroutes}.
+15 test routes were prepared for analysing the accuracy of the application. The locations of the routes were picked randomly from anywhere in the UK. These tests focused on short distance routes (all under 20km, with the majority under 10km) because manually counting CrashMap collisions is a tedious, time-consuming process that was not feasible for long routes within the timeframe of the project. The test routes are specified in \autoref{tab:accuracyroutes}.
 
 \begin{table}
 	\center
@@ -1012,7 +1012,7 @@ Fifteen test routes were prepared for analysing the accuracy of the application.
 
 \subsection{Results}
 
-The results of the tests are presented in \autoref{tab:accuracyresults}. For 4 of the 15 tested routes, the number of collisions found using both applications was the same. For 3 routes the number of collisions found differed by 1, and for 5 it differed by 2. The graph shown in \autoref{fig:graphaccuracy} demonstrates how the number of collisions found for a route differs between the two applications. There is a strong positive correlation between the two sets of results, and the line of best fit is close to $y=x$. This shows that, on average, the application returns the correct number of collisions. However, these results are not conclusive due to the small sample of routes tested. In order to form a more concrete conclusion about the accuracy, far more routes need to be tested, including those of longer distances.
+The results of the tests are presented in \autoref{tab:accuracyresults}. For four of the 15 tested routes, the number of collisions found using both applications was the same. For three of the routes, the number of collisions found differed by one, and for five it differed by two. The graph shown in \autoref{fig:graphaccuracy} demonstrates how the number of collisions found for a route differs between the two applications. There is a strong positive correlation between the two sets of results, and the line of best fit is close to $y=x$. This shows that, on average, the application returns the correct number of collisions. These results give confidence that the application is operating accurately, although more testing, including for longer routes, is required to improve the level of confidence in these preliminary results.
 
 \begin{table}
 	\center
@@ -1071,15 +1071,30 @@ It is important to understand why the system sometimes returns too many or too f
 	\label{fig:includedcollisionroute6}
 \end{figure}
 
-Whilst carrying out these tests, it was noticed that a large proportion of collisions are plotted far away from roads on both Crash Map and the RSAS. It is possible that the collision data provided is not accurate enough, which increases the difficulty of automatically filtering collisions by route. Another possible cause for these issues is the Google Maps API not correctly projecting the points onto the map. Further work is required in order to investigate these theories.
+Whilst carrying out these tests, it was noticed that a large proportion of collisions are plotted far away from roads on both Crash Map and the RSAS. It is possible that the collision data provided is not accurate enough, which increases the difficulty of automatically filtering collisions by route. Open data accuracy is a general concern, as discussed in the literature review (\autoref{sec:openDateBenefits&Challenges}). Another possible cause for these issues is the Google Maps API not correctly projecting the points onto the map. Further work is required in order to investigate these theories.
 
 \section{Performance}
 
-It is important to test the performance of the application for a number of routes in order to prove its scalability. It is reasonable to expect that longer routes will take longer to search as there is more data to process. However, it is important that the application is still able to respond in under 10 seconds for all routes, as specified by NFR5. 
+It is important to test the performance of the application for a number of routes in order to prove its scalability. It is reasonable to expect that longer routes will take longer to search as there is more data to process. However, it is important that the application is still able to respond in under 10 seconds for all routes, as specified by NFR4. 
 
-\subsection{Methodology}
+\subsection{Method}
 
-Twenty test routes were prepared for analysing the performance of the application. The locations of the routes were picked randomly from anywhere within the UK. The distance of the routes was highly influential for this process, as it was important to have a good variety. The routes vary in distance from 1.9km to 949km, with the majority under 50km as longer journeys are less likely to be important to users (e.g. councils looking to analyse routes within their county will not need to look at routes that are several hundreds of kilometres).
+Twenty test routes were prepared for analysing the performance of the application. The locations of the routes were picked randomly from anywhere within the UK. The distance of the routes was highly influential for this process, as it was important to have a good variety. The routes vary in distance from 1.9km to 949km, with the majority under 50km as longer journeys are less likely to be important to users (e.g. councils looking to analyse routes within their county will not need to look at routes that are several hundreds of kilometres). \autoref{fig:routerisksshort} and \autoref{fig:routeriskslong} show the results produced by Route Risks for the shortest (1.9km) and the longest (949km) routes used for the performance evaluation, respectively.
+
+
+\begin{figure}
+	\center
+	\includegraphics[scale=0.45]{routerisksshortdist}
+	\caption{Route Risks results for a short journey}
+	\label{fig:routerisksshort}
+\end{figure}
+
+\begin{figure}
+	\center
+	\includegraphics[scale=0.45]{routeriskslongdist}
+	\caption{Route Risks results for a long journey}
+	\label{fig:routeriskslong}
+\end{figure}
 
 The first tests focused purely on comparing response times for different distances. Hence, all severity levels and years were included in the searches to ensure a controlled experiment. Including data for all years and severity levels also ensures that the maximum amount of data is returned for each route, which should also lead to the worst-case response times. 
 
@@ -1092,7 +1107,9 @@ Response time was measured manually using a stop watch. The stop watch was start
 The results of the first set of tests are presented in \autoref{tab:performanceresults1}. As expected, there is a strong positive correlation between response times of the system and the distance of the route being analysed. Crucially, the longest route analysed completed in 6.1 seconds, which is considerably below the target of 10 seconds. \autoref{fig:graphrespdist} presents a graph to better demonstrate the relationship between distance and response time. Each of the results has been plotted and a line of best fit has been drawn using the data. This line can be used to estimate the response time for a route, given its distance. The equation of the line is as follows:
 $$ Response Time = 0.0057\times Distance + 1.14$$
 
-It is possible to use this equation to estimate what distance a route must be in order to exceed a response time of 10 seconds. This analysis suggests that searches for routes under 1500km in length will complete in under 10 seconds, assuming that the user's connection is not the bottleneck. The route from Land's End in South-West England to John O'Groats in North-East Scotland is widely considered to be the longest point-to-point route on the island of Great Britain, at a distance of 1348km. This suggests that the application will always respond in under 10 seconds, as no route in the UK is longer than 1500km. The route mentioned here was tested and the system responded in 6.3 seconds. 
+where the response time is expressed in seconds, and the distance in kilometres.
+
+It is possible to use this empirically-derived equation to estimate what distance a route must be in order to exceed a response time of 10 seconds. This analysis suggests that searches for routes under 1500km in length will complete in under 10 seconds, assuming that the user's connection is not the bottleneck. The route from Land's End in South-West England to John O'Groats in North-East Scotland is widely considered to be the longest point-to-point route on the island of Great Britain, at a distance of 1348km. This suggests that the application will always respond in under 10 seconds, as no route in the UK is longer than 1500km. The route mentioned here was tested and the system responded in 6.3 seconds. 
 
 \begin{table}
 	\center
@@ -1162,13 +1179,14 @@ The results for the second part of the performance analysis are presented in \au
 	\label{fig:graphrespyears}
 \end{figure}
 
-It is also worth consideration that other factors can impact the performance of the application, which may cause an increase in response times. A poor connection on the user's end may lead to slow download times which could significantly affect the performance for them. Furthermore, if there are a large number of users on the site concurrently, response times from the server may increase.
+It is also worth consideration that other factors can impact the performance of the application, which may cause an increase in response times. A poor connection on the user's end may lead to slow download times which could significantly affect the performance for them. Furthermore, if there are a large number of users on the site concurrently, response times from the server may increase. However, this problem can be addressed easily since Route Risks is deployed on public cloud infrastructure and can therefore be scaled up to run on multiple virtual machines, albeit at additional cost.
+
 
 \section{User Evaluation}
 
-Users often behave in unexpected ways which are difficult to anticipate during the design of an interactive application. When an application is deemed to be sufficient by the developer, it is necessary to test it with real users. A small summative evaluation was carried out on the final version of the Road Safety Advisory System in order to evaluate the usability. 
+When an application is deemed to be sufficient by the developer, it is necessary to test it with real users \citep{Cooper2007}. A small summative evaluation was carried out on the final version of the Road Safety Advisory System in order to evaluate the usability. 
 
-\subsection{Methodology}
+\subsection{Method}
 
 The user evaluations were carried out by asking users who had no prior knowledge of the application to complete a set of tasks. Users were only given a brief introduction to the site, which purposely held back information so that they would read help messages or the 'about' page if necessary. This was done in order to test NFR3 and NFR4, which state that users should be able to use the application without external assistance, and that results should be presented in a user-friendly manner. Users were asked to discuss their thought process while carrying out the tasks by using a concurrent verbal protocol. Any usability issues found were discussed and given a severity rating using the scale defined by Nielsen \citep{Nielsen1995}; 1 for cosmetic problems, 2 for minor usability problems, 3 for major usability problems and 4 for usability catastrophes.
 
@@ -1188,7 +1206,23 @@ These routes were chosen in order to see how users would use the statistics when
 
 \subsection{Results}
 
-A total of six participants took part in the user evaluation. The usability issues raised are presented in \autoref{tab:userevalprobs}. A total of 7 unique issues were raised, and all of these were assigned severity ratings of 1 or 2. One user did not raise any issues. The most common problem was that users wanted to see the distance of the routes when performing the comparison. As this issue was raised by 50\% of the participants, it was deemed a high priority, so a fix was immediately implemented. Other issues were considered less important as they were only raised by a single user and were not assigned a high severity rating. However, these issues are still worth consideration for future work.
+A total of six participants took part in the user evaluation. The usability issues raised are presented in \autoref{tab:userevalprobs}. A total of 7 unique issues were raised, and all of these were assigned severity ratings of 1 or 2. One user did not raise any issues. The most common problem was that users wanted to see the distance of the routes when performing the comparison. As this issue was raised by 50\% of the participants, it was deemed a high priority, so a fix was immediately implemented. This was done by adding a 'distance' column to the results table. \autoref{fig:resultstablebefore} shows the results table before this fix, and \autoref{fig:resultstableafter} shows the changes made following the user feedback. In addition to adding a 'distance' field, the fields were moved into a more logical order.
+
+\begin{figure}
+	\center
+	\includegraphics[scale=0.75]{resultstablebefore}
+	\caption{Route Risks results table before user evaluation}
+	\label{fig:resultstablebefore}
+\end{figure}
+
+\begin{figure}
+	\center
+	\includegraphics[scale=0.75]{resultstableafter}
+	\caption{Route Risks results table following usability improvement}
+	\label{fig:resultstableafter}
+\end{figure}
+
+Other issues were considered less important as they were only raised by a single user and were not assigned a high severity rating. However, these issues are still worth consideration for future work.
 
 \begin{table}
 \caption{User Evaluation Problems}
@@ -1224,27 +1258,31 @@ The technical experience of the users also explains why so many ignored the help
 
 \section{Maintainability}
 
-It is important that the RSAS is maintainable, so that new datasets can be added in the future. New datasets are released annually, and will need to be immediately added to the application to keep it relevant and up-to-date. The database structure used for the RSAS is very simple and easily allows for the addition of new data. It uses one table, which is based on the 'accidents' CSV file provided by the UK Department for Transport for the years 2005 to 2013. When new data is released, provided the data is in the same format, it will be possible to add it directly to the existing table by running a script. The maintainability of the application could be improved in the future by looking into automating this process.
+It is important that the RSAS is maintainable, so that new datasets can be added in the future. New datasets are released annually, and will need to be immediately added to the application to keep it relevant and up-to-date. The database structure used for the RSAS is very simple and easily allows for the addition of new data. It uses one table, which is based on the 'accidents' CSV file provided by the UK Department for Transport for the years 2005 to 2013. When new data is released, provided the data is in the same format, it will be possible to add it directly to the existing table by running a script. The script used for importing the 2005-2013 data can be reused here, assuming that the structure of the CSV file is the same. The maintainability of the application could be improved in the future by looking into automating this process.
 
 \section{Summary}
 
 This chapter of the report analysed and evaluated the final version of the Road Safety Advisory System. Functional tests were carried out to ensure that the requirements of the system were satisfied. An in-depth evaluation was then carried out to assess the accuracy of the collision searching functionality. The performance of the application was tested thoroughly to ensure that it is scalable and responds in an acceptable time for all possible requests. A usability study was carried out to ensure that users found the application easy and satisfying to use. 
 
-\chapter{Conclusion}
+\chapter{Conclusion and Future Work}
 
-\section{Evaluation of Objectives}
+\section{Conclusion}
 
 The purpose of this project was to build a web application that analyses the safety of UK roads. The application needed to differ significantly from existing applications by using new methods for analysing the road safety data. Based on the evaluation of existing applications, and the personas and scenarios created, it was decided that the application should feature advanced searching functionality that analyses road safety data for user-specified routes. 
 
-Implementing this advanced searching functionality proved to be the most challenging aspect of the project. Issues with accuracy and performance had to be overcome before the solution was deemed to be acceptable. The evaluation of the system showed that the accuracy of results is not perfect, but the results do generally reflect the data. It is not possible to improve the accuracy further with the approach used, due to issues with the accuracy of the road safety data or the methods used by the Google Maps API to project the points onto the map. Evaluation of the performance found that the response time of the system never exceeds 10 seconds, even when analysing very long routes.
+Implementing this advanced searching functionality proved to be the most challenging aspect of the project. Issues with accuracy and performance had to be overcome before the solution was deemed to be acceptable. The evaluation of the system showed that, while the accuracy is not perfect, the results closely approximate the data. It is not possible to improve the accuracy further with the approach used, due to issues with the accuracy of the road safety data or the methods used by the Google Maps API to project the points onto the map. Evaluation of the performance found that the response time of the system never exceeds 10 seconds, even when analysing very long routes.
 
 Another objective of the project was to include an interactive map that highlights collision hotspots. This was successfully implemented using the Google Maps API. When a user searches for a route, it is drawn onto the map, and a heatmap that visualises the intensity of collisions on the route is rendered. Red areas of the heatmap represent collision hotspots for that route. This provides a good visual representation of the road safety data, and all participants in the user evaluation were able to interpret the heatmap. 
 
-The application developed has been made publicly available at \textit{routerisks.co.uk}. In order to advertise the application, it was submitted to \textit{data.gov.uk}, which includes a library of 350+ applications that use Open Data. It is envisaged that people interested in Open Data will find the application here and use it to analyse routes of interest to them. Councils may also find the application, and use it to analyse which roads are the most dangerous within their county. It is hoped that the application can be used to assist decisions made regarding which roads need safety improvements. 
+The application developed has been made publicly available at \url{routerisks.co.uk}. Route Risks is published on \url{data.gov.uk}, which includes a library of 350+ applications that use Open Data. It is envisaged that people interested in Open Data will find the application here and use it to analyse routes of interest to them. Councils may also find the application, and use it to analyse which roads are the most dangerous within their county. It is hoped that the application can be used to assist decisions made regarding which roads need safety improvements. 
 
-The technologies used for the application were all open-source, with the exclusion of the Google Maps API. The application is deployed using a LAMP environment, meaning it uses Linux (Ubuntu), Apache, MySQL and PHP; all of which are open-source. The Google Maps API is free to use for publicly available sites (providing the usage limits are not exceeded), so the only costs associated with the application are for web hosting. 
+The technologies used for the application are all open-source, with the exception of the Google Maps API. The application is deployed using a LAMP environment, meaning it uses Linux (Ubuntu), Apache, MySQL and PHP; all of which are open-source. The Google Maps API is free to use for publicly available sites (providing the usage limits are not exceeded), so the only costs associated with the application are for web hosting. The PHP framework used, MINI 1 \citep{mini}, is recommended for projects with low server-side complexity like this, as it is easy to use and set up prototypes in a short period of time. However, more complex projects should look at more advanced frameworks. The Google Maps API is also recommended, as it is free to use, easy to setup, and provides additional libraries with advanced features.
 
 The source code of the application is publicly available on GitHub \citep{Taylor2015}. A link to the repository is included on the website's 'about' page, so that users who are interested in the application will be able to find it. It is envisaged that other developers may use concepts from this project in their own applications.
+
+The agile development methodology used for this project was very useful, and is recommended for similar projects. With the restricted timeframe available, and the unknowns involved with the development process, breaking the project down into increments was essential. This incremental approach ensured that a functional application was delivered.
+
+The project was as expected in terms of complexity and effort required. The main complexity of the project came from filtering the road safety data by route, which was expected as this had not been implemented by other applications. This concept clearly brings great benefits when it comes to analysing the data, and should be used in similar projects. The experience of using Open Data was good, but there was little challenge as only one dataset is used. Potential issues with the quality of the data have been raised, which need to be investigated in future work.
 
 \section{Future Work}
 
@@ -1265,6 +1303,14 @@ Accessibility problems with the application should be found and addressed. A kno
 \subsection{Automatically Retrieve New Datasets}
 
 When new road safety datasets are released, the current application will not be updated until an administrator downloads the file and manually updates the database. Future effort could be spent on developing a method for automating this process. \textit{Data.gov.uk} provides an API for accessing its data catalogue through both RESTful and functional interfaces \citep{Data.gov.uk}, which would be useful for this. 
+
+\subsection{Other Countries}
+
+The application could be extended to analyse routes in other countries. The complexity in this task would come from integrating multiple datasets from different sources. If the data could be imported into the current data model, the changes to the application would be minimal as the Google Maps API includes mapping and direction services for over 100 countries \citep{Googlea}. Any possible impact on performance would need to be considered before adding more data. It may be necessary to implement caching or pre-computation of popular routes to improve response times.
+
+\subsection{Integration With Other Services}
+
+The application could be integrated with other web services to provide more in-depth analysis. For example, weather services could be used to get a forecast for the specified route at a given time. This data could then be used in the collision analysis, as all collisions have weather data associated with them. This could be a useful method for analysing the safety of roads at a certain point in time.
 
 \bibliography{library}
 
