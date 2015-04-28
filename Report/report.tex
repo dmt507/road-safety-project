@@ -21,7 +21,7 @@
 \wordcount{19044}
 
 
-\abstract{As the movement behind Open Data (public-organisation data made freely available for exploitation and redistribution) continues to gain momentum, more and more web applications are being developed to exploit this data; creating useful tools for governments, businesses and the general public. Road safety data published by the UK Department for Transport is used by several web applications, all of which are very similar in purpose. These applications lack advanced search functionality, so it is not possible to analyse a specific route. Route Risks, the application developed for this project, searches for collisions that have occurred on user-specified road journeys. The results are used to highlight collision hotspots on the route and calculate useful statistics. These results can be used as a basis for comparing the safety of different roads. The final version of the application is publicly available and can be accessed at \url{routerisks.co.uk}. Route Risks is published in the application catalogue on the UK Government's Open Data application portal, \url{data.gov.uk}. }
+\abstract{As the movement behind Open Data---public-organisation data made freely available for exploitation and redistribution---continues to gain momentum, a growing number of  applications are being developed to exploit this data, creating useful tools for governments, businesses and the general public. Road safety data published by the UK Department for Transport is used by several of these applications, all of which provide simple visualisation facilities. However, these applications lack advanced search functionality, so it is not possible to analyse a specific route. \emph{Route Risks}, the road safety advisory system developed by this project, addresses this limitation by supporting searches for collisions that have occurred on user-specified road journeys. The results are used to highlight collision hotspots on the route, and include useful statistics. These results can be used as a basis for comparing the safety of different roads, both by individual drivers and by public organisations responsible for improving the safety of road traffic. The final version of the application is publicly available at \url{http://routerisks.co.uk}. Route Risks is also published in the application catalogue on the UK Government's Open Data application portal, \url{http://data.gov.uk/apps}.}
 
 
 \acknowledgements{ 
@@ -77,7 +77,7 @@ Another aim was to establish a 'framework' that can be followed by other develop
 Following on from these aims, the objectives of this project are outlined as follows:
 
 \begin{itemize}
-	\item Develop a web application, the Road Safety Advisory System, that uses publicly available road safety data published by the UK Department for Transport to analyse the safety of UK roads.
+	\item Develop a road safety advisory system called \emph{Route Risks}, i.e., a web application that uses publicly available road safety data published by the UK Department for Transport to analyse the safety of UK roads.
 	\item Include an interactive map in the application and use it to highlight collision hotspots.
 	\item Ensure that the application expands on existing applications in the field by implementing a new method for analysing the road safety data.
 	\item Make the final application publicly available, and submit it to \textit{data.gov.uk} to be included in their application library.
@@ -89,15 +89,15 @@ Following on from these aims, the objectives of this project are outlined as fol
 \section{Report Structure}
 The remainder of this report is structured as follows:
 
-Chapter 2 provides a background of Open Data, and a review of the literature associated with the Open Data movement. It also covers more general areas of software development, including web application technologies, software engineering methodologies and design of interactive applications.
+Chapter 2 provides a background of Open Data, and a review of the literature associated with the Open Data movement. It also covers more general areas of software development, including web application development, software engineering methodologies, design of interactive applications and Mapping APIs.
 
-Chapter 3 describes the functional and non-functional requirements gathered to develop the road safety advisory system.
+Chapter 3 describes and justifies the functional and non-functional requirements gathered to develop the road safety advisory system.
 
-Chapter 4 presents the system architecture, development process, technology overview and interface designs. All design decisions made will be explained in this chapter.
+Chapter 4 presents the system architecture, request handling process, and interface designs.
 
-Chapter 5 describes the components created and techniques used during the implementation phase. It also describes the testing process followed, and the outcomes of testing.
+Chapter 5 describes the technologies used and development process followed. It also explains the components created and techniques used during the implementation phase.
 
-Chapter 6 provides an evaluation of the application. This includes a discussion of which requirements were met, along with an analysis of the usability, maintainability and limitations of the application.
+Chapter 6 provides an evaluation of the application. This includes functional testing and in depth analysis of the accuracy and performance of Route Risks. It also describes the user evaluation carried out, and has a brief discussion regarding maintainability.
 
 Chapter 7 summarises the achievements of the project and presents suggestions for future work in this area.
 
@@ -333,17 +333,18 @@ A fundamental objective of this project involves using an interactive map to ana
 
 Google introduced the first mapping API in 2005. The Google Maps API \citep{Google} enables the overlaying of data on top of tiled map layers from Google Maps. It brings the look and feel of Google Maps, that many internet users are already familiar with, to third-party applications. The API can be used by most websites free of charge, but charges will incur if the site consistently generates high traffic (25,000 map loads per day for 90 consecutive days). Google provide a number of services and libraries that can be used by developers looking for advanced functionality. Services include directions, geocoding and street view. There is a geometry library that provides "utility functions for the computation of geometric data on the surface of the Earth" (e.g. you can determine whether a given point is near a line). The visualisation library includes 'heat map layer' functionality for visualising data intensity at geographical points.
 
-Microsoft's Bing Maps API \citep{Microsoft} is similar in scope to Google's API. Bing Maps also offers a free usage tier, with a limit of 125,000 cumulative billable transactions within any 12-month period. It was released five years after the Google Maps API and is still behind in terms of functionality offered, hence its lower popularity. There is a considerable amount of documentation available online, but it isn't structured or presented as well as Google's, making it far more frustrating to use. The core API doesn't have advanced geometry and visualisation libraries like Google Maps API. However, it is possible to import third party modules that offer some of this functionality (such as heat maps). 
+Microsoft's Bing Maps API \citep{Microsoft} is similar in scope to Google's API. Bing Maps also offers a free usage tier, with a limit of 125,000 cumulative billable transactions within any 12-month period. It was released five years after the Google Maps API and is still behind in terms of functionality offered, hence its lower popularity. There is a considerable amount of documentation available online, but it is not structured or presented as well as Google's, making it far more frustrating to use. The core API does not have advanced geometry and visualisation libraries like Google Maps API. However, it is possible to import third party modules that offer some of this functionality (such as heat maps). 
 
 OpenLayers \citep{OpenLayers} is an open source mapping API that was initially released in 2006. It is very flexible and powerful but also complex and large. It has an extensive collection of documentation and samples, some of which can be difficult for beginners to grasp. It has a large developer community behind it who have provided plenty of tips and example uses. OpenLayers does not have its own directions service, making route calculation a difficult task. OpenLayers is far more complex than the alternatives and more suitable for GIS experts. A lot of the extra functionality that it offers is not required for a project like this.
 
 From this analysis, it is clear that Google Maps offers the most benefits to this type of project. It was created first, and has consistently grown to keep ahead of the competition. Detailed documentation is available online, and there is a large community of developers who are willing to provide support. The heat map functionality will be useful for visualising the density of collisions, thus highlighting collision hotspots. It is also notable that three of the existing applications analysed use the Google Maps API; demonstrating its popularity in the field.
 
+\section{Summary}
+This chapter looked at the background of the Open Data movement, and the benefits and challenges that using Open Data can bring. It analysed four applications that use road safety data to gain an understanding of what has already been achieved in the field, and to form motivation for the requirements of Route Risks. Aspects of web application development and mapping APIs, were discussed and analysed to motivate design decisions made later in the report. Software development methodologies were looked at to help decide on the approach used for this project. Interactive design techniques were researched and discussed in order to ensure that the design of  Route Risks followed these key principles. The next chapter uses these findings to create personas and scenarios, and to define the functional and non-functional requirements of Route Risks.
+
 \chapter{Problem Analysis}
 
-\section{Introduction}
-
-This chapter will analyse the problem presented by the project, with a focus on using the goal-directed design process \citep{Cooper2007}. Firstly, personas will be created to represent potential users of the application. Scenarios describing how these personas would ideally interact with the application in order to achieve their goals will then be written. Finally, the functional and non-functional requirements of the application will be defined, using the scenarios and findings of the literature review as motivation. 
+This chapter analyses the problem presented by the project, with a focus on using the goal-directed design process \citep{Cooper2007}. Personas were created to represent potential users of the application. Scenarios describing how these personas would ideally interact with the application in order to achieve their goals are then presented. Finally, the functional and non-functional requirements of the application are defined and justified, using the scenarios and findings of the literature review as motivation. 
 
 \section{Personas} 
 
@@ -473,22 +474,46 @@ Both NFR1 and NFR7 address the compatibility characteristic. NFR2, NFR3 and NFR5
 \label{tab:NonFunctionalReqs}
 \end{table}
 
+\section{Summary}
+This chapter defined three different users of the road safety advisory system, and their motivations for using the application. Scenarios were then presented, describing ideal user experiences for each persona. Based on these scenarios, objectives of the project, and findings of the literature review, the functional requirements of Route Risks were defined. Non-functional requirements were also defined using software quality standards. The next chapter uses these requirements to design Route Risks.
+
 \chapter{Design}
 
 \section{System Architecture}
 
+The high-level architecture of the Route Risks application is presented in \autoref{fig:componentdiagram}.
+
+The Request Handler at the core of the application provides the 'Collision Search' interface that clients can use to request information about collisions on a specified route. This component assembles responses to client requests by using the other components of the application as follows.
+
+The Request Parser provides an interface for extracting the relevant information from a user's request. In particular, this will focus on getting the route start and end locations (FR2), the selected years (FR7) and severity levels (FR8).
+
+The Response Generator is responsible for producing collision statistics (FR6 and FR9) and a visual representation of collision hotspots (FR4) using the results of the collision query generated by the Collision Query Engine. The Mapping API's 'Generate Visual Output' interface is required to create the visual representation of collision hotspots.
+
+The Collision Query Engine is responsible for finding all collisions on the route specified by the user (FR2). The Route Query Engine's 'Find Route' interface is used to get the route for the user's request. This route is then used to search the Collision Database using the 'Get Collisions' interface. This search must also use the selected years and severity levels from the user's request. Finally, the Mapping API's 'Filter Collisions' interface is used to refine the collisions found. 
+
+The Route Query Engine takes the user's specified route and gets the directions using the Mapping API's 'Get Directions' interface.
+
+The Mapping API needs to provide interfaces for: finding the route between two locations, filtering collisions to only include those close to the route (FR2), and generating a visual output that represents collision density (FR4). The decision on which third-party mapping API to use during the implementation was based on the need for these interfaces.
+
+\begin{figure}
+	\center
+	\includegraphics[scale=1]{componentdiagram}
+	\caption{Component diagram for Route Risks}
+	\label{fig:componentdiagram}
+\end{figure}
+
 \section{Request Handling}
 
-The activity diagram in \autoref{fig:activitydiagram} depicts the operations carried out to handle a user request for details about collisions on a specified route. The diagram is partitioned into five sections in order to represent where each of the activities take place. These sections include: the user's view of the application, the user's web browser, the Road Safety Advisory System's application and database servers, and the mapping service. The activities are defined as follows:
+The activity diagram in \autoref{fig:activitydiagram} depicts the operations carried out to handle a user request for details about collisions on a specified route. The diagram is partitioned into five sections in order to represent where each of the activities take place. These sections include: the user's view of the application, the user's web browser, the road safety advisory system's application and database servers, and the mapping service. The activities are defined as follows:
 
 \begin{enumerate}
 	\item \textbf{Submit search} - The user enters their parameters and submits a search.
 	\item \textbf{Validate user request} - Validation tests are run the user's search parameters.
-	\item \textbf{Submit directions request} - If the user's search is valid, the locations entered are submitted to the Google Directions Service in order to find a route.
-	\item \textbf{Get directions} - The Directions Service receives the request and attempts to find a route for the provided locations.
+	\item \textbf{Submit directions request} - If the user's search is valid, the locations entered are submitted to the Mapping Service in order to find a route.
+	\item \textbf{Get directions} - The Mapping Service receives the request and attempts to find a route for the provided locations.
 	\item \textbf{Send response} - The results of the previous step are used to form a response, before sending it back to the user's browser.
-	\item \textbf{Receive directions response} - The response from the Directions Service is received and checked.
-	\item \textbf{Submit collision search} - If a route was found, the response data is processed to get the required data for a collision search. A request is then submitted to the Road Safety Advisory System application server.
+	\item \textbf{Receive directions response} - The response from the Mapping Service is received and checked.
+	\item \textbf{Submit collision search} - If a route was found, the response data is processed to get the required data for a collision search. A request is then submitted to the road safety advisory system's application server.
 	\item \textbf{Submit database query} -  The application server receives the request, processes the data, and creates a query which is submitted to the database server.
 	\item \textbf{Execute database query} - The database server receives the request, and executes the query on the road safety data.
 	\item \textbf{Return query results} - The database server sends the query results to the application server.
@@ -502,23 +527,23 @@ The activity diagram in \autoref{fig:activitydiagram} depicts the operations car
 \begin{figure}
 	\center
 	\includegraphics[scale=0.65]{activitydiagram}
-	\caption{Activity diagram for request handling}
+	\caption{Activity diagram demonstrating request handling in Route Risks}
 	\label{fig:activitydiagram}
 \end{figure}
 
 \section{Interface Design}
 
-As discussed in the literature review, the design of a successful web application must focus on user interaction. It is important to follow common design conventions when creating the user interface for a web application, such as those mentioned by Lynch and Horton \citep{Lynch2009}. This section discusses the design of the interface for the road safety advisory system, with justifications for each design decision made. All wireframes presented in this section were created using Lucidchart \citep{LucidSoftware}.
+As discussed in the literature review, the design of a successful web application must focus on user interaction. It is important to follow common design conventions when creating the user interface for a web application, such as those mentioned by Lynch and Horton \citep{Lynch2009}. This section discusses the design of the interface for Route Risks, with justifications for each design decision made. All wireframes presented in this section were created using Lucidchart \citep{LucidSoftware}.
 
-The wireframe for the home page of the application can be seen in \autoref{fig:homewireframe}. The menu at the top of the page includes the site name and links to the pages of the website; Home and About. The decision was made to include the application itself on the home page as users are likely to expect immediate access to it. There is a brief notice at the top of the page explaining how to operate the application in case it isn't immediately obvious to a user. A more detailed description of the application is included on the 'About' page in order to keep the home page as uncluttered as possible. 
+The wireframe for the home page of the application can be seen in \autoref{fig:homewireframe}. The menu at the top of the page includes the site name and links to the pages of the website; Home and About. The decision was made to include the application itself on the home page as users are likely to expect immediate access to it. There is a brief notice at the top of the page explaining how to operate the application in case it is not immediately obvious to a user. A more detailed description of the application is included on the 'About' page in order to keep the home page as uncluttered as possible. 
 
 The main area of the page is split between search parameters and results. These are displayed alongside each other, with 25\% of the width used for parameters and 75\% for results. The results are allocated a larger section of the page as they are the main focus of the application. This creates a visual hierarchy whereby the results, and in particularly the interactive map, will dominate the interface. Displaying the empty results table and blank map on the home page is an example of feedforward, as it helps a user understand what will happen when they submit a search. A user who has never used the application before will immediately expect the statistics in the table to be calculated, and for some representation of the results to be displayed on the map. 
 
-All search parameters are presented in a panel on the left-hand side of the page. The location text fields are displayed at the top, as this is the key information required from the user in order to perform a search. Sample text is included in the field to make it clear that the user should be entering an address. Collision data is filtered by severity and year by using checkboxes. All severity levels and the last 3 years are checked by default. This is a design decision aimed at saving users time, as it is believed that most users won't be interested in data from more than 3 years ago. The submit button is blue in order to draw attention to it and signify that is the primary action on the page.
+All search parameters are presented in a panel on the left-hand side of the page. The location text fields are displayed at the top, as this is the key information required from the user in order to perform a search. Sample text is included in the field to make it clear that the user should be entering an address. Collision data is filtered by severity and year by using checkboxes. All severity levels and the last 3 years are checked by default. This is a design decision aimed at saving users time, as it is believed that most users will not be interested in data from more than 3 years ago. The submit button is blue in order to draw attention to it and signify that is the primary action on the page.
 
 \begin{figure}
 	\center
-	\includegraphics[scale=0.7]{HomePageWireframe}
+	\includegraphics[scale=0.8]{HomePageWireframe}
 	\caption{Wireframe for home page}
 	\label{fig:homewireframe}
 \end{figure}
@@ -527,7 +552,7 @@ Some statistic names are abbreviated as they are quite long and would make the t
 
 \begin{figure}
 	\center
-	\includegraphics[scale=0.7]{ResultsWireframe}
+	\includegraphics[scale=0.8]{ResultsWireframe}
 	\caption{Wireframe for displaying search results}
 	\label{fig:resultswireframe}
 \end{figure}
@@ -536,14 +561,14 @@ The final key design issue involves displaying error messages for the user. If a
 
 \begin{figure}
 	\center
-	\includegraphics[scale=0.7]{ErrorWireframe}
+	\includegraphics[scale=0.8]{ErrorWireframe}
 	\caption{Wireframe for displaying error messages}
 	\label{fig:errorwireframe}
 \end{figure}
 
 \section{Summary}
 
-This chapter discussed the design decisions made when creating the Road Safety Advisory System. An activity diagram was created to demonstrate the flow of control when handling requests within the system. Designs for the user interface were presented and discussed. The next chapter focuses on the implementation of the system designed in this chapter.
+This chapter discussed the design of the road safety advisory system. A component diagram is used to represent the high-level architecture required for the system to meet its requirements. An activity diagram was created to demonstrate the flow of control when handling requests within the system. Designs for the user interface were presented and discussed. The next chapter focuses on the implementation of the system designed in this chapter.
 
 \chapter{Implementation}
 
@@ -553,7 +578,7 @@ This section of the report provides a brief discussion of the technologies used 
 
 \subsection{Google Maps API}
 
-The Google Maps API \citep{Google} was compared with Bing Maps and OpenLayers in the literature review. The findings suggested that Google Maps would be the ideal mapping API for this project. This section justifies the decision made by explaining how the Google Maps API provides the interface specified by the design.
+The Google Maps API \citep{Google} was compared with Bing Maps and OpenLayers in the literature review. The findings suggested that Google Maps would be the ideal mapping API for this project. This section justifies the decision made by explaining how the Google Maps API provides the interfaces specified in the design.
 
 The Google Maps API features a Directions Service that receives direction requests and returns computed results. The response contains all relevant information about the route, including distance, duration, an overview path, and latitude/longitude coordinates along the route. This response can be handled by the developer or directly rendered on the map. Route origins and destinations may be entered as text strings or as latitude/longitude values. 
 
@@ -587,9 +612,9 @@ As discussed in the literature review, LAMP is a common open source sever enviro
 
 The road safety advisory system was developed using an agile development process. Agile methods are "incremental development methods in which the increments are small and, typically, new releases of the system are created and made available to customers every two or three weeks" \citep{Sommerville2005}. Each increment was designed to satisfy a set of functional requirements, and delivering a usable release of the application. This approach was important as it ensured a working final application, even if some requirements were not satisfied. The importance ratings assigned to the functional requirements in \autoref{tab:FunctionalReqs} helped to prioritise which pieces of functionality would be delivered in each increment. At the end of each increment, thorough system testing was completed to ensure that both new features, and features from previous increments, were all functioning correctly. Any significant issues were addressed before moving on to the next increment. 
 
-Three 'essential' increments of the application were designed, each focusing on high/medium importance functional requirements. A further 'nice to have' increment was planned, which focused on the low importance requirement, FR9. This increment was not implemented due to the time constraints imposed on the project, and thus is included as future work. The three essential increments were implemented successfully and are described in the remainder of this section.
+Three 'essential' increments of the application were designed, each focusing on components specified in the design, and the high/medium importance functional requirements. A further 'nice to have' increment was planned, which focused on the low importance requirement, FR9. This increment was not implemented due to the time constraints imposed on the project. The three essential increments were implemented successfully and are described in the remainder of this section.
 
-The first increment of the system focuses on satisfying FR1, FR2, FR3, FR5 and FR6. It is important to satisfy FR1 and FR2 initially as they are both of high importance to the system, and all other requirements are dependant on this functionality. The successful implementation of FR6 is crucial to this increment as this proves to the end user that FR1 and FR2 have been satisfied. Outputting these statistics ensures that a usable release of the application is created. The interface design should present search parameters and results alongside each other (FR5), making it possible to immediately submit a new search after a previous search has finished, thus satisfying FR6. The following steps outline the development process for this increment:
+The first increment of the system focuses on implementing each of the components specified in the design in order to create a functional version of the application. This excludes the 'Generate Visual Output' interface for the mapping API, as this is not required for a fully functional application. The following steps outline the development process for this increment:
 
 \begin{enumerate}
 	\item Create a table for collision data in the MySQL database.
@@ -600,13 +625,13 @@ The first increment of the system focuses on satisfying FR1, FR2, FR3, FR5 and F
 	\item Create a table that displays the statistics for the user.
 \end{enumerate}
 
-The second increment of the system focuses on FR4, as this is the only remaining functional requirement of high importance. The following steps outline the development process for this increment:
+The second increment of the system focuses on adding the 'Generate Visual Output' interface, as this is necessary to satisfy the only remaining functional requirement of high importance. The following steps outline the development process for this increment:
 \begin{enumerate}
 	\item Add an interactive map to the application using the Google Maps API.
 	\item Develop functionality that uses the coordinates of collisions on the route to create a heatmap using the Google Maps visualisation library.
 \end{enumerate}
 
-The third increment of the system addresses FR7 and FR8. These requirements are both of medium importance, and it is logical to include them in the same increment as they both involve adding data filters. The following steps outline the development process for this increment:
+The third increment of the system includes upgrades for the Request Parser and Collision Query Engine, to make the system filter results using the user's specified severity levels and years. The following steps outline the development process for this increment:
 \begin{enumerate}
 	\item Update the search form to include checkboxes for all severity levels and years.
 	\item Modify database query to only include results for the selected severity levels and years.
@@ -614,11 +639,11 @@ The third increment of the system addresses FR7 and FR8. These requirements are 
 
 \section{Components}
 
-This section describes some of the key components of the Road Safety Advisory System. The approach to developing these features is discussed, with an explanation of decisions made and outcomes of these decisions. 
+This section describes some of the key components of the road safety advisory system. The approach to developing these features is discussed, with an explanation of decisions made and outcomes of these decisions. 
 
 \subsection{Collision Search}
 
-The most complex feature of the Road Safety Advisory System is the collision search. Searching for collisions by route has not been achieved in any existing web applications, so a new approach needed to be designed and developed. 
+The most complex feature of the road safety advisory system is the collision search. Searching for collisions by route has not been achieved in any existing web applications, so a new approach needed to be designed and developed. 
 
 The first step in this process involved making the application find the route using the Google Maps API Directions Service. An example of using this is provided in the API documentation \citep{Google}. A HTML form was created with fields for the start and end locations of a route. On submission, a JavaScript function is called to handle the request. The request is validated to ensure that the form is nonempty, before sending a request to the Directions Service. If a route is not found, an error message is dynamically inserted into the page and the search is stopped. 
 
@@ -682,7 +707,7 @@ Whenever a collision is determined to be on the route, a weight is assigned to i
 
 Filters were required for the search form so that users can specify year and severity of collisions to be included in the results. The first step of the implementation involved adding checkboxes to the search form for all available options. Validation had to be added to check that at least one severity level and at least one year has been selected before submitting a search. The validation is performed on client-side using JavaScript as soon as the form is submitted. If the validation fails, an error message explaining the problem is inserted into the page using jQuery, and the search is halted. 
 
-If the validation passes, the selected options are inserted into two arrays, one for years and one for severity levels. These arrays are included as additional parameters when the Ajax request is sent to the server to find collisions. The model doesn't directly insert the arrays into the SQL query, as this would make the application vulnerable to SQL injections. To avoid this issue, a prepared statement is used as it allows you to include placeholders in the SQL. Strings containing comma-separated '?' symbols, with each '?' representing an element in the original array are dynamically created. These strings are added to the SQL query, and when the query is executed, the real values from the original arrays are inserted safely.
+If the validation passes, the selected options are inserted into two arrays, one for years and one for severity levels. These arrays are included as additional parameters when the Ajax request is sent to the server to find collisions. The model does not directly insert the arrays into the SQL query, as this would make the application vulnerable to SQL injections. To avoid this issue, a prepared statement is used as it allows you to include placeholders in the SQL. Strings containing comma-separated '?' symbols, with each '?' representing an element in the original array are dynamically created. These strings are added to the SQL query, and when the query is executed, the real values from the original arrays are inserted safely.
 
 \section{Techniques Used}
 
@@ -763,7 +788,7 @@ The algorithm returns a new array, \textit{newRouteSteps}. The new steps are cre
 \item A \textit{lat\_lngs} field that contains an array of coordinates for the step (as latitude and longitude pairs).
 \end{itemize}
 
-The algorithm begins by initialising \textit{stepCounter}, a variable that counts how many steps have been created so far by the algorithm, to 0. The for loop in lines 3-34 iterate through all route steps. The distance of the current step and the array of coordinates are assigned to variables. A check is then made to see if the distance of the step is over 10km (line 6). If it is under 10km, the bounds of the step are calculated and it is added to the array of new steps with no further changes (lines 30-31). If the step is over this distance, it must be split into multiple smaller steps. First of all, the number of new steps is calculated by dividing the distance by 10km and rounding up to the nearest whole value (line 7). It then calculates how many sets of coordinates should be assigned to each new step (line 9). The for loop in steps 11-28, creates each new route step. The while loop in lines 14-24 copies coordinates from the original step to the new step. The loop's conditions make it exit when the step has the maximum number of coordinates, or if there are no more coordinates to copy from the original step (line 14). After each pair of coordinates is added, a check is made to see if the new step is 'full', and there are more coordinates to copy from the original step (line 18). If this is the case, the next set of coordinates are added to the current step. This is necessary as the steps need to be connected to each other in order to form a line for the entire route. The 'if' statement on lines 20-22 is used to ensure that a new step isn't created if there is only 1 more set of coordinates to add; this is done by incrementing $i$ so that the inner for loop terminates early. After all coordinates have been added to the new step, the bounds are calculated and it is added to the array of new steps (lines 25-26).
+The algorithm begins by initialising \textit{stepCounter}, a variable that counts how many steps have been created so far by the algorithm, to 0. The for loop in lines 3-34 iterate through all route steps. The distance of the current step and the array of coordinates are assigned to variables. A check is then made to see if the distance of the step is over 10km (line 6). If it is under 10km, the bounds of the step are calculated and it is added to the array of new steps with no further changes (lines 30-31). If the step is over this distance, it must be split into multiple smaller steps. First of all, the number of new steps is calculated by dividing the distance by 10km and rounding up to the nearest whole value (line 7). It then calculates how many sets of coordinates should be assigned to each new step (line 9). The for loop in steps 11-28, creates each new route step. The while loop in lines 14-24 copies coordinates from the original step to the new step. The loop's conditions make it exit when the step has the maximum number of coordinates, or if there are no more coordinates to copy from the original step (line 14). After each pair of coordinates is added, a check is made to see if the new step is 'full', and there are more coordinates to copy from the original step (line 18). If this is the case, the next set of coordinates are added to the current step. This is necessary as the steps need to be connected to each other in order to form a line for the entire route. The 'if' statement on lines 20-22 is used to ensure that a new step is not created if there is only 1 more set of coordinates to add; this is done by incrementing $i$ so that the inner for loop terminates early. After all coordinates have been added to the new step, the bounds are calculated and it is added to the array of new steps (lines 25-26).
 
 To analyse the time complexity of the algorithm, first note that each execution of an assignment or conditional (i.e., `if') statement requires constant, $\mathcal{O}(1)$, time. The while loop on lines 14--24 is executed at most
 \[
@@ -784,7 +809,18 @@ represents the maximum number of coordinates in a step of the processed route.
 
 Hence the complexity of the algorithm is linear in the number of elements from $routeSteps$, and in the number of coordinates in the largest step. It is important that this algorithm is linear, so that the time taken for longer routes does not increase, for instance, exponentially.
 
-Careful consideration had to be made when deciding upon the distance threshold used within this algorithm. A lower value leads to more accurate results from the first layer of filtering, improving the time taken for the second layer of filtering. However, this also increases the number of database calls made for each route, which can have a negative affect on the performance. This creates a trade-off between the amount of computation required on client-side and sever-side. Tests were performed using several different distance thresholds for a set list of routes, and the computation times were compared. It was concluded that 10km is the optimal threshold, as it produced the results in the shortest times for all tested routes, and the browser never became unresponsive due to the amount of data to be processed. \autoref{fig:shortersteps} shows the results of running this algorithm on the long route step from \autoref{fig:longroutestep}. Black rectangles have been drawn to represent the bounding areas of each of the new steps. This clearly demonstrates that far less invalid collisions will be returned as a much smaller area is being analysed.
+Careful consideration had to be made when deciding upon the distance threshold used within this algorithm. A lower value leads to more refined results from the first layer of filtering, improving the time taken for the second layer of filtering. However, this also increases the number of database calls made for each route, which can have a negative affect on the performance. This creates a trade-off between the amount of computation required on client-side and sever-side. 
+
+Response times were measured for the 20 routes specified in \autoref{tab:performanceresults1} while using different threshold values in the range 5-50. A trial and error approach was used to identify this initial range, and it was found that values either side produced longer response times. Tests were carried out for all multiples of 5 within the 5-50 range. It was concluded that 10km is the optimal threshold, as it produced the results in the shortest times for most of the tested routes. A graph comparing the response times for thresholds of 5km, 10km and 15km is presented in \autoref{fig:thresholdtests}.
+
+\begin{figure}
+	\center
+	\includegraphics[scale=1]{thresholdtests}
+	\caption{Graph showing response times for different distance thresholds}
+	\label{fig:thresholdtests}
+\end{figure}
+
+ \autoref{fig:shortersteps} shows the results of running this algorithm on the long route step from \autoref{fig:longroutestep}. Black rectangles have been drawn to represent the bounding areas of each of the new steps. This clearly demonstrates that far less invalid collisions will be returned as a much smaller area is being analysed.
 
 \begin{figure}
 	\center
@@ -794,17 +830,17 @@ Careful consideration had to be made when deciding upon the distance threshold u
 \end{figure}
 
 \section{Summary}
-This chapter discussed the challenges faced during the implementation of the Road Safety Advisory System and the solutions used to overcome them. There is a focus on the collision searching functionality as this is unique to this application and provided the most interesting challenges during development. The next chapter focuses on testing and evaluating the system.
+This chapter discussed the challenges faced during the implementation of Route Risks, and the solutions used to overcome them. There is a focus on the collision searching functionality as this is unique to this application and provided the most interesting challenges during development. The next chapter focuses on testing and evaluating the system.
 
 \chapter{Testing and Evaluation}
 
 \section{Testing and Evaluation Methodology}
 
-The testing and evaluation of the Road Safety Advisory System were conducted in four primary stages:
+The testing and evaluation of the road safety advisory system were conducted in four primary stages:
 
 \begin{enumerate}
 	\item Functional testing - A series of test cases have been designed to test that the system produced meets its functional requirements. These tests do not require knowledge of the code, and are focused on ensuring that everything is functional from the perspective of a user (black-box testing). After each increment of the system was developed, the relevant tests for the new functionality were run, along with tests for existing functionality. This regression testing ensures that code changes do not break previously functional parts of the application.
-	\item Accuracy testing - One of the main challenges of testing the application involves checking that the results produced are accurate. As there isn't an existing application that performs collision searching by route, there is no basis for comparison. Hence the decision was made to use Crash Map \citep{crashmap} in order to manually zoom/pan along a route and count the number of collisions. The results, and time taken to calculate them, are compared with the Road Safety Advisory System.
+	\item Accuracy testing - One of the main challenges of testing the application involves checking that the results produced are accurate. As there is not an existing application that performs collision searching by route, there is no basis for comparison. Hence the decision was made to use Crash Map \citep{crashmap} in order to manually zoom/pan along a route and count the number of collisions. The results, and time taken to calculate them, are compared with the results obtained using Route Risks.
 	\item Performance testing -  Performance analysis was carried out to determine how fast the system is, and to determine what impacts the speed. The aim of this analysis is to ensure that the system is fully scalable. 
 	\item Usability testing - User evaluations were carried out to test the usability of the application. Participants were asked to perform a set of tasks using the application and raise any usability issues.
 \end{enumerate}
@@ -821,7 +857,7 @@ Prior to testing, the application was deployed onto an EC2 instance provided by 
 	\hline
 	\textbf{Instance Type} & t2.micro (Variable ECUs, 1 vCPUs, 2.5 GHz, Intel Xeon Family, 1 GiB memory, EBS only) \\ \hline
 	\textbf{Operating System} & Ubuntu Server 14.04 LTS \\ \hline
-	\textbf{Deployed Components} & Apache, PHP, Git, Road Safety Advisory System. \\ \hline
+	\textbf{Deployed Components} & Apache, PHP, Git, Route Risks. \\ \hline
 	\end{tabular}
 \end{table}
 
@@ -836,7 +872,7 @@ Prior to testing, the application was deployed onto an EC2 instance provided by 
 	\end{tabular}
 \end{table}
 
-This is the intended final deployment of the Road Safety Advisory System, and its end users can currently access the application at \url{RouteRisks.co.uk} (\autoref{fig:routerisks}).
+This is the intended final deployment of Route Risks, and its end users can currently access the application at \url{RouteRisks.co.uk} (\autoref{fig:routerisks}).
 
 \begin{figure}
 	\center
@@ -973,13 +1009,13 @@ This section of the report includes a description of the methodology used to tes
 
 \subsection{Method}
 
-The accuracy of the application was tested by comparing the results of the Road Safety Advisory System (RSAS) with those manually obtained using Crash Map \citep{crashmap}. The following process was followed for each test route:
+The accuracy of the application was tested by comparing the results of Route Risks with those manually obtained using Crash Map \citep{crashmap}. The following process was followed for each test route:
 
 \begin{enumerate}
 	\item Access Crash Map and search for the start of the route. Adjust the data filters accordingly.
 	\item Follow the route by panning and zooming on the map where necessary. Count the number of collisions on the route.
 	\item Record the total number of collisions found, and the time taken to carry out the search (to the nearest second).
-	\item Access the RSAS and perform a search using the specified details.
+	\item Access Route Risks and perform a search using the specified details.
 	\item Record the total number of collisions found, and the time taken to carry out the search (to the nearest second).
 \end{enumerate}
 
@@ -1016,11 +1052,11 @@ The results of the tests are presented in \autoref{tab:accuracyresults}. For fou
 
 \begin{table}
 	\center
-	\caption{Comparison of results from Crash Map and the Road Safety Advisory System (RSAS)}
+	\caption{Comparison of results from Crash Map and Route Risks}
 	\label{tab:accuracyresults}
 	\begin{tabular}{| p{1cm} | p{2cm} | p{2.5cm} | p{1.7cm} | p{1.7cm} | p{1.7cm} | p{1.7cm} |}
 	\hline
-	\multicolumn{3}{|c|}{} & \multicolumn{2}{c|}{\textbf{Crash Map}} & \multicolumn{2}{c|}{\textbf{RSAS}}  \\ \hline
+	\multicolumn{3}{|c|}{} & \multicolumn{2}{c|}{\textbf{Crash Map}} & \multicolumn{2}{c|}{\textbf{Route Risks}}  \\ \hline
 	Route & Years & Severity Levels & Collisions & Time(s) & Collisions & Time(s) \\ \hline
 	1 & All & All & 29 & 73 & 30 & 1 \\ \hline
 	2 & All & All &16 & 78 & 19 & 1 \\ \hline
@@ -1049,29 +1085,29 @@ The results of the tests are presented in \autoref{tab:accuracyresults}. For fou
 
 \subsection{Discussion}
 
-The use of Crash Map to analyse the accuracy of the application has a number of issues. Firstly, the application isn't designed to analyse routes in this manner, so there isn't an automated process. Therefore, it is open to human error when counting up the number of collisions. Three of the tests carried out had to be restarted after forgetting how many collisions had been counted mid-way through. It is also down to the user to make a decision as to whether a collision is on the route or not. In many cases this will be obvious, but when a collision is on a junction between the route and an adjoining road, for example, some users may choose to include it in the results, whilst some may exclude it. Because of these factors, the results obtained when using Crash Map cannot be accepted as conclusively correct. However, as there is no better approach available, these figures are considered as correct for the basis of this experiment.
+The use of Crash Map to analyse the accuracy of the application has a number of issues. Firstly, the application is not designed to analyse routes in this manner, so there is not an automated process. Therefore, it is open to human error when counting up the number of collisions. Three of the tests carried out had to be restarted after forgetting how many collisions had been counted mid-way through. It is also down to the user to make a decision as to whether a collision is on the route or not. In many cases this will be obvious, but when a collision is on a junction between the route and an adjoining road, for example, some users may choose to include it in the results, whilst some may exclude it. Because of these factors, the results obtained when using Crash Map cannot be accepted as conclusively correct. However, as there is no better approach available, these figures are considered as correct for the basis of this experiment.
 
-Another issue with using Crash Map for these tests is the time taken. Manually navigating the route, and waiting for collisions to load each time the map is panned/zoomed is a long and tedious process. The results in \autoref{tab:accuracyresults} show that the time taken for each search ranged from 13 seconds to 2 minutes and 43 seconds. This issue would be accentuated further for longer routes. In comparison, the RSAS completed all searches in 1 second. 
+Another issue with using Crash Map for these tests is the time taken. Manually navigating the route, and waiting for collisions to load each time the map is panned/zoomed is a long and tedious process. The results in \autoref{tab:accuracyresults} show that the time taken for each search ranged from 13 seconds to 2 minutes and 43 seconds. This issue would be accentuated further for longer routes. In comparison, Route Risks completed all searches in 1 second. 
 
-It is important to understand why the system sometimes returns too many or too few collisions. To do this, some of the routes tested were examined further. \autoref{fig:excludedcollisionsroute8} shows the 2 collisions that were included in the results for route 8 when testing with Crash Map, but excluded by the RSAS. Both collisions are plotted a considerable distance away from the road. A human viewing these points will still associate them with the route, because there is not another road nearby. However, the automated filtering performed by the RSAS will determine that they are too far away from the route to be relevant. This could be resolved by increasing the tolerance value used when filtering collisions, but this could have an adverse affect when analysing other routes.
+It is important to understand why the system sometimes returns too many or too few collisions. To do this, some of the routes tested were examined further. \autoref{fig:excludedcollisionsroute8} shows the 2 collisions that were included in the results for route 8 when testing with Crash Map, but excluded by Route Risks. Both collisions are plotted a considerable distance away from the road. A human viewing these points will still associate them with the route, because there is not another road nearby. However, the automated filtering performed by Route Risks will determine that they are too far away from the route to be relevant. This could be resolved by increasing the tolerance value used when filtering collisions, but this could have an adverse affect when analysing other routes.
 
 \begin{figure}
 	\center
 	\includegraphics[scale=0.5]{excludedcollisions}
-	\caption{Collisions excluded when testing route 8 in the Road Safety Advisory System (screen shot from Crash Map \citep{crashmap})}
+	\caption{Collisions excluded when testing route 8 in Route Risks (screen shot from Crash Map \citep{crashmap})}
 	\label{fig:excludedcollisionsroute8}
 \end{figure}
 
-\autoref{fig:includedcollisionroute6} shows a collision that is included in the results for route 6 by the RSAS, but excluded by the user when using Crash Map. To a user viewing the map it is clearly not on the route, but to the system it is considered close enough to the route to be relevant. An increase in the tolerance value to resolve the issue for route 8 would ultimately lead to more issues like this. Hence the tolerance value used is a trade-off, as it can lead to too many or too few collisions being included in the results for any given route. These tests suggest that the tolerance value used is suitable as the RSAS results are, on average, equivalent to the results found using Crash Map. 
+\autoref{fig:includedcollisionroute6} shows a collision that is included in the results for route 6 by Route Risks, but excluded by the user when using Crash Map. To a user viewing the map it is clearly not on the route, but to the system it is considered close enough to the route to be relevant. An increase in the tolerance value to resolve the issue for route 8 would ultimately lead to more issues like this. Hence the tolerance value used is a trade-off, as it can lead to too many or too few collisions being included in the results for any given route. These tests suggest that the tolerance value used is suitable as Route Risks' results are, on average, equivalent to the results found using Crash Map. 
 
 \begin{figure}
 	\center
 	\includegraphics[scale=1]{incorrectlyincluded}
-	\caption{Collision wrongly included when testing route 6 in the Road Safety Advisory System}
+	\caption{Collision wrongly included when testing route 6 in Route Risks}
 	\label{fig:includedcollisionroute6}
 \end{figure}
 
-Whilst carrying out these tests, it was noticed that a large proportion of collisions are plotted far away from roads on both Crash Map and the RSAS. It is possible that the collision data provided is not accurate enough, which increases the difficulty of automatically filtering collisions by route. Open data accuracy is a general concern, as discussed in the literature review (\autoref{sec:openDateBenefits&Challenges}). Another possible cause for these issues is the Google Maps API not correctly projecting the points onto the map. Further work is required in order to investigate these theories.
+Whilst carrying out these tests, it was noticed that a large proportion of collisions are plotted far away from roads on both Crash Map and Route Risks. It is possible that the collision data provided is not accurate enough, which increases the difficulty of automatically filtering collisions by route. Open data accuracy is a general concern, as discussed in the literature review (\autoref{sec:openDateBenefits&Challenges}). Another possible cause for these issues is the Google Maps API not correctly projecting the points onto the map. Further work is required in order to investigate these theories.
 
 \section{Performance}
 
@@ -1184,7 +1220,7 @@ It is also worth consideration that other factors can impact the performance of 
 
 \section{User Evaluation}
 
-When an application is deemed to be sufficient by the developer, it is necessary to test it with real users \citep{Cooper2007}. A small summative evaluation was carried out on the final version of the Road Safety Advisory System in order to evaluate the usability. 
+When an application is deemed to be sufficient by the developer, it is necessary to test it with real users \citep{Cooper2007}. A small summative evaluation was carried out on the final version of Route Risks in order to evaluate the usability. 
 
 \subsection{Method}
 
@@ -1258,11 +1294,11 @@ The technical experience of the users also explains why so many ignored the help
 
 \section{Maintainability}
 
-It is important that the RSAS is maintainable, so that new datasets can be added in the future. New datasets are released annually, and will need to be immediately added to the application to keep it relevant and up-to-date. The database structure used for the RSAS is very simple and easily allows for the addition of new data. It uses one table, which is based on the 'accidents' CSV file provided by the UK Department for Transport for the years 2005 to 2013. When new data is released, provided the data is in the same format, it will be possible to add it directly to the existing table by running a script. The script used for importing the 2005-2013 data can be reused here, assuming that the structure of the CSV file is the same. The maintainability of the application could be improved in the future by looking into automating this process.
+It is important that the road safety advisory system is maintainable, so that new datasets can be added in the future. New datasets are released annually, and will need to be immediately added to the application to keep it relevant and up-to-date. The database structure used for Route Risks is very simple and easily allows for the addition of new data. It uses one table, which is based on the 'accidents' CSV file provided by the UK Department for Transport for the years 2005 to 2013. When new data is released, provided the data is in the same format, it will be possible to add it directly to the existing table by running a script. The script used for importing the 2005-2013 data can be reused here, assuming that the structure of the CSV file is the same. The maintainability of the application could be improved in the future by looking into automating this process.
 
 \section{Summary}
 
-This chapter of the report analysed and evaluated the final version of the Road Safety Advisory System. Functional tests were carried out to ensure that the requirements of the system were satisfied. An in-depth evaluation was then carried out to assess the accuracy of the collision searching functionality. The performance of the application was tested thoroughly to ensure that it is scalable and responds in an acceptable time for all possible requests. A usability study was carried out to ensure that users found the application easy and satisfying to use. 
+This chapter of the report analysed and evaluated the final version of Route Risks. Functional tests were carried out to ensure that the requirements of the system were satisfied. An in-depth evaluation was then carried out to assess the accuracy of the collision searching functionality. The performance of the application was tested thoroughly to ensure that it is scalable and responds in an acceptable time for all possible requests. A usability study was carried out to ensure that users found the application easy and satisfying to use. The next chapter summarises the findings of this project, and presents ideas for future work.
 
 \chapter{Conclusion and Future Work}
 
@@ -1274,7 +1310,14 @@ Implementing this advanced searching functionality proved to be the most challen
 
 Another objective of the project was to include an interactive map that highlights collision hotspots. This was successfully implemented using the Google Maps API. When a user searches for a route, it is drawn onto the map, and a heatmap that visualises the intensity of collisions on the route is rendered. Red areas of the heatmap represent collision hotspots for that route. This provides a good visual representation of the road safety data, and all participants in the user evaluation were able to interpret the heatmap. 
 
-The application developed has been made publicly available at \url{routerisks.co.uk}. Route Risks is published on \url{data.gov.uk}, which includes a library of 350+ applications that use Open Data. It is envisaged that people interested in Open Data will find the application here and use it to analyse routes of interest to them. Councils may also find the application, and use it to analyse which roads are the most dangerous within their county. It is hoped that the application can be used to assist decisions made regarding which roads need safety improvements. 
+The application developed has been made publicly available at \url{routerisks.co.uk}. Route Risks is also published in the application catalogue on the UK Government's Open Data application portal, \url{http://data.gov.uk/apps} (see \autoref{fig:datagovuk}). It is envisaged that people interested in Open Data will find the application here and use it to analyse routes of interest to them. Councils may also find the application, and use it to analyse which roads are the most dangerous within their county. It is hoped that the application can be used to assist decisions made regarding which roads need safety improvements. 
+
+\begin{figure}
+	\center
+	\includegraphics[scale=0.4]{datagovuk}
+	\caption{\url{data.gov.uk} page advertising Route Risks}
+	\label{fig:datagovuk}
+\end{figure}
 
 The technologies used for the application are all open-source, with the exception of the Google Maps API. The application is deployed using a LAMP environment, meaning it uses Linux (Ubuntu), Apache, MySQL and PHP; all of which are open-source. The Google Maps API is free to use for publicly available sites (providing the usage limits are not exceeded), so the only costs associated with the application are for web hosting. The PHP framework used, MINI 1 \citep{mini}, is recommended for projects with low server-side complexity like this, as it is easy to use and set up prototypes in a short period of time. However, more complex projects should look at more advanced frameworks. The Google Maps API is also recommended, as it is free to use, easy to setup, and provides additional libraries with advanced features.
 
@@ -1310,7 +1353,7 @@ The application could be extended to analyse routes in other countries. The comp
 
 \subsection{Integration With Other Services}
 
-The application could be integrated with other web services to provide more in-depth analysis. For example, weather services could be used to get a forecast for the specified route at a given time. This data could then be used in the collision analysis, as all collisions have weather data associated with them. This could be a useful method for analysing the safety of roads at a certain point in time.
+The application could be integrated with other web services to provide more in-depth analysis. For example, weather services could be used to get a forecast for the specified route at a given time. This data could then be used to analyse the safety of roads in specific weather conditions, as all collisions have weather data associated with them.
 
 \bibliography{library}
 
