@@ -395,10 +395,10 @@ function getBounds(latlngs){
     var southWest = bounds.getSouthWest();
 
     var formattedBounds = {
-        maxlat: northEast.k,
-        minlat: southWest.k,
-        maxlong: northEast.D,
-        minlong: southWest.D
+        maxlat: northEast.lat(),
+        minlat: southWest.lat(),
+        maxlong: northEast.lng(),
+        minlong: southWest.lng()
     };
 
     return formattedBounds;
